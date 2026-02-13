@@ -1,5 +1,5 @@
 import type { Component, ParentProps } from 'solid-js';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.svg';
 import ThemeToggle from './ThemeToggle';
 
 const Layout: Component<ParentProps> = (props) => {

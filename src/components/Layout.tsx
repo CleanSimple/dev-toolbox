@@ -1,6 +1,7 @@
 import type { Component, ParentProps } from 'solid-js';
 import logo from '../assets/logo.svg';
 import ThemeToggle from './ThemeToggle';
+import ReloadPrompt from './ReloadPrompt';
 
 const Layout: Component<ParentProps> = (props) => {
     return (
@@ -16,6 +17,7 @@ const Layout: Component<ParentProps> = (props) => {
             </nav>
             <main class="flex-1 w-full max-w-7xl mx-auto p-8">
                 {props.children}
+                <ReloadPrompt />
             </main>
         </div>
     );

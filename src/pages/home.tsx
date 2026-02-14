@@ -1,8 +1,9 @@
 import { createSignal } from "solid-js";
 import SourceInput from "../components/SourceInput";
 import Output from "../components/Output";
+import type { Component } from "solid-js";
 
-function Home() {
+const Home: Component = () => {
     const [inputValue, setInputValue] = createSignal('');
 
     const handleSourceChange = (value: string) => {

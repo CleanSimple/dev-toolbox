@@ -1,7 +1,8 @@
 import { createSignal, createEffect, onMount, onCleanup } from 'solid-js';
 import { Moon, Sun, Monitor } from 'lucide-solid';
+import type { Component } from 'solid-js';
 
-export default function ThemeToggle() {
+const ThemeToggle: Component = () => {
     const [theme, setTheme] = createSignal(
         localStorage.getItem('theme') || 'system'
     );
@@ -57,3 +58,5 @@ export default function ThemeToggle() {
         </button>
     );
 }
+
+export default ThemeToggle;

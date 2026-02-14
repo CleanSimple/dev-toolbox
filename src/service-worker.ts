@@ -18,4 +18,4 @@ cleanupOutdatedCaches()
 registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')))
 
 
-console.log('Service Worker registered')
+// console.log('Service Worker registered')

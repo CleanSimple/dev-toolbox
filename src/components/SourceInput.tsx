@@ -1,20 +1,19 @@
 import { createSignal } from 'solid-js';
 import type { Component } from 'solid-js';
-
-export type FormatType = 'text' | 'hex';
+import type { DataFormat } from '../operations';
 
 interface SourceInputProps {
-    onValueChange?: (value: string, format: FormatType) => void;
+    onValueChange?: (value: string, format: DataFormat) => void;
     initialValue?: string;
-    initialFormat?: FormatType;
+    initialFormat?: DataFormat;
 }
 
 const SourceInput: Component<SourceInputProps> = (props) => {
-    const [format, setFormat] = createSignal<FormatType>(props.initialFormat || 'text');
+    const [format, setFormat] = createSignal<DataFormat>(props.initialFormat || 'text');
     const [value, setValue] = createSignal(props.initialValue || '');
 
     const handleFormatChange = (e: Event) => {
-        const newFormat = (e.target as HTMLSelectElement).value as FormatType;
+        const newFormat = (e.target as HTMLSelectElement).value as DataFormat;
         setFormat(newFormat);
         props.onValueChange?.(value(), newFormat);
     };

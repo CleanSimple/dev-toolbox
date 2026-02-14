@@ -9,4 +9,4 @@ export const operations: Operation[] = [
 ];
 
 // Export types for convenience
-export type { Operation, OperationType } from './types';
+export type { Operation, OperationType, DataFormat, Data as Result } from './types';

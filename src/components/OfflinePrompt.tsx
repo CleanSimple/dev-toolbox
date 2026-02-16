@@ -1,18 +1,17 @@
 import type { Component } from 'solid-js'
 import { Show, createSignal } from 'solid-js'
-import { useRegisterSW } from 'virtual:pwa-register/solid'
 import { Wifi, X, Bookmark, Info } from 'lucide-solid'
 
-const OfflinePrompt: Component = () => {
+interface OfflinePromptProps {
+    show: boolean;
+    onClose: () => void;
+}
+
+const OfflinePrompt: Component<OfflinePromptProps> = (props) => {
     const [showBookmarkInfo, setShowBookmarkInfo] = createSignal(false)
-    const {
-        offlineReady: [offlineReady, setOfflineReady],
-    } = useRegisterSW({
-        immediate: true,
-    })
 
     const close = () => {
-        setOfflineReady(false)
+        props.onClose()
         setShowBookmarkInfo(false)
     }
 
@@ -22,7 +21,7 @@ const OfflinePrompt: Component = () => {
 
     return (
         <div class="fixed bottom-0 right-0 z-50 p-4 md:p-8 pointer-events-none">
-            <Show when={offlineReady()}>
+            <Show when={props.show}>
                 <div class="pointer-events-auto flex flex-col gap-4 p-5 min-w-[320px] max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] animate-fade-in-up">
                     <div class="flex items-start gap-4">
                         <div class="shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">

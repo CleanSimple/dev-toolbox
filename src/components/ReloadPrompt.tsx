@@ -1,38 +1,17 @@
 import type { Component } from 'solid-js'
 import { Show } from 'solid-js'
-import { useRegisterSW } from 'virtual:pwa-register/solid'
 import { RefreshCw, X } from 'lucide-solid'
 
-const ReloadPrompt: Component = () => {
-    const {
-        needRefresh: [needRefresh, setNeedRefresh],
-        updateServiceWorker,
-    } = useRegisterSW({
-        immediate: true,
-        onRegisteredSW(swUrl, swRegistraion) {
-            console.log(`Service Worker at: ${swUrl}`)
-            if (import.meta.env.DEV && swRegistraion) {
-                setInterval(() => {
-                    console.log('Checking for sw update')
-                    swRegistraion.update()
-                }, 20000 /* 20s for testing purposes */)
-            }
-            else {
-                console.log(`Service Worker Registered.`)
-            }
-        },
-        onRegisterError(error) {
-            console.error('Service Worker registration error', error)
-        },
-    })
+interface ReloadPromptProps {
+    show: boolean;
+    onClose: () => void;
+    onUpdate: () => void;
+}
 
-    const close = () => {
-        setNeedRefresh(false)
-    }
-
+const ReloadPrompt: Component<ReloadPromptProps> = (props) => {
     return (
         <div class="fixed bottom-0 right-0 z-50 p-4 md:p-8 pointer-events-none">
-            <Show when={needRefresh()}>
+            <Show when={props.show}>
                 <div class="pointer-events-auto flex flex-col gap-4 p-5 min-w-[320px] max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] animate-fade-in-up">
                     <div class="flex items-start gap-4">
                         <div class="shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
@@ -45,7 +24,7 @@ const ReloadPrompt: Component = () => {
                             </p>
                         </div>
                         <button
-                            onClick={close}
+                            onClick={props.onClose}
                             class="absolute top-4 right-4 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
                         >
                             <X size={16} />
@@ -53,13 +32,13 @@ const ReloadPrompt: Component = () => {
                     </div>
                     <div class="flex gap-2">
                         <button
-                            onClick={() => updateServiceWorker()}
+                            onClick={props.onUpdate}
                             class="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-bold rounded-xl transition-all active:scale-[0.97] shadow-lg shadow-blue-500/20"
                         >
                             Reload Now
                         </button>
                         <button
-                            onClick={close}
+                            onClick={props.onClose}
                             class="flex-1 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 text-[13px] font-bold rounded-xl transition-all active:scale-[0.97]"
                         >
                             Later

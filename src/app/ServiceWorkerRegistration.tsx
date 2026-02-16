@@ -1,9 +1,9 @@
-import { type Component, type ParentProps } from 'solid-js';
+import { type Component } from 'solid-js';
 import { useRegisterSW } from 'virtual:pwa-register/solid';
-import ReloadPrompt from './ReloadPrompt';
-import OfflinePrompt from './OfflinePrompt';
+import ReloadPrompt from '../components/ReloadPrompt';
+import OfflinePrompt from '../components/OfflinePrompt';
 
-const SWRegistrationProvider: Component<ParentProps> = (props) => {
+const ServiceWorkerRegistration: Component = () => {
     const {
         needRefresh: [needRefresh, setNeedRefresh],
         offlineReady: [offlineReady, setOfflineReady],
@@ -36,7 +36,6 @@ const SWRegistrationProvider: Component<ParentProps> = (props) => {
 
     return (
         <>
-            {props.children}
             <ReloadPrompt
                 show={needRefresh()}
                 onClose={closeReload}
@@ -50,4 +49,4 @@ const SWRegistrationProvider: Component<ParentProps> = (props) => {
     );
 };
 
-export default SWRegistrationProvider;
+export default ServiceWorkerRegistration;

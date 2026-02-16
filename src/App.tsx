@@ -6,8 +6,9 @@ import ServiceWorkerRegistration from "./app/ServiceWorkerRegistration";
 const App: Component = () => {
     return (
         <>
-            <Router>{routes}</Router>
             <ServiceWorkerRegistration />
+
+            <Router>{routes}</Router>
         </>
     );
 };

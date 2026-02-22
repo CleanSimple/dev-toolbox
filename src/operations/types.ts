@@ -1,5 +1,5 @@
 export type OperationType = 'format' | 'encode' | 'decode' | 'convert';
-export type DataFormat = 'text' | 'hex';
+export type DataFormat = 'text' | 'bytes-hex';
 
 export interface Data {
     value: string;

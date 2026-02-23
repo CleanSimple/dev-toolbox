@@ -1,3 +1,4 @@
+import { byteArrayFromHexString, bytesToText } from '../utils/bytes-encoder';
 import type { Operation, Data } from './types';
 
 export const base64Decode: Operation = {
@@ -5,9 +6,16 @@ export const base64Decode: Operation = {
     name: 'Base64 Decode',
     type: 'decode',
     handler: (input: Data): Data => {
-        if (input.format !== 'text') {
-            throw new Error('Base64 Decode only supports text format');
+        if (input.format == 'text') {
+            return { value: atob(input.value), format: 'text' };
         }
-        return { value: atob(input.value), format: 'text' };
+        else if (input.format == 'bytes-hex') {
+            const bytes = byteArrayFromHexString(input.value);
+            const text = atob(bytesToText(bytes));
+            return { value: text, format: 'text' };
+        }
+        else {
+            throw new Error(`Unsupported input format: ${input.format}`);
+        }
     }
 };

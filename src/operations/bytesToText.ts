@@ -1,5 +1,5 @@
 import { byteArrayFromHexString, bytesToText as _bytesToText } from "../utils/bytes-encoder";
-import type { Operation } from "./types";
+import type { Operation } from "../types";
 
 export const bytesToText: Operation = {
     id: 'bytes-to-text',

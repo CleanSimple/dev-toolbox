@@ -1,5 +1,5 @@
 import { createEffect, createSignal, type Signal } from "solid-js";
-import type { Operation, Data } from "./types";
+import type { Operation, Data } from "../types";
 
 interface OperationDetails {
     operation: Operation;

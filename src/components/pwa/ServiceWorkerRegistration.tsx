@@ -1,7 +1,7 @@
 import { Show, type Component } from 'solid-js';
 import { useRegisterSW } from 'virtual:pwa-register/solid';
-import ReloadPrompt from '../components/ReloadPrompt';
-import OfflinePrompt from '../components/OfflinePrompt';
+import ReloadPrompt from './ReloadPrompt';
+import OfflinePrompt from './OfflinePrompt';
 
 const ServiceWorkerRegistration: Component = () => {
     const {

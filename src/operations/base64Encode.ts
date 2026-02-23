@@ -1,5 +1,5 @@
 import { byteArrayFromHexString, bytesToText } from '../utils/bytes-encoder';
-import type { Operation, Data } from './types';
+import type { Operation, Data } from '../types';
 
 export const base64Encode: Operation = {
     id: 'base64-encode',

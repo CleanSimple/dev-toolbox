@@ -4,7 +4,7 @@ import AddOperation from "../components/AddOperation";
 import Output from "../components/Output";
 import type { Component } from "solid-js";
 import type { DataFormat, Operation } from "../operations";
-import { createOperationPipline } from "../operations/OperationsPipline";
+import { createOperationPipline } from "../hooks/createOperationPipline";
 
 
 const Home: Component = () => {

@@ -1,4 +1,4 @@
-import type { Operation } from "./types";
+import type { Operation } from "../types";
 import { byteArrayToHexString, textToBytes as _textToBytes } from "../utils/bytes-encoder";
 
 export const textToBytes: Operation = {

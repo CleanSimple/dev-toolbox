@@ -13,7 +13,7 @@ interface OperationOutput {
     error: () => string;
 }
 
-export function createOperationPipline() {
+export function createOperationPipeline() {
     const [pipeline, setPipeline] = createSignal<OperationDetails[][]>([]);
     const [input, setInput] = createSignal<Data>({ value: '', format: 'text' });
     const [isProcessing, setIsProcessing] = createSignal<boolean>(false);

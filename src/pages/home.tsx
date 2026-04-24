@@ -4,11 +4,11 @@ import AddOperation from "../components/AddOperation";
 import Output from "../components/Output";
 import type { Component } from "solid-js";
 import type { DataFormat, Operation } from "../operations";
-import { createOperationPipline } from "../hooks/createOperationPipline";
+import { createOperationPipeline } from "../hooks/createOperationPipeline";
 
 
 const Home: Component = () => {
-    const operationsPipeline = createOperationPipline();
+    const operationsPipeline = createOperationPipeline();
 
     const handleSourceChange = (input: string, format: DataFormat) => {
         operationsPipeline.setInput({ value: input, format });

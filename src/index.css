@@ -4,6 +4,33 @@
   --animate-spin-slow: spin 3s linear infinite;
   --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
 
+  --color-base-bg: var(--scheme-base-bg);
+  --color-base-text: var(--scheme-base-text);
+  
+  --color-surface-bg: var(--scheme-surface-bg);
+  --color-surface-text: var(--scheme-surface-text);
+  --color-surface-border: var(--scheme-surface-border);
+
+  --color-primary-bg: var(--scheme-primary-bg);
+  --color-primary-text: var(--scheme-primary-text);
+  --color-primary-hover: var(--scheme-primary-hover);
+
+  --color-secondary-bg: var(--scheme-secondary-bg);
+  --color-secondary-text: var(--scheme-secondary-text);
+  --color-secondary-hover: var(--scheme-secondary-hover);
+
+  --color-muted-text: var(--scheme-muted-text);
+  
+  --color-info-bg: var(--scheme-info-bg);
+  --color-info-text: var(--scheme-info-text);
+  
+  --color-success-bg: var(--scheme-success-bg);
+  --color-success-text: var(--scheme-success-text);
+  
+  --color-error-bg: var(--scheme-error-bg);
+  --color-error-border: var(--scheme-error-border);
+  --color-error-text: var(--scheme-error-text);
+
   @keyframes fade-in-up {
     from {
       opacity: 0;
@@ -42,6 +69,17 @@
   --scheme-input-bg: var(--color-gray-50);
   --scheme-input-border: var(--color-gray-300);
   --scheme-muted-text: var(--color-gray-400);
+
+  /* Info, Success, Error Scheme */
+  --scheme-info-bg: var(--color-blue-100);
+  --scheme-info-text: var(--color-blue-800);
+
+  --scheme-success-bg: var(--color-green-50);
+  --scheme-success-text: var(--color-green-600);
+
+  --scheme-error-bg: var(--color-red-50);
+  --scheme-error-border: var(--color-red-200);
+  --scheme-error-text: var(--color-red-700);
 }
 
 :root.dark {
@@ -66,6 +104,17 @@
   --scheme-input-bg: var(--color-gray-900);
   --scheme-input-border: var(--color-gray-600);
   --scheme-muted-text: var(--color-gray-500);
+
+  /* Info, Success, Error Scheme */
+  --scheme-info-bg: var(--color-blue-900);
+  --scheme-info-text: var(--color-blue-200);
+
+  --scheme-success-bg: color-mix(in srgb, var(--color-green-900) 20%, transparent);
+  --scheme-success-text: var(--color-green-400);
+
+  --scheme-error-bg: color-mix(in srgb, var(--color-red-900) 20%, transparent);
+  --scheme-error-border: var(--color-red-800);
+  --scheme-error-text: var(--color-red-400);
 }
 
 @layer components {

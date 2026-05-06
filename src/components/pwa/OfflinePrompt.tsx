@@ -20,30 +20,30 @@ const OfflinePrompt: Component<OfflinePromptProps> = (props) => {
 
     return (
         <div class="fixed bottom-0 right-0 z-50 p-4 md:p-8 pointer-events-none">
-            <div class="pointer-events-auto flex flex-col gap-4 p-5 min-w-[320px] max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] animate-fade-in-up">
+            <div class="pointer-events-auto flex flex-col gap-4 p-5 min-w-[320px] max-w-sm bg-surface-bg border border-surface-border rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] animate-fade-in-up">
                 <div class="flex items-start gap-4">
-                    <div class="shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">
+                    <div class="shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-success-bg text-success-text">
                         <Wifi size={20} />
                     </div>
                     <div class="flex flex-col gap-1 pr-6">
-                        <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 italic tracking-tight">Offline Ready</h3>
-                        <p class="text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                        <h3 class="text-sm font-bold text-surface-text italic tracking-tight">Offline Ready</h3>
+                        <p class="text-[13px] text-muted-text leading-relaxed">
                             Dev Toolbox is now available offline. Bookmark this page for easy access anytime!
                         </p>
                     </div>
                     <button
                         onClick={close}
-                        class="absolute top-4 right-4 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+                        class="absolute top-4 right-4 p-1 text-muted-text hover:text-surface-text transition-colors"
                     >
                         <X size={16} />
                     </button>
                 </div>
 
                 <Show when={showBookmarkInfo()}>
-                    <div class="flex items-center gap-3 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-1 duration-200">
-                        <Info size={16} class="text-blue-500 shrink-0" />
-                        <p class="text-[12px] text-zinc-600 dark:text-zinc-400">
-                            Press <kbd class="px-1.5 py-0.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-xs font-sans font-medium text-zinc-900 dark:text-zinc-100">Ctrl + D</kbd> (or <kbd class="px-1.5 py-0.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-xs font-sans font-medium text-zinc-900 dark:text-zinc-100">⌘ + D</kbd>) to bookmark.
+                    <div class="flex items-center gap-3 p-3 bg-secondary-bg rounded-xl border border-surface-border animate-in fade-in slide-in-from-top-1 duration-200">
+                        <Info size={16} class="text-info-text shrink-0" />
+                        <p class="text-[12px] text-muted-text">
+                            Press <kbd class="px-1.5 py-0.5 bg-surface-bg border border-surface-border rounded text-xs font-sans font-medium text-surface-text">Ctrl + D</kbd> (or <kbd class="px-1.5 py-0.5 bg-surface-bg border border-surface-border rounded text-xs font-sans font-medium text-surface-text">⌘ + D</kbd>) to bookmark.
                         </p>
                     </div>
                 </Show>

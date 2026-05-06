@@ -44,7 +44,7 @@ const SourceInput: Component<SourceInputProps> = (props) => {
         <div class="card p-4 gap-3">
             {/* Options Bar */}
             <div class="flex items-center gap-4">
-                <label class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label class="flex items-center gap-2 text-sm font-medium text-surface-text">
                     <span>Format:</span>
                     <select
                         class="select-field px-3 py-1.5"
@@ -70,7 +70,7 @@ const SourceInput: Component<SourceInputProps> = (props) => {
 
             {/* Info Text */}
             <Show when={example()}>
-                <div class="text-xs text-gray-500 dark:text-gray-400">
+                <div class="text-xs text-muted-text">
                     Example: {example()}
                 </div>
             </Show>

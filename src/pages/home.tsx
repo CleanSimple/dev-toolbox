@@ -21,13 +21,13 @@ const Home: Component = () => {
     return (
         <div class="min-h-screen p-6">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-3xl font-bold text-surface-text mb-6">
+                <h1 class="text-3xl font-bold text-main mb-6">
                     Dev Toolbox
                 </h1>
 
                 {/* Input Section */}
                 <div class="flex flex-col gap-4 mb-6">
-                    <h2 class="text-xl font-semibold text-surface-text">
+                    <h2 class="text-xl font-semibold text-main">
                         Input
                     </h2>
                     <SourceInput
@@ -44,7 +44,7 @@ const Home: Component = () => {
                         <For each={outputChain}>
                             {({ operationName, result, error }) => (
                                 <div class="flex flex-col gap-4">
-                                    <h2 class="text-xl font-semibold text-surface-text">
+                                    <h2 class="text-xl font-semibold text-main">
                                         Output of {operationName}
                                     </h2>
                                     <Output

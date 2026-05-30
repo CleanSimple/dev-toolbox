@@ -26,7 +26,7 @@ const AddOperation: Component<AddOperationProps> = (props) => {
     return (
         <div class="card p-4 gap-3">
             <div class="flex items-center gap-4 flex-wrap">
-                <label class="flex items-center gap-2 text-sm font-medium text-surface-text">
+                <label class="flex items-center gap-2 text-sm font-medium text-main">
                     <span>Operation:</span>
                     <select
                         class="select-field px-3 py-1.5"
@@ -44,7 +44,7 @@ const AddOperation: Component<AddOperationProps> = (props) => {
                 </label>
 
                 {/* Operation Type Badge */}
-                <div class="px-2 py-1 text-xs font-semibold rounded-full bg-info-bg text-info-text">
+                <div class="px-2 py-1 text-xs font-semibold rounded-full bg-info text-info">
                     {selectedOperation().type}
                 </div>
 
@@ -58,7 +58,7 @@ const AddOperation: Component<AddOperationProps> = (props) => {
             </div>
 
             {/* Operation Description */}
-            <div class="text-xs text-muted-text">
+            <div class="text-xs text-muted">
                 Select an operation to add to the pipeline
             </div>
         </div>

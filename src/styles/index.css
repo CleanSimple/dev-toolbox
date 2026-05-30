@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@import "./color-pallet.css";
+@import "./theme.css";
+@import "./components.css";

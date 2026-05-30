@@ -17,7 +17,7 @@ const Output: Component<OutputProps> = (props) => {
 
             {/* Error Messages */}
             {props.error && (
-                <div class="px-3 py-2 bg-error-bg border border-error-border rounded-md text-sm text-error-text">
+                <div class="px-3 py-2 border bg-error border-error rounded-md text-sm">
                     <span class="font-semibold">Error:</span> {props.error}
                 </div>
             )}

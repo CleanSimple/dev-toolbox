@@ -1,0 +1,123 @@
+
+@theme {
+  --animate-spin-slow: spin 3s linear infinite;
+  --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Override Tailwind v4 default border color to use our semantic token */
+  --color-border: var(--border-main);
+
+  /* Register color utilities */
+  --color-app: var(--bg-app);
+  --color-surface: var(--bg-surface);
+  --color-muted: var(--bg-muted);
+  --color-brand: var(--bg-brand);
+  --color-brand-hover: var(--bg-brand-hover);
+  --color-secondary: var(--bg-secondary);
+  --color-secondary-hover: var(--bg-secondary-hover);
+  --color-info: var(--bg-info);
+  --color-success: var(--bg-success);
+  --color-error: var(--bg-error);
+
+  --text-color-main: var(--text-main);
+  --text-color-muted: var(--text-muted);
+  --text-color-on-brand: var(--text-on-brand);
+  --text-color-secondary: var(--text-secondary);
+  --text-color-info: var(--text-info);
+  --text-color-success: var(--text-success);
+  --text-color-error: var(--text-error);
+
+  --border-color-subtle: var(--border-subtle);
+  --border-color-main: var(--border-main);
+  --border-color-brand: var(--border-brand);
+  --border-color-error: var(--border-error);
+}
+
+/* Use the selector strategy for dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+:root {
+  /* --- Light Theme (Default) --- */
+  /* Backgrounds */
+  --bg-app: var(--color-neutral-100);
+  --bg-surface: var(--color-neutral-000);
+  --bg-muted: var(--color-neutral-200);
+  --bg-muted-hover: var(--color-neutral-300);
+  --bg-brand: var(--color-primary-600);
+  --bg-brand-hover: var(--color-primary-700);
+  --bg-secondary: var(--color-secondary-600);
+  --bg-secondary-hover: var(--color-secondary-700);
+  --bg-info: var(--color-info-100);
+  --bg-success: var(--color-success-100);
+  --bg-warning: var(--color-warning-100);
+  --bg-error: var(--color-danger-100);
+
+  /* Text Colors */
+  --text-main: var(--color-neutral-900);
+  --text-muted: var(--color-neutral-600);
+  --text-on-brand: var(--color-neutral-000);
+  --text-secondary: var(--color-secondary-700);
+  --text-info: var(--color-info-700);
+  --text-success: var(--color-success-700);
+  --text-warning: var(--color-warning-700);
+  --text-error: var(--color-danger-700);
+
+  /* Borders & Dividers */
+  --border-subtle: var(--color-neutral-200);
+  --border-main: var(--color-neutral-300);
+  --border-brand: var(--color-primary-500);
+  --border-error: var(--color-danger-500);
+
+  /* Focus Rings */
+  --color-ring: var(--color-primary-500);
+  --color-ring-offset: var(--color-neutral-000);
+}
+
+:root.dark {
+  /* --- Dark Theme --- */
+  /* Backgrounds */
+  --bg-app: var(--color-neutral-950);
+  --bg-surface: var(--color-neutral-900);
+  --bg-muted: var(--color-neutral-800);
+  --bg-muted-hover: var(--color-neutral-700);
+  --bg-brand: var(--color-primary-500);
+  --bg-brand-hover: var(--color-primary-400);
+  --bg-secondary: var(--color-secondary-500);
+  --bg-secondary-hover: var(--color-secondary-400);
+  --bg-info: var(--color-info-900);
+  --bg-success: var(--color-success-700);
+  --bg-warning: var(--color-warning-700);
+  --bg-error: var(--color-danger-700);
+
+  /* Text Colors */
+  --text-main: var(--color-neutral-100);
+  --text-muted: var(--color-neutral-400);
+  --text-on-brand: var(--color-neutral-950);
+  --text-secondary: var(--color-secondary-300);
+  --text-info: var(--color-info-200);
+  --text-success: var(--color-success-200);
+  --text-warning: var(--color-warning-200);
+  --text-error: var(--color-danger-200);
+
+  /* Borders & Dividers */
+  --border-subtle: var(--color-neutral-800);
+  --border-main: var(--color-neutral-700);
+  --border-brand: var(--color-primary-400);
+  --border-error: var(--color-danger-400);
+
+  /* Focus Rings */
+  --color-ring: var(--color-primary-400);
+  --color-ring-offset: var(--color-neutral-950);
+}
+

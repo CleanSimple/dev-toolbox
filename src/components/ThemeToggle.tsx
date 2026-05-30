@@ -50,7 +50,7 @@ const ThemeToggle: Component = () => {
     return (
         <button
             onClick={toggleTheme}
-            class="p-2 rounded-full hover:bg-secondary-hover transition-colors text-surface-text"
+            class="p-2 rounded-full hover:bg-secondary-hover transition-colors text-main"
             aria-label="Toggle Theme"
             title={theme() === 'system' ? 'Auto (System Theme)' : theme() === 'dark' ? 'Dark Mode' : 'Light Mode'}
         >

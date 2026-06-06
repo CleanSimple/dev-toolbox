@@ -3,8 +3,8 @@ import { isSubclassOf } from "@/utils";
 import { Bytes, Text, Base64 } from "@/data-formats";
 import { BytesToText } from "./BytesToText";
 import { TextToBytes } from "./TextToBytes";
-import { TextToBase64 } from "./TextToBase64";
-import { Base64ToText } from "./Base64ToText";
+import { Base64Encode } from "./Base64Encode";
+import { Base64Decode } from "./Base64Decode";
 
 
 interface OperationRegistration {
@@ -39,5 +39,5 @@ export function getOperations<T extends DataFormat>(type: ConstructorOf<T>): Ope
 
 registerOperation(Bytes, Text, new BytesToText());
 registerOperation(Text, Bytes, new TextToBytes());
-registerOperation(Text, Base64, new TextToBase64());
-registerOperation(Base64, Text, new Base64ToText());
+registerOperation(Text, Base64, new Base64Encode());
+registerOperation(Base64, Text, new Base64Decode());

@@ -2,9 +2,10 @@ import type { IFormatter } from "@/types";
 import type { Text } from "@/data-formats";
 
 export class TextFormatter implements IFormatter<Text> {
-    readonly name = "Default";
+    readonly id = "text";
+    readonly name = "Text";
 
-    format(data: Text): string {
-        return data.value;
+    format(value: Text): string {
+        return value.value;
     }
 }

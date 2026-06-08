@@ -13,17 +13,21 @@ interface OperationRegistration {
     operation: Operation;
 }
 
-let _RegisteredOperations: OperationRegistration[] = [];
+export const Operations: Map<string, Operation> = new Map();
+const _RegisteredOperations: OperationRegistration[] = [];
 
 function registerOperation<TInType extends ConstructorOf<DataFormat>, TOutType extends ConstructorOf<DataFormat>>(
     inType: TInType, outType: TOutType, operation: IOperation<InstanceType<TInType>, InstanceType<TOutType>>
 ): void {
-    const operationRegistration: OperationRegistration = {
+    if (Operations.has(operation.id)) {
+        throw new Error(`Operation with id "${operation.id}" already registered`);
+    }
+    Operations.set(operation.id, operation as unknown as Operation);
+    _RegisteredOperations.push({
         inType: inType,
         outType: outType,
         operation: operation as unknown as Operation,
-    }
-    _RegisteredOperations.push(operationRegistration);
+    });
 }
 
 export function getOperations<T extends DataFormat>(type: ConstructorOf<T>): Operation[] {

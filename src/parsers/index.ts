@@ -4,9 +4,15 @@ import { TextParser } from "./text";
 import { BytesHexParser } from "./bytes";
 import { Base64Parser } from "./base64";
 
-let _ParsersMap: Map<ConstructorOf<DataFormat>, Parser[]> = new Map();
+export const Parsers: Map<string, Parser> = new Map();
+const _ParsersMap: Map<ConstructorOf<DataFormat>, Parser[]> = new Map();
 
 function registerParser<T extends ConstructorOf<DataFormat>>(type: T, parser: IParser<InstanceType<T>>): void {
+    if (Parsers.has(parser.id)) {
+        throw new Error(`Parser with id "${parser.id}" already registered`);
+    }
+    Parsers.set(parser.id, parser);
+
     let parsers = _ParsersMap.get(type);
     if (!parsers) {
         parsers = []

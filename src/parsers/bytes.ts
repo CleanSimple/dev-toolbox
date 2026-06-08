@@ -2,39 +2,26 @@ import type { IParser } from "@/types";
 import { Bytes } from "@/data-formats";
 
 export class BytesHexParser implements IParser<Bytes> {
+    readonly id = 'hex';
     readonly name = 'Hex';
     readonly description = 'Enter bytes as hexadecimal values';
     readonly example = '\'0x61 0x62 0x63\', \'61 62 63\', \'616263\'';
 
     parse(text: string): Bytes {
-        const trimmed = text.trim().replace(/^0[xX]/, '');
-        if (trimmed.length === 0) {
-            return new Bytes(new Uint8Array(0));
+        const trimmed = text.trim().replace(/^0x/i, '');
+        if (trimmed.length <= 2 || !/\s/.test(trimmed)) {
+            return new Bytes(Uint8Array.fromHex(trimmed));
         }
 
-        let tokens: string[];
-        if (trimmed.length <= 2) {
-            tokens = [trimmed];
-        } else if (/\s/.test(trimmed)) {
-            tokens = trimmed.split(/\s+/);
-        } else {
-            if (trimmed.length % 2 !== 0) {
-                throw new Error(
-                    `Continuous hex string must have an even number of characters, ` +
-                    `but got ${trimmed.length} character(s). ` +
-                    `Add a leading zero if needed (e.g. "0F" instead of "F").`
-                );
-            }
-            tokens = trimmed.match(/.{1,2}/g) || [];
-        }
-
+        //  handle space separated tokens
+        const tokens = trimmed.split(/\s+/);
         const bytes = new Uint8Array(tokens.length);
 
         for (let i = 0; i < tokens.length; i++) {
             const token = tokens[i];
 
-            // Strip optional "0x" / "0X" prefix
-            const hexPart = token.replace(/^0[xX]/, '');
+            // strip optional "0x" prefix
+            const hexPart = token.replace(/^0x/i, '');
             if (hexPart.length === 0) {
                 throw new Error(
                     `Token ${i + 1} ("${token}") is empty after stripping the "0x" prefix.`

@@ -23,11 +23,7 @@ function registerOperation<TInType extends ConstructorOf<DataFormat>, TOutType e
         throw new Error(`Operation with id "${operation.id}" already registered`);
     }
     Operations.set(operation.id, operation as unknown as Operation);
-    _RegisteredOperations.push({
-        inType: inType,
-        outType: outType,
-        operation: operation as unknown as Operation,
-    });
+    _RegisteredOperations.push({ inType, outType, operation: operation as unknown as Operation });
 }
 
 export function getOperations<T extends DataFormat>(type: ConstructorOf<T>): Operation[] {

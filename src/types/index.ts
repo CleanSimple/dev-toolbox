@@ -12,3 +12,16 @@ export type Formatter = IFormatter<DataFormat>;
 export type Parser = IParser<DataFormat>;
 
 export type ConstructorOf<T> = new (...args: any[]) => T;
+
+export interface Flow {
+    name: string;
+    dataFormat: string;
+    parser: string;
+    pipelines: {
+        name: string;
+        operations: {
+            id: string;
+            formatter: string;
+        }[]
+    }[]
+}

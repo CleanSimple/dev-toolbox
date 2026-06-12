@@ -17,9 +17,6 @@ export class BytesToHexFormatter implements IFormatter<Bytes> {
         this.bytesPerRow = options.bytesPerRow ?? 16;
     }
 
-    get id(): string {
-        return ['bytes-hex', this.mode, this.bytesPerRow.toString()].join('-');
-    }
     get name(): string {
         const options: string[] = [BytesToHexFormatter.ModeNames[this.mode]];
         if (this.bytesPerRow > 0) options.push(`${this.bytesPerRow} bytes per row`);

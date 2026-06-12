@@ -2,7 +2,6 @@ import type { IParser } from "@/types";
 import { Bytes } from "@/data-formats";
 
 export class BytesHexParser implements IParser<Bytes> {
-    readonly id = 'hex';
     readonly name = 'Hex';
     readonly description = 'Enter bytes as hexadecimal values';
     readonly example = '\'0x61 0x62 0x63\', \'61 62 63\', \'616263\'';

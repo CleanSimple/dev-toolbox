@@ -5,6 +5,11 @@ import type { ConstructorOf, DataFormat } from "@/types";
 
 export { Text, Bytes, Base64 };
 
+interface DataFormatRegistration {
+    name: string;
+    type: ConstructorOf<DataFormat>;
+}
+
 export const DataFormats = {
     'text': {
         name: 'Text',
@@ -18,4 +23,4 @@ export const DataFormats = {
         name: 'Base64',
         type: Base64
     }
-} satisfies Record<string, { name: string, type: ConstructorOf<DataFormat> }>;
+} satisfies Record<string, DataFormatRegistration>;

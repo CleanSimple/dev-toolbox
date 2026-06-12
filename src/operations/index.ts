@@ -1,4 +1,4 @@
-import type { ConstructorOf, DataFormat, IOperation, Operation } from "@/types";
+import type { ConstructorOf, DataFormat, IOperation } from "@/types";
 import { isSubclassOf } from "@/utils";
 import { Bytes, Text, Base64 } from "@/data-formats";
 import { BytesToText } from "./BytesToText";
@@ -6,38 +6,42 @@ import { TextToBytes } from "./TextToBytes";
 import { Base64Encode } from "./Base64Encode";
 import { Base64Decode } from "./Base64Decode";
 
-
-interface OperationRegistration {
-    inType: ConstructorOf<any>;
-    outType: ConstructorOf<any>;
-    operation: Operation;
+interface OperationRecord<TInType extends ConstructorOf<DataFormat>, TOutType extends ConstructorOf<DataFormat>> {
+    inType: TInType;
+    outType: TOutType;
+    operation: IOperation<InstanceType<TInType>, InstanceType<TOutType>>;
 }
 
-export const Operations: Map<string, Operation> = new Map();
-const _RegisteredOperations: OperationRegistration[] = [];
+const operation = <TInType extends ConstructorOf<DataFormat>, TOutType extends ConstructorOf<DataFormat>>(record: OperationRecord<TInType, TOutType>) => record;
 
-function registerOperation<TInType extends ConstructorOf<DataFormat>, TOutType extends ConstructorOf<DataFormat>>(
-    inType: TInType, outType: TOutType, operation: IOperation<InstanceType<TInType>, InstanceType<TOutType>>
-): void {
-    if (Operations.has(operation.id)) {
-        throw new Error(`Operation with id "${operation.id}" already registered`);
-    }
-    Operations.set(operation.id, operation as unknown as Operation);
-    _RegisteredOperations.push({ inType, outType, operation: operation as unknown as Operation });
-}
+export const Operations = {
+    'bytes-to-text': operation({
+        inType: Bytes,
+        outType: Text,
+        operation: new BytesToText()
+    }),
+    'text-to-bytes': operation({
+        inType: Text,
+        outType: Bytes,
+        operation: new TextToBytes()
+    }),
+    'base64-encode': operation({
+        inType: Text,
+        outType: Base64,
+        operation: new Base64Encode()
+    }),
+    'base64-decode': operation({
+        inType: Base64,
+        outType: Text,
+        operation: new Base64Decode()
+    })
+};
 
-export function getOperations<T extends DataFormat>(type: ConstructorOf<T>): Operation[] {
-    const operations = [];
-    for (const operationRegistration of _RegisteredOperations) {
-        if (isSubclassOf(type, operationRegistration.inType)) {
-            operations.push(operationRegistration.operation);
-        }
+export function getOperations<T extends DataFormat>(type: ConstructorOf<T>) {
+    const operations: string[] = [];
+    for (const [id, operation] of Object.entries(Operations)) {
+        if (isSubclassOf(type, operation.inType) && isSubclassOf(operation.outType, type))
+            operations.push(id);
     }
     return operations;
 }
-
-
-registerOperation(Bytes, Text, new BytesToText());
-registerOperation(Text, Bytes, new TextToBytes());
-registerOperation(Text, Base64, new Base64Encode());
-registerOperation(Base64, Text, new Base64Decode());

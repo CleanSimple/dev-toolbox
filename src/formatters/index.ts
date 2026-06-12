@@ -1,38 +1,41 @@
-import type { ConstructorOf, DataFormat, Formatter, IFormatter } from "@/types";
-import { Bytes, Text } from "@/data-formats";
+import type { ConstructorOf, DataFormat, IFormatter } from "@/types";
+import { Bytes, Text, } from "@/data-formats";
 import { BytesToHexFormatter } from "./bytes";
 import { TextFormatter } from "./text";
 import { isSubclassOf } from "@/utils";
 
-interface FormatterRegistration {
-    type: ConstructorOf<DataFormat>;
-    formatter: Formatter
+interface FormatterRecord<T extends DataFormat> {
+    type: ConstructorOf<T>;
+    formatter: IFormatter<T>
 }
 
-export const Formatters: Map<string, Formatter> = new Map();
-const _RegisteredFormatters: FormatterRegistration[] = [];
+const formatter = <T extends DataFormat>(record: FormatterRecord<T>) => record;
 
-function registerFormatter<T extends DataFormat>(type: ConstructorOf<T>, formatter: IFormatter<T>): void {
-    if (Formatters.has(formatter.id)) {
-        throw new Error(`Formatter with id "${formatter.id}" already registered`);
+export const Formatters = {
+    'text': formatter({ type: Text, formatter: new TextFormatter() }),
+    'bytes-hex-compact-16': formatter({
+        type: Bytes,
+        formatter: new BytesToHexFormatter({ mode: "compact", bytesPerRow: 16 })
+    }),
+    'bytes-hex-spaced-16': formatter({
+        type: Bytes,
+        formatter: new BytesToHexFormatter({ mode: "spaced", bytesPerRow: 16 })
+    }),
+    'bytes-hex-prefixed-16': formatter({
+        type: Bytes,
+        formatter: new BytesToHexFormatter({ mode: "prefixed", bytesPerRow: 16 })
+    }),
+    'bytes-hex-cArray-16': formatter({
+        type: Bytes,
+        formatter: new BytesToHexFormatter({ mode: "cArray", bytesPerRow: 16 })
+    }),
+};
+
+export function getFormatters<T extends DataFormat>(type: ConstructorOf<T>) {
+    const formatters: string[] = [];
+    for (const [id, formatter] of Object.entries(Formatters)) {
+        if (isSubclassOf(type, formatter.type))
+            formatters.push(id);
     }
-    Formatters.set(formatter.id, formatter);
-    _RegisteredFormatters.push({ type, formatter });
+    return formatters;
 }
-
-export function getFormatters<T extends DataFormat>(type: ConstructorOf<T>): IFormatter<T>[] {
-    const formatters = [];
-    for (const formatterRegistration of _RegisteredFormatters) {
-        if (isSubclassOf(type, formatterRegistration.type)) {
-            formatters.push(formatterRegistration.formatter);
-        }
-    }
-    return formatters
-}
-
-
-registerFormatter(Text, new TextFormatter());
-registerFormatter(Bytes, new BytesToHexFormatter({ mode: "compact", bytesPerRow: 16 }));
-registerFormatter(Bytes, new BytesToHexFormatter({ mode: "spaced", bytesPerRow: 16 }));
-registerFormatter(Bytes, new BytesToHexFormatter({ mode: "prefixed", bytesPerRow: 16 }));
-registerFormatter(Bytes, new BytesToHexFormatter({ mode: "cArray", bytesPerRow: 16 }));

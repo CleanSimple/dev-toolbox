@@ -4,6 +4,7 @@ import lucidePreprocess from "vite-plugin-lucide-preprocess";
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa';
 import manifest from './public/manifest.json';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -30,6 +31,7 @@ if (isDev) {
 
 export default defineConfig({
   plugins: [
+    tsconfigPaths(),
     solid(),
     lucidePreprocess(),
     tailwindcss(),

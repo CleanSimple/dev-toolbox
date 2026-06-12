@@ -1,6 +1,7 @@
 import type { Component, ParentProps } from 'solid-js';
 import logo from '../assets/logo.svg';
 import ThemeToggle from './ThemeToggle';
+
 const Layout: Component<ParentProps> = (props) => {
     return (
         <div class="min-h-screen flex flex-col bg-app text-main transition-colors duration-200">

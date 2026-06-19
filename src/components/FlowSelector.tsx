@@ -1,6 +1,7 @@
 import { type Component, createSignal, For } from "solid-js";
-import { Flows } from "../flows";
-import { Search, ArrowRight, Frown } from 'lucide-solid';
+import { Flows } from "@/flows";
+import { Search, Frown } from 'lucide-solid';
+import FlowInfo from "./FlowInfo";
 
 interface FlowSelectorProps {
     onSelectFlow?: (flowId: string) => void;
@@ -32,40 +33,7 @@ const FlowSelector: Component<FlowSelectorProps> = (props) => {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <For each={filteredFlows()}>
                     {([id, flow]) => (
-                        <div
-                            class="flex flex-col p-5 bg-surface border border-subtle rounded-xl shadow-sm hover:shadow-md hover:border-brand/30 transition-all cursor-pointer group"
-                            onClick={() => props.onSelectFlow?.(id)}
-                        >
-                            <h3 class="text-lg font-bold text-main mb-3 group-hover:text-brand transition-colors">{flow.name}</h3>
-                            <div class="flex flex-col gap-3">
-                                <For each={flow.pipelines}>
-                                    {(pipeline) => (
-                                        <div class="flex flex-col bg-app/50 p-3 rounded-lg border border-subtle/50">
-                                            <span class="text-xs font-bold text-subtle uppercase tracking-wider mb-2">{pipeline.name}</span>
-                                            <div class="flex flex-wrap items-center gap-2 text-sm">
-                                                <span class="px-2 py-1 bg-surface border border-subtle rounded text-xs font-medium text-subtle shadow-sm">
-                                                    {flow.parserId}
-                                                </span>
-                                                <ArrowRight class="h-4 w-4 text-subtle/50" />
-                                                <For each={pipeline.operations}>
-                                                    {(op) => (
-                                                        <>
-                                                            <span class="px-2 py-1 bg-brand/10 text-brand dark:text-brand border border-brand/20 rounded font-medium shadow-sm">
-                                                                {op.operationId}
-                                                            </span>
-                                                            <ArrowRight class="h-4 w-4 text-subtle/50" />
-                                                        </>
-                                                    )}
-                                                </For>
-                                                <span class="px-2 py-1 bg-surface border border-subtle rounded text-xs font-medium text-subtle shadow-sm">
-                                                    {pipeline.operations[pipeline.operations.length - 1]?.formatterId}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    )}
-                                </For>
-                            </div>
-                        </div>
+                        <FlowInfo flow={flow} onClick={() => props.onSelectFlow?.(id)} />
                     )}
                 </For>
                 {filteredFlows().length === 0 && (

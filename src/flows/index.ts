@@ -3,7 +3,7 @@ import type { Formatters } from "@/formatters";
 import type { Operations } from "@/operations";
 import type { Parsers } from "@/parsers";
 
-interface Flow {
+export interface Flow {
     name: string;
     dataFormatId: keyof typeof DataFormats;
     parserId: keyof typeof Parsers;

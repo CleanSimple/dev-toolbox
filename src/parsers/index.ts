@@ -17,11 +17,11 @@ export const Parsers = {
     'base64': parser({ type: Base64, parser: new Base64Parser() }),
 }
 
-export function getParsers<T extends DataFormat>(type: ConstructorOf<T>) {
-    const parsers: string[] = [];
+export function getParsers<T extends ConstructorOf<DataFormat>>(type: T) {
+    const parsers: (keyof typeof Parsers)[] = [];
     for (const [id, parser] of Object.entries(Parsers as Record<string, ParserRecord<DataFormat>>)) {
         if (type === parser.type)
-            parsers.push(id);
+            parsers.push(id as keyof typeof Parsers);
     }
     return parsers;
 }

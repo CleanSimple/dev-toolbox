@@ -3,6 +3,8 @@ import { Bytes } from "./bytes";
 import { Base64 } from "./base64";
 import type { ConstructorOf, DataFormat } from "@/types";
 
+import "@/extensions";
+
 export { Text, Bytes, Base64 };
 
 interface DataFormatRegistration {

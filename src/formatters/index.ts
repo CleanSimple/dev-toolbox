@@ -31,11 +31,11 @@ export const Formatters = {
     }),
 };
 
-export function getFormatters<T extends DataFormat>(type: ConstructorOf<T>) {
-    const formatters: string[] = [];
-    for (const [id, formatter] of Object.entries(Formatters)) {
-        if (isSubclassOf(type, formatter.type))
-            formatters.push(id);
+export function getFormatters<T extends ConstructorOf<DataFormat>>(type: T) {
+    const formatters: (keyof typeof Formatters)[] = [];
+    for (const [id, record] of Object.entries(Formatters)) {
+        if (isSubclassOf(type, record.type))
+            formatters.push(id as keyof typeof Formatters);
     }
     return formatters;
 }

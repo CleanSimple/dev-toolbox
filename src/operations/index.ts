@@ -6,13 +6,13 @@ import { TextToBytes } from "./TextToBytes";
 import { Base64Encode } from "./Base64Encode";
 import { Base64Decode } from "./Base64Decode";
 
-interface OperationRecord<TInType extends ConstructorOf<DataFormat>, TOutType extends ConstructorOf<DataFormat>> {
+interface OperationRecord<TInType extends DataFormatType, TOutType extends DataFormatType> {
     inType: TInType;
     outType: TOutType;
     operation: IOperation<InstanceType<TInType>, InstanceType<TOutType>>;
 }
 
-const operation = <TInType extends ConstructorOf<DataFormat>, TOutType extends ConstructorOf<DataFormat>>(record: OperationRecord<TInType, TOutType>) => record;
+const operation = <TInType extends DataFormatType, TOutType extends DataFormatType>(record: OperationRecord<TInType, TOutType>) => record;
 
 export const Operations = {
     'bytes-to-text': operation({

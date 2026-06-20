@@ -1,4 +1,4 @@
-import type { ConstructorOf, DataFormat, IParser } from "@/types";
+import type { ConstructorOf, DataFormat, DataFormatType, IParser } from "@/types";
 import { Base64, Bytes, Text } from "@/data-formats";
 import { TextParser } from "./text";
 import { BytesHexParser } from "./bytes";
@@ -17,11 +17,14 @@ export const Parsers = {
     'base64': parser({ type: Base64, parser: new Base64Parser() }),
 }
 
-export function getParsers<T extends ConstructorOf<DataFormat>>(type: T) {
-    const parsers: (keyof typeof Parsers)[] = [];
-    for (const [id, parser] of Object.entries(Parsers as Record<string, ParserRecord<DataFormat>>)) {
-        if (type === parser.type)
-            parsers.push(id as keyof typeof Parsers);
+export function getParsers<T extends DataFormatType>(type: T) {
+    const parsers: ParserId[] = [];
+    for (const [id, parser] of Object.entries(Parsers)) {
+        if (type === parser.type as DataFormatType)
+            parsers.push(id as ParserId);
     }
     return parsers;
 }
+
+
+export type ParserId = keyof typeof Parsers;

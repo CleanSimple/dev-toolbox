@@ -1,15 +1,15 @@
 import { Text } from "./text";
 import { Bytes } from "./bytes";
 import { Base64 } from "./base64";
-import type { ConstructorOf, DataFormat } from "@/types";
+import type { DataFormatType } from "@/types";
 
-import "@/extensions";
+import "@/data-formats/extensions";
 
 export { Text, Bytes, Base64 };
 
 interface DataFormatRegistration {
     name: string;
-    type: ConstructorOf<DataFormat>;
+    type: DataFormatType;
 }
 
 export const DataFormats = {
@@ -26,3 +26,6 @@ export const DataFormats = {
         type: Base64
     }
 } satisfies Record<string, DataFormatRegistration>;
+
+
+export type DataFormatId = keyof typeof DataFormats;

@@ -1,4 +1,4 @@
-import type { ConstructorOf, DataFormat, IFormatter } from "@/types";
+import type { ConstructorOf, DataFormat, DataFormatType, IFormatter } from "@/types";
 import { Bytes, Text, } from "@/data-formats";
 import { BytesToHexFormatter } from "./bytes";
 import { TextFormatter } from "./text";
@@ -31,7 +31,7 @@ export const Formatters = {
     }),
 };
 
-export function getFormatters<T extends ConstructorOf<DataFormat>>(type: T) {
+export function getFormatters<T extends DataFormatType>(type: T) {
     const formatters: (keyof typeof Formatters)[] = [];
     for (const [id, record] of Object.entries(Formatters)) {
         if (isSubclassOf(type, record.type))
@@ -39,3 +39,5 @@ export function getFormatters<T extends ConstructorOf<DataFormat>>(type: T) {
     }
     return formatters;
 }
+
+export type FormatterId = keyof typeof Formatters;

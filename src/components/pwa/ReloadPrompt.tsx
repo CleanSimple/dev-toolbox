@@ -1,5 +1,6 @@
 import type { Component } from 'solid-js'
 import { RefreshCw, X } from 'lucide-solid'
+import Button from '../controls/Button';
 
 interface ReloadPromptProps {
     onClose: () => void;
@@ -28,18 +29,22 @@ const ReloadPrompt: Component<ReloadPromptProps> = (props) => {
                     </button>
                 </div>
                 <div class="flex gap-2">
-                    <button
+                    <Button
+                        variant='primary'
+                        size='lg'
                         onClick={props.onUpdate}
-                        class="btn btn-primary flex-1 px-4 py-2.5 text-sm font-bold rounded-xl shadow-lg shadow-brand/20"
+                        class="flex-1 shadow-lg shadow-brand/20"
                     >
                         Reload Now
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant='neutral'
+                        size='lg'
                         onClick={props.onClose}
-                        class="btn btn-neutral flex-1 px-4 py-2.5 text-sm font-bold rounded-xl"
+                        class="flex-1"
                     >
                         Later
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div >

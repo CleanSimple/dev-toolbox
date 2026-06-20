@@ -4,8 +4,8 @@ import ThemeToggle from './ThemeToggle';
 
 const Layout: Component<ParentProps> = (props) => {
     return (
-        <div class="min-h-screen flex flex-col bg-app text-main transition-colors duration-200">
-            <nav class="bg-surface shadow px-8 py-4 border-b border-subtle transition-colors duration-200">
+        <div class="min-h-screen flex flex-col bg-app text-main transition-colors">
+            <nav class="bg-surface shadow px-8 py-4 border-b border-subtle transition-colors">
                 <div class="max-w-7xl mx-auto flex items-center justify-between">
                     <a href="/" class="flex items-center gap-3 font-bold text-xl text-main">
                         <img src={logo} alt="Dev Toolbox Logo" class="h-8 w-auto" />

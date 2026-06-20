@@ -1,6 +1,7 @@
 import type { Component } from 'solid-js'
 import { Show, createSignal } from 'solid-js'
 import { Wifi, X, Bookmark, Info } from 'lucide-solid'
+import Button from '../controls/Button';
 
 interface OfflinePromptProps {
     onClose: () => void;
@@ -49,19 +50,23 @@ const OfflinePrompt: Component<OfflinePromptProps> = (props) => {
                 </Show>
 
                 <div class="flex gap-2">
-                    <button
+                    <Button
+                        variant='primary'
+                        size='lg'
                         onClick={toggleBookmarkInfo}
-                        class="btn btn-primary flex-1 gap-2 px-4 py-2.5 text-sm font-bold rounded-xl shadow-lg shadow-brand/20"
+                        class="flex-1 gap-2 shadow-lg shadow-brand/20"
                     >
                         <Bookmark size={16} />
                         Bookmark
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant='neutral'
+                        size='lg'
                         onClick={close}
-                        class="btn btn-neutral flex-1 px-4 py-2.5 text-sm font-bold rounded-xl"
+                        class="flex-1"
                     >
                         Ok
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

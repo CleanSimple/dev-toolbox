@@ -8,7 +8,7 @@ export const routes: RouteDefinition[] = [
         component: Layout,
         children: [
             {
-                path: "/",
+                path: "/:flowId?",
                 component: Home,
             },
         ],

@@ -51,7 +51,7 @@ const OfflinePrompt: Component<OfflinePromptProps> = (props) => {
 
                 <div class="flex gap-2">
                     <Button
-                        variant='primary'
+                        color='primary'
                         size='lg'
                         onClick={toggleBookmarkInfo}
                         class="flex-1 gap-2 shadow-lg shadow-brand/20"
@@ -60,7 +60,7 @@ const OfflinePrompt: Component<OfflinePromptProps> = (props) => {
                         Bookmark
                     </Button>
                     <Button
-                        variant='neutral'
+                        color='neutral'
                         size='lg'
                         onClick={close}
                         class="flex-1"

@@ -30,7 +30,7 @@ const ReloadPrompt: Component<ReloadPromptProps> = (props) => {
                 </div>
                 <div class="flex gap-2">
                     <Button
-                        variant='primary'
+                        color='primary'
                         size='lg'
                         onClick={props.onUpdate}
                         class="flex-1 shadow-lg shadow-brand/20"
@@ -38,7 +38,7 @@ const ReloadPrompt: Component<ReloadPromptProps> = (props) => {
                         Reload Now
                     </Button>
                     <Button
-                        variant='neutral'
+                        color='neutral'
                         size='lg'
                         onClick={props.onClose}
                         class="flex-1"

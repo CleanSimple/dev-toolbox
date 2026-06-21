@@ -92,7 +92,7 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
         <div class="w-full flex flex-col gap-6">
             {/* Header */}
             <div class="flex items-center gap-3 pb-2 border-b border-subtle">
-                <Button variant="neutral" class="w-10 h-10" onclick={props.onBack}>
+                <Button color="neutral" class="w-10 h-10" onclick={props.onBack}>
                     <ArrowLeft class="w-6 h-6 text-brand" />
                 </Button>
                 <h1 class="text-2xl font-bold text-main tracking-tight">{props.flow.name}</h1>

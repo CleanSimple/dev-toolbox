@@ -1,8 +1,8 @@
 import { type JSX, splitProps, type Component } from "solid-js";
 
-type SelectProps = JSX.HTMLAttributes<HTMLDivElement>;
+type CardProps = JSX.HTMLAttributes<HTMLDivElement>;
 
-const Card: Component<SelectProps> = (props) => {
+const Card: Component<CardProps> = (props) => {
     const [local, rest] = splitProps(props, ["class", "children"]);
 
     return (

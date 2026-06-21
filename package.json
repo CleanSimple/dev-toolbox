@@ -11,7 +11,8 @@
   "dependencies": {
     "@solidjs/router": "^0.15.4",
     "lucide-solid": "^0.564.0",
-    "solid-js": "^1.9.10"
+    "solid-js": "^1.9.10",
+    "tailwind-variants": "^3.2.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",

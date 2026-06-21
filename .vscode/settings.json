@@ -2,5 +2,6 @@
     "files.associations": {
         "*.css": "tailwindcss"
     },
+    "tailwindCSS.classFunctions": ["tv"],
     "typescript.tsdk": "node_modules\\typescript\\lib"
 }

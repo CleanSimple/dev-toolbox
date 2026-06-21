@@ -1,19 +1,19 @@
 import { type JSX, splitProps, type Component } from "solid-js";
+import { tv, type VariantProps } from "tailwind-variants/lite";
 
-type CardProps = JSX.HTMLAttributes<HTMLDivElement>;
+const variant = tv({
+    base: "bg-surface border border-main rounded-xl p-4"
+});
+
+type CardVariants = VariantProps<typeof variant>;
+type CardProps = JSX.HTMLAttributes<HTMLDivElement> & CardVariants;
 
 const Card: Component<CardProps> = (props) => {
-    const [local, rest] = splitProps(props, ["class", "children"]);
+    const [variantProps, parentProps, rest] = splitProps(props, ["class"], ["children"]);
 
     return (
-        <div
-            class={`
-                bg-surface border border-main rounded-xl p-4
-                ${local.class}
-                `}
-            {...rest}
-        >
-            {local.children}
+        <div class={variant(variantProps)} {...rest}>
+            {parentProps.children}
         </div>
     );
 }

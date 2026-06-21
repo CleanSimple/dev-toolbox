@@ -1,8 +1,8 @@
 import { type JSX, splitProps, type Component } from "solid-js";
 
-type SelectProps = JSX.HTMLAttributes<HTMLDivElement>;
+type GroupBoxProps = JSX.HTMLAttributes<HTMLDivElement>;
 
-const GroupBox: Component<SelectProps> = (props) => {
+const GroupBox: Component<GroupBoxProps> = (props) => {
     const [local, rest] = splitProps(props, ["class", "children"]);
 
     return (

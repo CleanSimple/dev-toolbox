@@ -1,11 +1,11 @@
 import { makeStyle } from "@/utils/styling";
 import { type JSX, splitProps, type Component } from "solid-js";
 
-type TextInputProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+type TextAreaProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement> & {
     size?: "sm" | "md" | "lg"
 };
 
-const TextArea: Component<TextInputProps> = (props) => {
+const TextArea: Component<TextAreaProps> = (props) => {
     const [local, rest] = splitProps(props, ["class", "size"]);
     const { size } = makeStyle(local, { size: "md" });
 

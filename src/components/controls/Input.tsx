@@ -1,11 +1,11 @@
 import { makeStyle } from "@/utils/styling";
 import { type JSX, splitProps, type Component } from "solid-js";
 
-type TextInputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
+type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
     size?: "sm" | "md" | "lg"
 };
 
-const Input: Component<TextInputProps> = (props) => {
+const Input: Component<InputProps> = (props) => {
     const [local, rest] = splitProps(props, ["class", "size"]);
     const { size } = makeStyle(local, { size: "md" });
 

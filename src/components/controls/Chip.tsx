@@ -30,10 +30,6 @@ const Chip: Component<ChipProps> = (props) => {
                 ${size("lg", "text-lg px-4 py-2 rounded-lg font-semibold")}
                 ${local.class}
                 `}
-            style={`
-                --border-color: transparent;
-                --bg-color: transparent;
-                `}
             {...rest}
         >
             {local.children}

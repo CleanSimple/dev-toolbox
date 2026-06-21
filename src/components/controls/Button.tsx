@@ -8,7 +8,7 @@ type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const Button: Component<ButtonProps> = (props) => {
     const [local, rest] = splitProps(props, ["class", "color", "size", "children"]);
-    const { color, size } = makeStyle(local, { variant: "neutral", size: "md" });
+    const { color, size } = makeStyle(local, { color: "neutral", size: "md" });
 
     return (
         <button

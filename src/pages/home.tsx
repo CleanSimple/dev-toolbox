@@ -26,7 +26,7 @@ const Home: Component = () => {
                     <div class="flex flex-col items-center justify-center text-main/70 py-16 bg-surface border border-subtle border-dashed rounded-xl">
                         <Frown class="h-10 w-10 mb-2" />
                         <p class="text-sm font-medium">Flow not found</p>
-                        <Button variant="primary" class="mt-4" onclick={() => navigate("/")}>
+                        <Button color="primary" class="mt-4" onclick={() => navigate("/")}>
                             Back to flows
                         </Button>
                     </div>

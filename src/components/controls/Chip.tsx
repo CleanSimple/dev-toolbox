@@ -2,7 +2,7 @@ import { type JSX, splitProps, type Component } from "solid-js";
 import { tv, type VariantProps } from 'tailwind-variants/lite';
 
 const variant = tv({
-    base: "shadow-sm",
+    base: "inline-flex items-center justify-center pointer-none",
     variants: {
         style: {
             filled: null,
@@ -14,9 +14,9 @@ const variant = tv({
             neutral: null,
         },
         size: {
-            sm: "text-sm px-1 py-0.5 rounded-sm",
-            md: "text-base px-2 py-1 rounded-md",
-            lg: "text-lg px-4 py-2 rounded-lg",
+            sm: "text-sm px-2 py-0.5 rounded-sm",
+            md: "text-base px-3 py-0.75 rounded-md",
+            lg: "text-lg px-4 py-1 rounded-lg",
         }
     },
     compoundVariants: [
@@ -28,12 +28,12 @@ const variant = tv({
         {
             style: "filled",
             color: "secondary",
-            class: "bg-secondary text-main"
+            class: "bg-accent text-on-accent"
         },
         {
             style: "filled",
             color: "neutral",
-            class: "bg-subtle text-main"
+            class: "bg-main text-body"
         },
         {
             style: "outlined",
@@ -43,18 +43,18 @@ const variant = tv({
         {
             style: "outlined",
             color: "secondary",
-            class: "border-secondary text-secondary"
+            class: "border-accent text-accent"
         },
         {
             style: "outlined",
             color: "neutral",
-            class: "border-main text-subtle"
+            class: "border-main text-body"
         },
     ],
     defaultVariants: {
         color: "neutral",
         style: "outlined",
-        size: "sm"
+        size: "md"
     },
 })
 

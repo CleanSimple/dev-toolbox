@@ -4,19 +4,20 @@ import { tv, type VariantProps } from "tailwind-variants/lite";
 const variant = tv({
     base: `
         inline-flex items-center justify-center cursor-pointer
-        active:scale-[0.97]
-        focus:outline-none
+        transition-colors
+        active:not-disabled:scale-[0.97]
+        disabled:bg-disabled disabled:text-on-disabled disabled:cursor-not-allowed
     `,
     variants: {
         color: {
             primary: "bg-brand text-on-brand hover:bg-brand-hover",
-            secondary: "bg-secondary text-main hover:bg-secondary-hover",
-            neutral: "bg-subtle text-main hover:bg-subtle-hover",
+            secondary: "bg-accent text-on-accent hover:bg-accent-hover",
+            neutral: "bg-main text-body hover:bg-hover",
         },
         size: {
-            sm: "text-sm px-1 py-0.5 rounded-md",
-            md: "text-base px-2 py-1 rounded-lg",
-            lg: "text-lg px-4 py-2 rounded-xl font-semibold",
+            sm: "text-sm px-2 py-0.5 rounded-md",
+            md: "text-base px-3 py-0.75 rounded-lg",
+            lg: "text-lg px-4 py-1 rounded-xl font-semibold",
         }
     },
     defaultVariants: {

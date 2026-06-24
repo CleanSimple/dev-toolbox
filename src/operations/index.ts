@@ -1,4 +1,4 @@
-import type { ConstructorOf, DataFormat, IOperation } from "@/types";
+import type { ConstructorOf, DataFormat, DataFormatType, IOperation } from "@/types";
 import { isSubclassOf } from "@/utils";
 import { Bytes, Text, Base64 } from "@/data-formats";
 import { BytesToText } from "./BytesToText";

@@ -27,9 +27,9 @@ const FlowSelector: Component<FlowSelectorProps> = (props) => {
                     placeholder="Search flows..."
                     value={search()}
                     onInput={(e) => setSearch(e.currentTarget.value)}
-                    class="w-full pl-10"
+                    class="w-full pl-8"
                 />
-                <Search class="absolute left-3 top-2 h-5 w-5 text-muted" />
+                <Search class="absolute left-2 top-1.5 h-5 w-5 text-subtle" />
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -39,9 +39,9 @@ const FlowSelector: Component<FlowSelectorProps> = (props) => {
                     )}
                 </For>
                 {filteredFlows().length === 0 && (
-                    <div class="col-span-1 md:col-span-2 flex flex-col items-center justify-center text-main/70 py-16 bg-surface border border-subtle border-dashed rounded-xl">
+                    <div class="col-span-1 md:col-span-2 flex flex-col py-8 items-center justify-center text-subtle bg-content border border-subtle border-dashed rounded-xl">
                         <Frown class="h-10 w-10 mb-3" />
-                        <p class="text-sm font-medium">No flows found matching your search.</p>
+                        <p class="text-sm">No flows found matching your search.</p>
                     </div>
                 )}
             </div>

@@ -3,16 +3,17 @@ import { tv, type VariantProps } from "tailwind-variants/lite";
 
 const variant = tv({
     base: `
-        bg-subtle text-main border border-main rounded-md cursor-pointer
+        bg-transparent text-body border border-main rounded-md cursor-pointer
         transition-colors
         hover:border-brand/50
-        focus:outline-none focus:border-brand/80
+        disabled:bg-disabled/50 disabled:text-on-disabled disabled:border-disabled disabled:cursor-not-allowed
+
     `,
     variants: {
         size: {
-            sm: "text-sm px-1 py-0.5",
-            md: "text-base px-2 py-1",
-            lg: "text-lg px-4 py-2",
+            sm: "text-sm px-2 py-0.5",
+            md: "text-base px-2 py-0.75",
+            lg: "text-lg px-2 py-1",
         }
     },
     defaultVariants: {

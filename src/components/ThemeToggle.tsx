@@ -1,60 +1,79 @@
-import { createSignal, createEffect, onMount, onCleanup } from 'solid-js';
+import { createSignal, createEffect, onMount, onCleanup, Switch, Match } from 'solid-js';
 import { Moon, Sun, Monitor } from 'lucide-solid';
 import type { Component } from 'solid-js';
 
+const Themes = ["system", "light", "dark"] as const;
+type Theme = typeof Themes[number];
+
+const isTheme = (value: string): value is Theme => {
+    return (Themes as readonly string[]).includes(value);
+};
+
+const storage = {
+    getTheme(): Theme | null {
+        const theme = localStorage.getItem("theme");
+        return theme && isTheme(theme) ? theme : null
+    },
+    setTheme(theme: Theme) {
+        localStorage.setItem("theme", theme);
+    }
+}
+
 const ThemeToggle: Component = () => {
-    const [theme, setTheme] = createSignal(
-        localStorage.getItem('theme') || 'system'
+    const [theme, setTheme] = createSignal<Theme>(
+        storage.getTheme() ?? 'system'
     );
-
-    const applyTheme = (currentTheme: string) => {
-        const root = document.documentElement;
-        if (currentTheme === 'dark' || (currentTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            root.classList.add('dark');
-        } else {
-            root.classList.remove('dark');
-        }
-    };
-
     const toggleTheme = () => {
         setTheme(prev => {
-            if (prev === 'system') return 'light';
-            if (prev === 'light') return 'dark';
-            return 'system';
+            switch (prev) {
+                case "system": return "light";
+                case "light": return "dark";
+                case "dark": return "system";
+            }
         });
+    };
+
+    const applyTheme = (theme: Theme) => {
+        document.documentElement.dataset.theme = theme === "system"
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : "light")
+            : theme;
     };
 
     createEffect(() => {
         const currentTheme = theme();
         applyTheme(currentTheme);
-        localStorage.setItem('theme', currentTheme);
+        storage.setTheme(currentTheme);
     });
 
     onMount(() => {
         // handle system theme change
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const handleChange = () => {
+        const handleSystemThemeChange = () => {
             if (theme() === 'system') applyTheme('system');
         };
-        mediaQuery.addEventListener('change', handleChange);
-        onCleanup(() => mediaQuery.removeEventListener('change', handleChange));
-    });
 
-    const getIcon = () => {
-        const currentTheme = theme();
-        if (currentTheme === 'system') return <Monitor size={20} />;
-        if (currentTheme === 'light') return <Sun size={20} />;
-        return <Moon size={20} />;
-    };
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+        onCleanup(() => mediaQuery.removeEventListener('change', handleSystemThemeChange));
+    });
 
     return (
         <button
             onClick={toggleTheme}
-            class="p-2 rounded-full hover:bg-secondary-hover transition-colors text-main"
+            class="p-2 rounded-full text-body hover:bg-accent hover:text-on-accent transition-colors"
             aria-label="Toggle Theme"
             title={theme() === 'system' ? 'Auto (System Theme)' : theme() === 'dark' ? 'Dark Mode' : 'Light Mode'}
         >
-            {getIcon()}
+            <Switch>
+                <Match when={theme() == "system"}>
+                    <Monitor size={20} />
+                </Match>
+                <Match when={theme() == "light"}>
+                    <Sun size={20} />
+                </Match>
+                <Match when={theme() == "dark"}>
+                    <Moon size={20} />
+                </Match>
+            </Switch>
         </button>
     );
 }

@@ -8,8 +8,8 @@ import { Operations } from "@/operations";
 import { hasKey } from "@/utils";
 import Select from "./controls/Select";
 import TextArea from "./controls/TextArea";
-import Button from "./controls/Button";
 import Card from "./controls/Card";
+import Label from "./controls/Label";
 
 interface OperationTabProps {
     operation: Flow["pipelines"][number]["operations"][number];
@@ -36,7 +36,7 @@ const OperationTab: Component<OperationTabProps> = (props) => {
     return (
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-2">
-                <label class="text-sm text-subtle">Formatter</label>
+                <Label size="sm">Formatter</Label>
                 <Select
                     size="sm"
                     value={formatterId()}
@@ -92,17 +92,17 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
         <div class="w-full flex flex-col gap-6">
             {/* Header */}
             <div class="flex items-center gap-3 pb-2 border-b border-subtle">
-                <Button color="neutral" class="w-10 h-10" onclick={props.onBack}>
+                <button class="w-10 h-10 inline-flex items-center justify-center bg-subtle hover:bg-hover/50 rounded cursor-pointer transition-colors" onclick={props.onBack}>
                     <ArrowLeft class="w-6 h-6 text-brand" />
-                </Button>
-                <h1 class="text-2xl font-bold text-main tracking-tight">{props.flow.name}</h1>
+                </button>
+                <h1 class="text-2xl font-bold text-head">{props.flow.name}</h1>
             </div>
 
             {/* Input Section */}
             <Card class="flex flex-col gap-4">
                 <div class="flex items-center gap-6">
                     <div class="flex items-center gap-2">
-                        <label class="text-sm text-subtle">Input Type</label>
+                        <Label size="sm">Input Type</Label>
                         <Select
                             size="sm"
                             value={dataFormatId()}
@@ -116,7 +116,7 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
                         </Select>
                     </div>
                     <div class="flex items-center gap-2">
-                        <label class="text-sm text-subtle">Parser</label>
+                        <Label size="sm">Parser</Label>
                         <Select
                             size="sm"
                             value={parserId()}
@@ -139,7 +139,7 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
                         onInput={(e) => setInputValue(e.currentTarget.value)}
                     />
                     <Show when={parser().example}>
-                        <span class="text-sm text-muted">Example: {parser().example}</span>
+                        <span class="text-sm text-subtle">Example: {parser().example}</span>
                     </Show>
                 </div>
             </Card>
@@ -149,23 +149,23 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
                     <>
                         {/* Pipeline Representation */}
                         <Card class="flex flex-col gap-4">
-                            <h1 class="text-xl font-bold text-main tracking-tight">{pipeline.name} Pipeline</h1>
+                            <h1 class="text-xl font-bold text-body tracking-tight">{pipeline.name} Pipeline</h1>
                             {/* Tabs Header */}
                             <div class="flex flex-wrap gap-1 items-center">
                                 <For each={pipeline.operations}>
                                     {(op, index) => (
                                         <>
                                             <button
-                                                class={`px-3 py-2 bg-app border text-sm flex rounded-xl cursor-pointer ${index() == 0
+                                                class={`px-3 py-2 bg-base border text-sm flex rounded-xl cursor-pointer ${index() == 0
                                                     ? 'text-brand border-brand'
-                                                    : 'text-muted border-subtle'
+                                                    : 'text-subtle border-subtle'
                                                     }`}
                                             // onClick={() => setActiveTabs([pipelineIndex] = index())}
                                             >
                                                 <span>{op.operationId.replace(/-/g, ' ')}</span>
                                             </button>
                                             {index() !== pipeline.operations.length - 1
-                                                ? <ArrowRight class="w-4 h-4 text-muted" />
+                                                ? <ArrowRight class="w-4 h-4 text-subtle" />
                                                 : null
                                             }
                                         </>

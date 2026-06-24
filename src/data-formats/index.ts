@@ -27,10 +27,6 @@ export const DataFormats = {
     }
 } satisfies Record<string, DataFormatRegistration>;
 
-export function nameOfDataFormat<T extends DataFormatType>(type: T) {
-    return Object.values(DataFormats).find(
-        x => type == x.type as DataFormatType
-    )?.name
-}
-
 export type DataFormatId = keyof typeof DataFormats;
+
+export type DataFormatTypeById<T extends DataFormatId> = InstanceType<(typeof DataFormats)[T]["type"]>

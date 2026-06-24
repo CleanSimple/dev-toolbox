@@ -20,7 +20,7 @@ const OperationTab: Component<OperationTabProps> = (props) => {
         throw new Error(`Operation not found: ${props.operation.operationId}`);
     }
     const operation = Operations[props.operation.operationId]
-    const availableFormatters = getFormatters(operation.outType)
+    const availableFormatters = getFormatters(operation.outDataFormatId)
         .map((id) => [id, Formatters[id].formatter] as const);
 
     const [formatterId, setFormatterId] = createSignal(props.operation.formatterId);
@@ -70,9 +70,8 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
     const [inputValue, setInputValue] = createSignal("");
 
     const availableParsers = createMemo(() => {
-        const dataFormat = DataFormats[dataFormatId()];
         return new Map(
-            getParsers(dataFormat.type).map((id) => [id, Parsers[id].parser] as const)
+            getParsers(dataFormatId()).map((id) => [id, Parsers[id].parser] as const)
         );
     });
 

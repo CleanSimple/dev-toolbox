@@ -5,7 +5,7 @@ import Card from "./controls/Card";
 import Chip from "./controls/Chip";
 import { Operations } from "@/operations";
 import { Formatters } from "@/formatters";
-import { DataFormats, nameOfDataFormat } from "@/data-formats";
+import { DataFormats } from "@/data-formats";
 import { Parsers } from "@/parsers";
 
 
@@ -47,7 +47,7 @@ const Pipeline: Component<PipelineInfo> = (props) => {
         op => {
             const operation = Operations[op.operationId];
             const operationName = operation.operation.name;
-            const outputFormat = nameOfDataFormat(operation.outType);
+            const outputFormat = DataFormats[operation.outDataFormatId].name;
             const formatterName = Formatters[op.formatterId].formatter.name;
             return { operationName, outputFormat, formatterName }
         }

@@ -1,47 +1,52 @@
-import type { ConstructorOf, DataFormat, DataFormatType, IOperation } from "@/types";
+import type { IOperation } from "@/types";
 import { isSubclassOf } from "@/utils";
-import { Bytes, Text, Base64 } from "@/data-formats";
+import { type DataFormatId, type DataFormatTypeById, DataFormats } from "@/data-formats";
 import { BytesToText } from "./BytesToText";
 import { TextToBytes } from "./TextToBytes";
 import { Base64Encode } from "./Base64Encode";
 import { Base64Decode } from "./Base64Decode";
 
-interface OperationRecord<TInType extends DataFormatType, TOutType extends DataFormatType> {
-    inType: TInType;
-    outType: TOutType;
-    operation: IOperation<InstanceType<TInType>, InstanceType<TOutType>>;
+interface OperationRecord<TIn extends DataFormatId, TOut extends DataFormatId> {
+    inDataFormatId: TIn;
+    outDataFormatId: TOut;
+    operation: IOperation<DataFormatTypeById<TIn>, DataFormatTypeById<TOut>>;
 }
 
-const operation = <TInType extends DataFormatType, TOutType extends DataFormatType>(record: OperationRecord<TInType, TOutType>) => record;
+const operation = <TIn extends DataFormatId, TOut extends DataFormatId>(record: OperationRecord<TIn, TOut>) => record;
 
 export const Operations = {
     'bytes-to-text': operation({
-        inType: Bytes,
-        outType: Text,
+        inDataFormatId: "bytes",
+        outDataFormatId: "text",
         operation: new BytesToText()
     }),
     'text-to-bytes': operation({
-        inType: Text,
-        outType: Bytes,
+        inDataFormatId: "text",
+        outDataFormatId: "bytes",
         operation: new TextToBytes()
     }),
     'base64-encode': operation({
-        inType: Text,
-        outType: Base64,
+        inDataFormatId: "text",
+        outDataFormatId: "base64",
         operation: new Base64Encode()
     }),
     'base64-decode': operation({
-        inType: Base64,
-        outType: Text,
+        inDataFormatId: "base64",
+        outDataFormatId: "text",
         operation: new Base64Decode()
     })
 };
 
-export function getOperations<T extends DataFormat>(type: ConstructorOf<T>) {
+export function getOperations(dataFormatId: DataFormatId) {
     const operations: string[] = [];
+
+    const dataFormatType = DataFormats[dataFormatId].type;
     for (const [id, operation] of Object.entries(Operations)) {
-        if (isSubclassOf(type, operation.inType) && isSubclassOf(operation.outType, type))
+        const operationInDataFormatType = DataFormats[operation.inDataFormatId].type;
+        if (isSubclassOf(dataFormatType, operationInDataFormatType))
             operations.push(id);
+
     }
+
     return operations;
 }

@@ -21,6 +21,6 @@ const bytesExtensions = (): BytesExtensions => ({
     toText(this: Bytes): Text {
         return new Text(decodeString(this.value));
     }
-})
+});
 
-extendPrototype(Bytes, bytesExtensions());
+extendPrototype(Bytes.prototype, bytesExtensions());

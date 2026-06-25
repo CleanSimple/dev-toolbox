@@ -1,12 +1,12 @@
 import type { IParser } from "@/types";
-import { DataFormats, type DataFormatId, type DataFormatTypeById } from "@/data-formats";
+import { DataFormats, type DataFormatId, type DataFormatById } from "@/data-formats";
 import { TextParser } from "./text";
 import { BytesHexParser } from "./bytes";
 import { Base64Parser } from "./base64";
 
 interface ParserRecord<T extends DataFormatId> {
     dataFormatId: T;
-    parser: IParser<DataFormatTypeById<T>>;
+    parser: IParser<DataFormatById<T>>;
 }
 
 const parser = <T extends DataFormatId>(record: ParserRecord<T>) => record;

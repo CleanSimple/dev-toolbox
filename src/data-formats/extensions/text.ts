@@ -21,7 +21,7 @@ const textExtensions = (): TextExtensions => ({
     toBase64(this: Text): Base64 {
         return this.toBytes().toBase64();
     }
-})
+});
 
 
-extendPrototype(Text, textExtensions());
+extendPrototype(Text.prototype, textExtensions());

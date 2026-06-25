@@ -1,15 +1,15 @@
 import { Text } from "./text";
 import { Bytes } from "./bytes";
 import { Base64 } from "./base64";
-import type { DataFormatType } from "@/types";
+import type { ConstructorOf, IDataFormat } from "@/types";
 
 import "@/data-formats/extensions";
 
 export { Text, Bytes, Base64 };
 
-interface DataFormatRegistration {
+interface DataFormatRecord {
     name: string;
-    type: DataFormatType;
+    type: ConstructorOf<IDataFormat<any>>;
 }
 
 export const DataFormats = {
@@ -25,8 +25,9 @@ export const DataFormats = {
         name: 'Base64',
         type: Base64
     }
-} satisfies Record<string, DataFormatRegistration>;
+} satisfies Record<string, DataFormatRecord>;
 
+export type DataFormat = InstanceType<(typeof DataFormats)[DataFormatId]["type"]>;
 export type DataFormatId = keyof typeof DataFormats;
+export type DataFormatById<T extends DataFormatId> = InstanceType<(typeof DataFormats)[T]["type"]>;
 
-export type DataFormatTypeById<T extends DataFormatId> = InstanceType<(typeof DataFormats)[T]["type"]>

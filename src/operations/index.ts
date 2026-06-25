@@ -1,6 +1,6 @@
 import type { IOperation } from "@/types";
 import { isSubclassOf } from "@/utils";
-import { type DataFormatId, type DataFormatTypeById, DataFormats } from "@/data-formats";
+import { type DataFormatId, type DataFormatById, DataFormats } from "@/data-formats";
 import { BytesToText } from "./BytesToText";
 import { TextToBytes } from "./TextToBytes";
 import { Base64Encode } from "./Base64Encode";
@@ -9,7 +9,7 @@ import { Base64Decode } from "./Base64Decode";
 interface OperationRecord<TIn extends DataFormatId, TOut extends DataFormatId> {
     inDataFormatId: TIn;
     outDataFormatId: TOut;
-    operation: IOperation<DataFormatTypeById<TIn>, DataFormatTypeById<TOut>>;
+    operation: IOperation<DataFormatById<TIn>, DataFormatById<TOut>>;
 }
 
 const operation = <TIn extends DataFormatId, TOut extends DataFormatId>(record: OperationRecord<TIn, TOut>) => record;
@@ -35,7 +35,7 @@ export const Operations = {
         outDataFormatId: "text",
         operation: new Base64Decode()
     })
-};
+} as Record<string, OperationRecord<DataFormatId, DataFormatId>>;
 
 export function getOperations(dataFormatId: DataFormatId) {
     const operations: string[] = [];

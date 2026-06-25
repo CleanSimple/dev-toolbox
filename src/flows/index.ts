@@ -35,7 +35,7 @@ export const Flows: Record<string, Flow> = {
     },
     "base64-decode": {
         name: "Base64 Decode",
-        dataFormatId: "text",
+        dataFormatId: "base64",
         parserId: "base64",
         pipelines: [
             {

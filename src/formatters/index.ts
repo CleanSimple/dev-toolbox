@@ -1,12 +1,12 @@
 import type { IFormatter } from "@/types";
-import { DataFormats, type DataFormatId, type DataFormatTypeById, } from "@/data-formats";
+import { DataFormats, type DataFormatId, type DataFormatById, } from "@/data-formats";
 import { BytesToHexFormatter } from "./bytes";
 import { TextFormatter } from "./text";
 import { isSubclassOf } from "@/utils";
 
 interface FormatterRecord<T extends DataFormatId> {
     dataFormatId: T;
-    formatter: IFormatter<DataFormatTypeById<T>>
+    formatter: IFormatter<DataFormatById<T>>
 }
 
 const formatter = <T extends DataFormatId>(record: FormatterRecord<T>) => record;

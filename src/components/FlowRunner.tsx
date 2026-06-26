@@ -1,8 +1,8 @@
-import { createSignal, For, Show, type Component } from "solid-js";
+import { createSignal, For, onCleanup, onMount, Show, type Component } from "solid-js";
 import type { Flow } from "@/flows";
 import { DataFormats } from "@/data-formats";
 import { type FormatterId } from "@/formatters";
-import { ArrowLeft, ArrowRight } from "lucide-solid";
+import { ArrowLeft, ArrowRight, RefreshCcw } from "lucide-solid";
 import Select from "./controls/Select";
 import TextArea from "./controls/TextArea";
 import Card from "./controls/Card";
@@ -32,6 +32,16 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
         inputError,
         pipelines,
     } = createFlow(props.flow);
+
+    const [count, setCount] = createSignal(0)
+    onMount(() => {
+        const id = setInterval(() => {
+            setCount(count => count + 1)
+        }, 100);
+        onCleanup(() => {
+            clearInterval(id);
+        })
+    })
 
     return (
         <div class="w-full flex flex-col gap-6">
@@ -74,6 +84,12 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
                         <Show when={parserError()}>
                             <span class="text-danger">{parserError()}</span>
                         </Show>
+                    </div>
+                    <div class="animate-spin-slow">
+                        <RefreshCcw class="w-6 h-6" />
+                    </div>
+                    <div>
+                        {count()}
                     </div>
                 </div>
 
@@ -141,42 +157,37 @@ const Pipeline: Component<PipelineProps> = (props) => {
             </div>
 
             {/* Output */}
-            <OperationOutput operation={operations()[selectedOperation()]} />
+            <OperationOutput {...operations()[selectedOperation()]} />
         </Card>
     )
 };
 
-interface OperationOutputProps {
-    operation: ReturnType<typeof createOperation>;
-}
+type OperationOutputProps = ReturnType<typeof createOperation>;
 
 const OperationOutput: Component<OperationOutputProps> = (props) => {
-    const {
-        availableFormatters,
-        setFormatterId,
-        formatterId,
-        formattedOutput,
-    } = props.operation;
     return (
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-2">
                 <Label size="sm">Formatter</Label>
                 <Select
                     size="sm"
-                    onInput={(e) => setFormatterId(e.currentTarget.value as FormatterId)}
+                    onInput={(e) => props.setFormatterId(e.currentTarget.value as FormatterId)}
                 >
-                    <For each={Array.from(availableFormatters.entries())}>
+                    <For each={Array.from(props.availableFormatters.entries())}>
                         {([id, formatter]) => (
-                            <option value={id} selected={id === formatterId()}>{formatter.name}</option>
+                            <option value={id} selected={id === props.formatterId()}>{formatter.name}</option>
                         )}
                     </For>
                 </Select>
+                <Show when={props.formatterError()}>
+                    <span class="text-danger">{props.formatterError()}</span>
+                </Show>
             </div>
 
             <TextArea
                 class="w-full min-h-50 p-2 font-mono resize-y"
                 readOnly
-                value={formattedOutput() ?? ""}
+                value={props.formattedOutput() ?? ""}
             />
         </div>
     );

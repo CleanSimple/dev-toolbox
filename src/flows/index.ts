@@ -17,7 +17,39 @@ export interface Flow {
 }
 
 export const Flows: Record<string, Flow> = {
-    "base64-encode": {
+    "test": {
+        name: "Test",
+        dataFormatId: "text",
+        parserId: "text",
+        pipelines: [
+            {
+                name: "Bunch of Stuff",
+                operations: [
+                    {
+                        operationId: "base64-encode-text",
+                        formatterId: "text"
+                    },
+                    {
+                        operationId: "text-to-bytes",
+                        formatterId: "bytes-hex-spaced-16"
+                    },
+                    {
+                        operationId: "bytes-to-text",
+                        formatterId: "text"
+                    },
+                    {
+                        operationId: "text-as-base64",
+                        formatterId: "text"
+                    },
+                    {
+                        operationId: "base64-decode",
+                        formatterId: "text"
+                    },
+                ]
+            }
+        ]
+    },
+    "base64-encode-text": {
         name: "Base64 Encode",
         dataFormatId: "text",
         parserId: "text",
@@ -26,7 +58,23 @@ export const Flows: Record<string, Flow> = {
                 name: "Base64 Encode",
                 operations: [
                     {
-                        operationId: "base64-encode",
+                        operationId: "base64-encode-text",
+                        formatterId: "text"
+                    }
+                ]
+            }
+        ]
+    },
+    "base64-encode-bytes": {
+        name: "Base64 Encode",
+        dataFormatId: "bytes",
+        parserId: "hex",
+        pipelines: [
+            {
+                name: "Base64 Encode",
+                operations: [
+                    {
+                        operationId: "base64-encode-bytes",
                         formatterId: "text"
                     }
                 ]

@@ -13,7 +13,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
   includeAssets: ['favicon.svg', 'pwa-192x192.png', 'pwa-512x512.png'],
   manifest: manifest as any,
   srcDir: 'src',
-  filename: 'service-worker.ts',
+  filename: 'workers/service-worker.ts',
   strategies: 'injectManifest',
 }
 
@@ -37,4 +37,10 @@ export default defineConfig({
     tailwindcss(),
     VitePWA(pwaOptions)
   ],
+  server: {
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "credentialless"
+    }
+  }
 })

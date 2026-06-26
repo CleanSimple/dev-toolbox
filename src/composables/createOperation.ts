@@ -50,16 +50,21 @@ export function createOperation(inputDataFormatId: DataFormatId | null, input: A
             return null;
 
         setIsFormatting(true);
-        const result = await format(validatedFormatterIdLocal, outputLocal);
-        setIsFormatting(false);
-        return result;
+        try {
+            return await format(validatedFormatterIdLocal, outputLocal);
+        }
+        catch (error) {
+            console.info("formatting error", error);
+            return null;
+        }
+        finally {
+            setIsFormatting(false);
+        }
     });
 
     createEffect(async () => {
-        console.info("operation", "begin");
         if (!operationInst)
             return;
-        console.info("operation", "operation found");
 
         const inputLocal = input();
         if (!inputLocal) {
@@ -67,19 +72,16 @@ export function createOperation(inputDataFormatId: DataFormatId | null, input: A
             setOutput(null);
             return;
         }
-        console.info("operation", "input found");
 
         setOutputError(null);
         setIsRunning(true);
         try {
-            console.info("operation", "processing");
             const result = await runOperation(operation.operationId, inputLocal);
             setOutput(result);
-            console.info("operation", "success");
         } catch (error) {
             setOutputError(error instanceof Error ? error.message : new String(error) as string);
             setOutput(null);
-            console.info("operation", "failure", error);
+            console.info("operation error", error);
         }
         finally {
             setIsRunning(true);

@@ -27,7 +27,7 @@ export const DataFormats = {
     }
 } satisfies Record<string, DataFormatRecord>;
 
+export type DataFormatType = (typeof DataFormats)[DataFormatId]["type"];
 export type DataFormat = InstanceType<(typeof DataFormats)[DataFormatId]["type"]>;
 export type DataFormatId = keyof typeof DataFormats;
 export type DataFormatById<T extends DataFormatId> = InstanceType<(typeof DataFormats)[T]["type"]>;
-

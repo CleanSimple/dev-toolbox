@@ -3,8 +3,9 @@ import { isSubclassOf } from "@/utils";
 import { type DataFormatId, type DataFormatById, DataFormats } from "@/data-formats";
 import { BytesToText } from "./BytesToText";
 import { TextToBytes } from "./TextToBytes";
-import { Base64Encode } from "./Base64Encode";
+import { Base64Encode, Base64EncodeBytes } from "./Base64Encode";
 import { Base64Decode } from "./Base64Decode";
+import { TextAsBase64 } from "./TextAsBase64";
 
 interface OperationRecord<TIn extends DataFormatId, TOut extends DataFormatId> {
     inDataFormatId: TIn;
@@ -25,16 +26,26 @@ export const Operations = {
         outDataFormatId: "bytes",
         operation: new TextToBytes()
     }),
-    'base64-encode': operation({
+    'text-as-base64': operation({
+        inDataFormatId: "text",
+        outDataFormatId: "base64",
+        operation: new TextAsBase64()
+    }),
+    'base64-encode-text': operation({
         inDataFormatId: "text",
         outDataFormatId: "base64",
         operation: new Base64Encode()
+    }),
+    'base64-encode-bytes': operation({
+        inDataFormatId: "bytes",
+        outDataFormatId: "base64",
+        operation: new Base64EncodeBytes()
     }),
     'base64-decode': operation({
         inDataFormatId: "base64",
         outDataFormatId: "text",
         operation: new Base64Decode()
-    })
+    }),
 } as Record<string, OperationRecord<DataFormatId, DataFormatId>>;
 
 export function getOperations(dataFormatId: DataFormatId) {

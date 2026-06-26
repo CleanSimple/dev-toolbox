@@ -4,21 +4,23 @@ import { getParsers, Parsers } from "@/parsers";
 import { createSignal, createMemo, createEffect, batch, createDeferred } from "solid-js";
 import { createPipeline } from "./createPipeline";
 import { parse } from "@/utils/flow-helpers";
+import { createDebounced } from "./createDebounced";
 
 
 export function createFlow(flow: Flow) {
     const [dataFormatId, _setDataFormatId] = createSignal(flow.dataFormatId);
-    const [parserId, setParserId] = createSignal(flow.parserId);
+    const [_parserId, setParserId] = createSignal(flow.parserId);
     const [parserError, setParserError] = createSignal<string | null>(null);
     const [parserDescription, setParserDescription] = createSignal<string | null>(null);
     const [parserExample, setParserExample] = createSignal<string | null>(null);
-    const [rawInput, setRawInput] = createSignal<string | null>(null);
+    const [_rawInput, setRawInput] = createSignal<string | null>(null);
     const [input, setInput] = createSignal<DataFormat | null>(null);
     const [inputError, setInputError] = createSignal<string | null>(null);
     const [pipelines, setPipelines] = createSignal<ReturnType<typeof createPipeline>[]>([]);
     const [isParsing, setIsParsing] = createSignal(false);
 
-    const deferredParserId = createDeferred(parserId);
+    const parserId = createDeferred(_parserId);
+    const rawInput = createDebounced(_rawInput, 500);
 
     const availableParsers = createMemo(() => {
         return new Map(
@@ -35,7 +37,7 @@ export function createFlow(flow: Flow) {
         setParserExample(null);
         setParserError(null);
 
-        const parser = availableParsers().get(deferredParserId());
+        const parser = availableParsers().get(parserId());
         if (parser) {
             setParserDescription(parser.description);
             setParserExample(parser.example ?? null);
@@ -46,13 +48,11 @@ export function createFlow(flow: Flow) {
     })
 
     createEffect(async () => {
-        console.info("parse", "begin");
         if (parserError()) {
             setInputError(null);
             setInput(null);
             return;
         }
-        console.info("parse", "parser found");
 
         const rawInputLocal = rawInput();
         if (!rawInputLocal) {
@@ -60,19 +60,16 @@ export function createFlow(flow: Flow) {
             setInput(null);
             return;
         }
-        console.info("parse", "input found");
 
         setInputError(null);
         setIsParsing(true);
         try {
-            console.info("parse", "processing");
-            const result = await parse(deferredParserId(), rawInputLocal);
+            const result = await parse(parserId(), rawInputLocal);
             setInput(result);
-            console.info("parse", "success");
         } catch (error) {
             setInputError(error instanceof Error ? error.message : new String(error) as string);
             setInput(null);
-            console.info("parse", "failure");
+            console.info("parse error", error);
         }
         finally {
             setIsParsing(false);
@@ -103,7 +100,7 @@ export function createFlow(flow: Flow) {
         dataFormatId,
         setDataFormatId,
         availableParsers,
-        parserId: deferredParserId,
+        parserId,
         setParserId,
         parserError,
         parserDescription,

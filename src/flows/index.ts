@@ -23,7 +23,7 @@ export const Flows: Record<string, Flow> = {
         parserId: 'text',
         pipelines: [
             {
-                name: 'Bunch of Stuff',
+                name: 'Bunch of Stuff™',
                 operations: [
                     {
                         operationId: 'base64-encode-text',

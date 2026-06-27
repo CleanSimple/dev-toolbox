@@ -26,15 +26,3 @@ export function isSubclassOf(sourceType: Function, targetType: Function): boolea
 
     return false;
 }
-
-export function extendPrototype(prototype: object, properties: object) {
-    for (const key of Object.keys(properties)) {
-        const desc = Object.getOwnPropertyDescriptor(properties, key)!;
-        desc.enumerable = false;
-        Object.defineProperty(prototype, key, desc);
-    }
-}
-
-export function hasKey<T extends object>(obj: T, key: PropertyKey): key is keyof T {
-    return key in obj;
-}

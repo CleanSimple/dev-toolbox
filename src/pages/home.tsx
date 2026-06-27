@@ -4,7 +4,7 @@ import { Flows } from "@/flows";
 import { useParams } from "@solidjs/router";
 import { createEffect, Match, Switch, type Component } from "solid-js";
 import { useNavigate } from "@solidjs/router";
-import { hasKey } from "@/utils";
+import { hasKey } from "@cleansimple/utils-js";
 
 
 const Home: Component = () => {

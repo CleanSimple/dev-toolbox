@@ -27,7 +27,25 @@ export const DataFormats = {
     }
 } satisfies Record<string, DataFormatRecord>;
 
-export type DataFormatType = (typeof DataFormats)[DataFormatId]["type"];
-export type DataFormat = InstanceType<(typeof DataFormats)[DataFormatId]["type"]>;
+type DataFormatMap = {
+    [K in DataFormatId]: InstanceType<(typeof DataFormats)[K]["type"]>
+}
+
+export type DataFormat = DataFormatMap[DataFormatId];
 export type DataFormatId = keyof typeof DataFormats;
-export type DataFormatById<T extends DataFormatId> = InstanceType<(typeof DataFormats)[T]["type"]>;
+export type DataFormatById<T extends DataFormatId> = DataFormatMap[T];
+export type DataFormatType = (typeof DataFormats)[DataFormatId]["type"];
+
+
+
+export interface LocalData {
+    scope: "local"
+    instance: DataFormat
+}
+
+export interface WorkerData {
+    scope: "worker"
+    instanceId: number
+}
+
+export type DataRef = LocalData | WorkerData

@@ -1,10 +1,11 @@
-import type { DataFormat, DataFormatId } from "@/data-formats";
+import type { DataFormatId, DataRef } from "@/data-formats";
 import type { Flow } from "@/flows";
 import { getParsers, Parsers } from "@/parsers";
 import { createSignal, createMemo, createEffect, batch, createDeferred } from "solid-js";
 import { createPipeline } from "./createPipeline";
-import { parse } from "@/utils/flow-helpers";
+import { parse, releaseData } from "@/utils/flow-helpers";
 import { createDebounced } from "./createDebounced";
+import { createDisposable } from "./createDisposable";
 
 
 export function createFlow(flow: Flow) {
@@ -14,7 +15,10 @@ export function createFlow(flow: Flow) {
     const [parserDescription, setParserDescription] = createSignal<string | null>(null);
     const [parserExample, setParserExample] = createSignal<string | null>(null);
     const [_rawInput, setRawInput] = createSignal<string | null>(null);
-    const [input, setInput] = createSignal<DataFormat | null>(null);
+    const [input, setInput] = createDisposable<DataRef>((output) => {
+        if (output.scope === "worker")
+            releaseData(output).catch((error) => console.error("failed to release worker data", error));
+    });
     const [inputError, setInputError] = createSignal<string | null>(null);
     const [pipelines, setPipelines] = createSignal<ReturnType<typeof createPipeline>[]>([]);
     const [isParsing, setIsParsing] = createSignal(false);

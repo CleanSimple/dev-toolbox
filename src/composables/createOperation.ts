@@ -1,16 +1,20 @@
-import type { DataFormatId, DataFormat } from "@/data-formats";
+import type { DataFormatId, DataRef } from "@/data-formats";
 import type { Flow } from "@/flows";
 import { getFormatters, Formatters } from "@/formatters";
 import { getOperations, Operations } from "@/operations";
 import { type Accessor, createSignal, createMemo, createEffect } from "solid-js";
-import { format, runOperation } from "@/utils/flow-helpers";
+import { format, releaseData, runOperation } from "@/utils/flow-helpers";
 import { createLazyAsyncComputed } from "./createLazyAsyncComputed";
+import { createDisposable } from "./createDisposable";
 
-export function createOperation(inputDataFormatId: DataFormatId | null, input: Accessor<DataFormat | null>, operation: Flow["pipelines"][number]["operations"][number]) {
+export function createOperation(inputDataFormatId: DataFormatId | null, input: Accessor<DataRef | null>, operation: Flow["pipelines"][number]["operations"][number]) {
     const [operationError, setOperationError] = createSignal<string | null>(null);
     const [formatterId, setFormatterId] = createSignal(operation.formatterId);
     const [formatterError, setFormatterError] = createSignal<string | null>(null);
-    const [output, setOutput] = createSignal<DataFormat | null>(null);
+    const [output, setOutput] = createDisposable<DataRef>((output) => {
+        if (output.scope === "worker")
+            releaseData(output).catch((error) => console.error("failed to release worker data", error));
+    });
     const [outputError, setOutputError] = createSignal<string | null>(null);
     const [isRunning, setIsRunning] = createSignal(false);
     const [isFormatting, setIsFormatting] = createSignal(false);

@@ -1,9 +1,9 @@
-import type { DataFormatId, DataFormat } from "@/data-formats";
+import type { DataFormatId, DataRef } from "@/data-formats";
 import type { Flow } from "@/flows";
 import { type Accessor, createSignal } from "solid-js";
 import { createOperation } from "./createOperation";
 
-export function createPipeline(inputDataFormatId: DataFormatId, input: Accessor<DataFormat | null>, pipeline: Flow["pipelines"][number]) {
+export function createPipeline(inputDataFormatId: DataFormatId, input: Accessor<DataRef | null>, pipeline: Flow["pipelines"][number]) {
     const [name, setName] = createSignal(pipeline.name);
     const [operations, setOperations] = createSignal<ReturnType<typeof createOperation>[]>([]);
 

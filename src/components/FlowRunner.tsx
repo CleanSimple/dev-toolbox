@@ -187,7 +187,7 @@ const OperationOutput: Component<OperationOutputProps> = (props) => {
             <TextArea
                 class="w-full min-h-50 p-2 font-mono resize-y"
                 readOnly
-                value={props.formattedOutput() ?? ""}
+                value={props.formattedOutput()?.slice(0, 500) ?? ""}
             />
         </div>
     );

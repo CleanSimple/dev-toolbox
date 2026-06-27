@@ -1,16 +1,16 @@
-import { Bytes, type DataFormat } from "@/data-formats";
+import { type DataFormat, type DataRef, type LocalData, type WorkerData } from "@/data-formats";
 import { Formatters, type FormatterId } from "@/formatters";
 import { Operations } from "@/operations";
 import { Parsers, type ParserId } from "@/parsers";
 import type { IFormatter } from "@/types";
-import type { ErrorResultMessage, FormatResultMessage, ParseResultMessage, ProcessingMessage, RunOperationResultMessage } from "@/types/messages";
-import { deserializeData, deserializeError, serializeData } from "./serialization";
-import { encodeString } from ".";
-import { BytesToHexFormatter } from "@/formatters/bytes";
+import type { ErrorResultMessage, FormatResultMessage, ParseResultMessage, ProcessingMessage, RunOperationResultMessage, SuccessResultMessage } from "@/types/messages";
+import { deserializeError } from "./serialization";
 
 const BACKGROUND_THRESHOLD = 1 * 1024 * 1024;
-// const BACKGROUND_THRESHOLD = 5000000 * 1024 * 1024;
 let lastId = 0;
+
+// const BACKGROUND_THRESHOLD = 1;
+// const BACKGROUND_THRESHOLD = 5000000 * 1024 * 1024;
 
 // const largeString = makeLargeString(500);
 // const largeByteArray = new BytesToHexFormatter({ mode: "compact", bytesPerRow: 0 }).format(new Bytes(encodeString(makeLargeString(100))));
@@ -31,13 +31,14 @@ export async function parse(parserId: ParserId, input: string) {
     return parseInForeground(parserId, input);
 }
 
-function parseInForeground(parserId: ParserId, input: string) {
+function parseInForeground(parserId: ParserId, input: string): LocalData {
     const parser = Parsers[parserId].parser;
-    return parser.parse(input);
+    const result = parser.parse(input)
+    return { scope: "local", instance: result };
 }
 
 async function parseInBackground(parserId: ParserId, input: string) {
-    return new Promise<DataFormat>((resolve, reject) => {
+    return new Promise<WorkerData>((resolve, reject) => {
         const messageId = ++lastId;
         postMessage({
             id: messageId,
@@ -54,31 +55,33 @@ async function parseInBackground(parserId: ParserId, input: string) {
             if (message.data.type === "error")
                 reject(deserializeError(message.data.error));
             else
-                resolve(deserializeData(message.data.data));
+                resolve(message.data.data);
         };
         worker.addEventListener("message", handler);
     });
 }
 
-export async function runOperation(operationId: string, input: DataFormat) {
-    if (input.value.length >= BACKGROUND_THRESHOLD)
+export async function runOperation(operationId: string, input: DataRef) {
+    if (input.scope === "local")
+        return runOperationInForeground(operationId, input);
+    else
         return await runOperationInBackground(operationId, input);
-    return runOperationInForeground(operationId, input);
 }
 
-function runOperationInForeground(operationId: string, input: DataFormat) {
+function runOperationInForeground(operationId: string, input: LocalData): LocalData {
     const operation = Operations[operationId].operation;
-    return operation.handler(input);
+    const result = operation.handler(input.instance);
+    return { scope: "local", instance: result };
 }
 
-async function runOperationInBackground(operationId: string, input: DataFormat) {
-    return new Promise<DataFormat>((resolve, reject) => {
+async function runOperationInBackground(operationId: string, input: WorkerData) {
+    return new Promise<WorkerData>((resolve, reject) => {
         const messageId = ++lastId;
         postMessage({
             id: messageId,
             type: "runOperation",
             operationId,
-            data: serializeData(input),
+            data: input,
         });
 
         const handler = (message: MessageEvent<RunOperationResultMessage | ErrorResultMessage>) => {
@@ -89,31 +92,32 @@ async function runOperationInBackground(operationId: string, input: DataFormat) 
             if (message.data.type === "error")
                 reject(deserializeError(message.data.error));
             else
-                resolve(deserializeData(message.data.data));
+                resolve(message.data.data);
         };
         worker.addEventListener("message", handler);
     });
 }
 
-export async function format(formatterId: FormatterId, input: DataFormat) {
-    if (input.value.length > BACKGROUND_THRESHOLD)
+export async function format(formatterId: FormatterId, input: DataRef) {
+    if (input.scope === "local")
+        return formatInForeground(formatterId, input);
+    else
         return await formatInBackground(formatterId, input);
-    return formatInForeground(formatterId, input);
 }
 
-function formatInForeground(formatterId: FormatterId, input: DataFormat) {
+function formatInForeground(formatterId: FormatterId, input: LocalData) {
     const formatter = Formatters[formatterId].formatter as IFormatter<DataFormat>;
-    return formatter.format(input);
+    return formatter.format(input.instance);
 }
 
-async function formatInBackground(formatterId: FormatterId, input: DataFormat) {
+function formatInBackground(formatterId: FormatterId, input: WorkerData) {
     return new Promise<string>((resolve, reject) => {
         const messageId = ++lastId;
         postMessage({
             id: messageId,
             type: "format",
             formatterId,
-            data: serializeData(input),
+            data: input,
         });
 
         const handler = (message: MessageEvent<FormatResultMessage | ErrorResultMessage>) => {
@@ -130,19 +134,25 @@ async function formatInBackground(formatterId: FormatterId, input: DataFormat) {
     });
 }
 
+export function releaseData(data: WorkerData) {
+    return new Promise<void>((resolve, reject) => {
+        const messageId = ++lastId;
+        postMessage({
+            id: messageId,
+            type: "releaseValue",
+            data,
+        });
 
+        const handler = (message: MessageEvent<SuccessResultMessage | ErrorResultMessage>) => {
+            if (message.data.id !== messageId)
+                return;
 
-// function makeLargeString(sizeInMB: number): string {
-//     const targetBytes = sizeInMB * 1024 * 1024;
-//     const chunk = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\n";
-//     const parts: string[] = [];
-
-//     let length = 0;
-//     while (length < targetBytes) {
-//         parts.push(chunk);
-//         length += chunk.length;
-//     }
-
-//     return parts.join("");
-// }
-
+            worker.removeEventListener("message", handler);
+            if (message.data.type === "error")
+                reject(deserializeError(message.data.error));
+            else
+                resolve();
+        };
+        worker.addEventListener("message", handler);
+    });
+}

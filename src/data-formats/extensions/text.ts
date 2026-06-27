@@ -1,7 +1,8 @@
-import { encodeString, extendPrototype } from "@/utils";
+import { encodeString } from "@/utils";
 import { Base64 } from "../base64";
 import { Bytes } from "../bytes";
 import { Text } from "../text";
+import { extendPrototype } from "@cleansimple/utils-js";
 
 interface TextExtensions {
     toBytes(): Bytes;

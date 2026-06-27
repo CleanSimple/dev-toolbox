@@ -12,8 +12,8 @@ const pwaOptions: Partial<VitePWAOptions> = {
   registerType: 'prompt',
   includeAssets: ['favicon.svg', 'pwa-192x192.png', 'pwa-512x512.png'],
   manifest: manifest as any,
-  srcDir: 'src',
-  filename: 'workers/service-worker.ts',
+  srcDir: 'src/workers',
+  filename: 'service-worker.ts',
   strategies: 'injectManifest',
 }
 
@@ -37,6 +37,9 @@ export default defineConfig({
     tailwindcss(),
     VitePWA(pwaOptions)
   ],
+  worker: {
+    plugins: () => [tsconfigPaths()]
+  },
   server: {
     headers: {
       "Cross-Origin-Opener-Policy": "same-origin",

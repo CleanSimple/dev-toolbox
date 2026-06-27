@@ -1,11 +1,32 @@
-import type { DataFormat } from "@/data-formats";
+import type { DataFormat, WorkerData } from "@/data-formats";
 import { Formatters } from "@/formatters";
 import { Operations } from "@/operations";
 import { Parsers } from "@/parsers"
 import type { IFormatter } from "@/types";
 import type { ProcessingMessage, ResultMessage } from "@/types/messages"
-import { deserializeData, serializeData, serializeError } from "@/utils/serialization";
+import { serializeError } from "@/utils/serialization";
+import { fail } from "@cleansimple/utils-js";
 
+let lastId = 0;
+const DataStore: Map<number, DataFormat> = new Map();
+
+function storeData(data: DataFormat): WorkerData {
+    const instanceId = ++lastId;
+    DataStore.set(instanceId, data);
+    return {
+        scope: "worker",
+        instanceId,
+    }
+}
+
+function getData(data: WorkerData): DataFormat {
+    return DataStore.get(data.instanceId) ?? fail(new Error("Value instance not found"));
+}
+
+function releaseData(data: WorkerData) {
+    console.info("releasing", data);
+    DataStore.delete(data.instanceId);
+}
 
 function handleMessage(message: ProcessingMessage): ResultMessage {
     try {
@@ -15,21 +36,27 @@ function handleMessage(message: ProcessingMessage): ResultMessage {
                 return {
                     id: message.id,
                     type: "parse",
-                    data: serializeData(parser.parse(message.data)),
+                    data: storeData(parser.parse(message.data)),
                 };
             case "runOperation":
                 const operation = Operations[message.operationId].operation;
                 return {
                     id: message.id,
                     type: "runOperation",
-                    data: serializeData(operation.handler(deserializeData(message.data))),
+                    data: storeData(operation.handler(getData(message.data))),
                 }
             case "format":
                 const formatter = Formatters[message.formatterId].formatter as IFormatter<DataFormat>;
                 return {
                     id: message.id,
                     type: "format",
-                    data: formatter.format(deserializeData(message.data)),
+                    data: formatter.format(getData(message.data)),
+                }
+            case "releaseValue":
+                releaseData(message.data);
+                return {
+                    id: message.id,
+                    type: "success",
                 }
         }
     }

@@ -9,17 +9,19 @@ export function serializeError(error: unknown) {
     }
 
     return {
-        name: "UnknownError",
+        name: 'UnknownError',
         message: String(error),
     };
 }
 
 export type SerializedError = ReturnType<typeof serializeError>;
 
-export function deserializeError(data: SerializedError): unknown {
+export function deserializeError(data: SerializedError): Error {
     const error = new Error(data.message);
     error.name = data.name;
-    error.stack = data.stack;
+    if (data.stack) {
+        error.stack = data.stack;
+    }
     error.cause = data.cause;
 
     return error;

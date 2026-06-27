@@ -1,11 +1,12 @@
-import type { IParser } from "@/types";
-import { Text } from "@/data-formats";
+import type { IParser } from '@/types';
+
+import { Text } from '@/data-formats';
 
 export class TextParser implements IParser<Text> {
-    readonly name = 'Default'
-    readonly description = 'Enter text content'
+    public readonly name = 'Default';
+    public readonly description = 'Enter text content';
 
-    parse(text: string): Text {
+    public parse(text: string): Text {
         return new Text(text);
     }
 }

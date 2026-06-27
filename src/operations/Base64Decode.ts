@@ -1,11 +1,12 @@
-import { Base64, Text } from "@/data-formats";
-import type { IOperation } from "@/types";
+import type { IOperation } from '@/types';
+
+import { Base64, Text } from '@/data-formats';
 
 export class Base64Decode implements IOperation<Base64, Text> {
-    readonly name = 'Base64 Decode';
-    readonly type = 'decode';
+    public readonly name = 'Base64 Decode';
+    public readonly type = 'decode';
 
-    handler(input: Base64): Text {
+    public handler(input: Base64): Text {
         return input.decode();
     }
-};
+}

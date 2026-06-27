@@ -1,5 +1,5 @@
-import type { IFormatter } from "@/types";
-import type { Bytes } from "@/data-formats";
+import type { Bytes } from '@/data-formats';
+import type { IFormatter } from '@/types';
 
 type HexMode = 'compact' | 'spaced' | 'prefixed' | 'cArray';
 
@@ -12,21 +12,24 @@ export class BytesToHexFormatter implements IFormatter<Bytes> {
     private readonly mode: HexMode;
     private readonly bytesPerRow: number;
 
-    constructor(options: BytesToHexFormatterOptions = {}) {
-        this.mode = options.mode ?? "spaced";
+    public constructor(options: BytesToHexFormatterOptions = {}) {
+        this.mode = options.mode ?? 'spaced';
         this.bytesPerRow = options.bytesPerRow ?? 16;
     }
 
-    get name(): string {
+    public get name(): string {
         const options: string[] = [BytesToHexFormatter.ModeNames[this.mode]];
         if (this.bytesPerRow > 0) options.push(`${this.bytesPerRow} bytes per row`);
         return `Hex (${options.join(', ')})`;
     }
 
-    format(value: Bytes): string {
+    public format(value: Bytes): string {
         const { separator, prefix, leading, trailing } = BytesToHexFormatter.ModeOptions[this.mode];
 
-        const hexBytes = Array.from(value.value, byte => prefix + byte.toString(16).padStart(2, '0'));
+        const hexBytes = Array.from(
+            value.value,
+            byte => prefix + byte.toString(16).padStart(2, '0'),
+        );
 
         let formatted: string;
         if (this.bytesPerRow === 0) {
@@ -38,21 +41,23 @@ export class BytesToHexFormatter implements IFormatter<Bytes> {
                 const slice = hexBytes.slice(i, i + this.bytesPerRow);
                 rows.push(slice.join(separator) + separator.trim());
             }
-            formatted = rows.join("\n");
+            formatted = rows.join('\n');
         }
 
         return leading + formatted + trailing;
     }
 
-
-    private static ModeNames: Record<HexMode, string> = {
+    private static readonly ModeNames: Record<HexMode, string> = {
         'compact': 'Compact',
         'spaced': 'Spaced',
         'prefixed': 'Prefixed',
         'cArray': 'C Array',
     };
 
-    private static ModeOptions: Record<HexMode, { separator: string, prefix: string, leading: string, trailing: string }> = {
+    private static readonly ModeOptions: Record<
+        HexMode,
+        { separator: string; prefix: string; leading: string; trailing: string }
+    > = {
         'compact': { separator: '', prefix: '', leading: '', trailing: '' },
         'spaced': { separator: ' ', prefix: '', leading: '', trailing: '' },
         'prefixed': { separator: ' ', prefix: '0x', leading: '', trailing: '' },

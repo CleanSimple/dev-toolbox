@@ -1,193 +1,193 @@
 @theme {
-  /* Global Colors */
-  --color-brand: var(--color-brand);
+    /* Global Colors */
+    --color-brand: var(--color-brand);
 
-  /* Surface Colors */
-  --background-color-base: var(--surface-base);
-  --background-color-content: var(--surface-content);
+    /* Surface Colors */
+    --background-color-base: var(--surface-base);
+    --background-color-content: var(--surface-content);
 
-  --background-color-main: var(--surface-main);
-  --background-color-subtle: var(--surface-subtle);
-  --background-color-strong: var(--surface-strong);
-  --background-color-hover: var(--surface-hover);
-  --background-color-disabled: var(--surface-disabled);
+    --background-color-main: var(--surface-main);
+    --background-color-subtle: var(--surface-subtle);
+    --background-color-strong: var(--surface-strong);
+    --background-color-hover: var(--surface-hover);
+    --background-color-disabled: var(--surface-disabled);
 
-  --background-color-brand: var(--surface-brand);
-  --background-color-brand-subtle: var(--surface-brand-subtle);
-  --background-color-brand-strong: var(--surface-brand-strong);
-  --background-color-brand-hover: var(--surface-brand-hover);
+    --background-color-brand: var(--surface-brand);
+    --background-color-brand-subtle: var(--surface-brand-subtle);
+    --background-color-brand-strong: var(--surface-brand-strong);
+    --background-color-brand-hover: var(--surface-brand-hover);
 
-  --background-color-accent: var(--surface-accent);
-  --background-color-accent-subtle: var(--surface-accent-subtle);
-  --background-color-accent-strong: var(--surface-accent-strong);
-  --background-color-accent-hover: var(--surface-accent-hover);
+    --background-color-accent: var(--surface-accent);
+    --background-color-accent-subtle: var(--surface-accent-subtle);
+    --background-color-accent-strong: var(--surface-accent-strong);
+    --background-color-accent-hover: var(--surface-accent-hover);
 
-  --background-color-info: var(--surface-info);
-  --background-color-success: var(--surface-success);
-  --background-color-warning: var(--surface-warning);
-  --background-color-danger: var(--surface-danger);
+    --background-color-info: var(--surface-info);
+    --background-color-success: var(--surface-success);
+    --background-color-warning: var(--surface-warning);
+    --background-color-danger: var(--surface-danger);
 
-  /* Text Colors */
-  --text-color-head: var(--text-head);
-  --text-color-body: var(--text-body);
-  --text-color-subtle: var(--text-subtle);
-  --text-color-disabled: var(--text-disabled);
-  --text-color-on-disabled: var(--text-on-disabled);
+    /* Text Colors */
+    --text-color-head: var(--text-head);
+    --text-color-body: var(--text-body);
+    --text-color-subtle: var(--text-subtle);
+    --text-color-disabled: var(--text-disabled);
+    --text-color-on-disabled: var(--text-on-disabled);
 
-  --text-color-brand: var(--text-brand);
-  --text-color-brand-hover: var(--text-brand-hover);
-  --text-color-on-brand: var(--text-on-brand);
+    --text-color-brand: var(--text-brand);
+    --text-color-brand-hover: var(--text-brand-hover);
+    --text-color-on-brand: var(--text-on-brand);
 
-  --text-color-accent: var(--text-accent);
-  --text-color-accent-hover: var(--text-accent-hover);
-  --text-color-on-accent: var(--text-on-accent);
+    --text-color-accent: var(--text-accent);
+    --text-color-accent-hover: var(--text-accent-hover);
+    --text-color-on-accent: var(--text-on-accent);
 
-  --text-color-info: var(--text-info);
-  --text-color-success: var(--text-success);
-  --text-color-warning: var(--text-warning);
-  --text-color-danger: var(--text-danger);
+    --text-color-info: var(--text-info);
+    --text-color-success: var(--text-success);
+    --text-color-warning: var(--text-warning);
+    --text-color-danger: var(--text-danger);
 
-  /* Border Colors */
-  --border-color-main: var(--border-main);
-  --border-color-subtle: var(--border-subtle);
-  --border-color-strong: var(--border-strong);
-  --border-color-disabled: var(--border-disabled);
+    /* Border Colors */
+    --border-color-main: var(--border-main);
+    --border-color-subtle: var(--border-subtle);
+    --border-color-strong: var(--border-strong);
+    --border-color-disabled: var(--border-disabled);
 
-  --border-color-brand: var(--border-brand);
-  --border-color-accent: var(--border-accent);
+    --border-color-brand: var(--border-brand);
+    --border-color-accent: var(--border-accent);
 
-  --border-color-info: var(--border-info);
-  --border-color-success: var(--border-success);
-  --border-color-warning: var(--border-warning);
-  --border-color-danger: var(--border-danger);
+    --border-color-info: var(--border-info);
+    --border-color-success: var(--border-success);
+    --border-color-warning: var(--border-warning);
+    --border-color-danger: var(--border-danger);
 }
 
 /* --- Light Theme --- */
 :root[data-theme="light"] {
-  /* Global Colors */
-  --color-brand: var(--color-primary-600);
+    /* Global Colors */
+    --color-brand: var(--color-primary-600);
 
-  /* Surface Colors */
-  --surface-base: var(--color-neutral-050);
-  --surface-content: var(--color-neutral-000);
+    /* Surface Colors */
+    --surface-base: var(--color-neutral-050);
+    --surface-content: var(--color-neutral-000);
 
-  --surface-main: var(--color-neutral-300);
-  --surface-subtle: var(--color-neutral-200);
-  --surface-strong: var(--color-neutral-400);
-  --surface-hover: var(--color-neutral-500);
-  --surface-disabled: var(--color-neutral-100);
+    --surface-main: var(--color-neutral-300);
+    --surface-subtle: var(--color-neutral-200);
+    --surface-strong: var(--color-neutral-400);
+    --surface-hover: var(--color-neutral-500);
+    --surface-disabled: var(--color-neutral-100);
 
-  --surface-brand: var(--color-primary-600);
-  --surface-brand-subtle: var(--color-primary-500);
-  --surface-brand-strong: var(--color-primary-700);
-  --surface-brand-hover: var(--color-primary-800);
+    --surface-brand: var(--color-primary-600);
+    --surface-brand-subtle: var(--color-primary-500);
+    --surface-brand-strong: var(--color-primary-700);
+    --surface-brand-hover: var(--color-primary-800);
 
-  --surface-accent: var(--color-secondary-700);
-  --surface-accent-subtle: var(--color-secondary-500);
-  --surface-accent-strong: var(--color-secondary-900);
-  --surface-accent-hover: var(--color-secondary-800);
+    --surface-accent: var(--color-secondary-700);
+    --surface-accent-subtle: var(--color-secondary-500);
+    --surface-accent-strong: var(--color-secondary-900);
+    --surface-accent-hover: var(--color-secondary-800);
 
-  --surface-info: var(--color-info-200);
-  --surface-success: var(--color-success-200);
-  --surface-warning: var(--color-warning-200);
-  --surface-danger: var(--color-danger-200);
+    --surface-info: var(--color-info-200);
+    --surface-success: var(--color-success-200);
+    --surface-warning: var(--color-warning-200);
+    --surface-danger: var(--color-danger-200);
 
-  /* Text Colors */
-  --text-head: var(--color-neutral-950);
-  --text-body: var(--color-neutral-700);
-  --text-subtle: var(--color-neutral-500);
-  --text-disabled: var(--color-neutral-400);
-  --text-on-disabled: var(--color-neutral-400);
+    /* Text Colors */
+    --text-head: var(--color-neutral-950);
+    --text-body: var(--color-neutral-700);
+    --text-subtle: var(--color-neutral-500);
+    --text-disabled: var(--color-neutral-400);
+    --text-on-disabled: var(--color-neutral-400);
 
-  --text-brand: var(--color-primary-700);
-  --text-brand-hover: var(--color-primary-600);
-  --text-on-brand: var(--color-neutral-200);
+    --text-brand: var(--color-primary-700);
+    --text-brand-hover: var(--color-primary-600);
+    --text-on-brand: var(--color-neutral-200);
 
-  --text-accent: var(--color-secondary-700);
-  --text-accent-hover: var(--color-secondary-600);
-  --text-on-accent: var(--color-neutral-200);
+    --text-accent: var(--color-secondary-700);
+    --text-accent-hover: var(--color-secondary-600);
+    --text-on-accent: var(--color-neutral-200);
 
-  --text-info: var(--color-info-600);
-  --text-success: var(--color-success-600);
-  --text-warning: var(--color-warning-600);
-  --text-danger: var(--color-danger-600);
+    --text-info: var(--color-info-600);
+    --text-success: var(--color-success-600);
+    --text-warning: var(--color-warning-600);
+    --text-danger: var(--color-danger-600);
 
-  /* Border Colors */
-  --border-main: var(--color-neutral-300);
-  --border-subtle: var(--color-neutral-200);
-  --border-strong: var(--color-neutral-400);
-  --border-disabled: var(--color-neutral-300);
+    /* Border Colors */
+    --border-main: var(--color-neutral-300);
+    --border-subtle: var(--color-neutral-200);
+    --border-strong: var(--color-neutral-400);
+    --border-disabled: var(--color-neutral-300);
 
-  --border-brand: var(--color-primary-700);
-  --border-accent: var(--color-secondary-700);
+    --border-brand: var(--color-primary-700);
+    --border-accent: var(--color-secondary-700);
 
-  --border-info: var(--color-info-500);
-  --border-success: var(--color-success-500);
-  --border-warning: var(--color-warning-500);
-  --border-danger: var(--color-danger-500);
+    --border-info: var(--color-info-500);
+    --border-success: var(--color-success-500);
+    --border-warning: var(--color-warning-500);
+    --border-danger: var(--color-danger-500);
 }
 
 /* --- Dark Theme --- */
 :root[data-theme="dark"] {
-  /* Global Colors */
-  --color-brand: var(--color-primary-600);
+    /* Global Colors */
+    --color-brand: var(--color-primary-600);
 
-  /* Surface Colors */
-  --surface-base: var(--color-neutral-950);
-  --surface-content: var(--color-neutral-900);
+    /* Surface Colors */
+    --surface-base: var(--color-neutral-950);
+    --surface-content: var(--color-neutral-900);
 
-  --surface-main: var(--color-neutral-600);
-  --surface-subtle: var(--color-neutral-700);
-  --surface-strong: var(--color-neutral-500);
-  --surface-hover: var(--color-neutral-400);
-  --surface-disabled: var(--color-neutral-800);
+    --surface-main: var(--color-neutral-600);
+    --surface-subtle: var(--color-neutral-700);
+    --surface-strong: var(--color-neutral-500);
+    --surface-hover: var(--color-neutral-400);
+    --surface-disabled: var(--color-neutral-800);
 
-  --surface-brand: var(--color-primary-600);
-  --surface-brand-subtle: var(--color-primary-700);
-  --surface-brand-strong: var(--color-primary-500);
-  --surface-brand-hover: var(--color-primary-400);
+    --surface-brand: var(--color-primary-600);
+    --surface-brand-subtle: var(--color-primary-700);
+    --surface-brand-strong: var(--color-primary-500);
+    --surface-brand-hover: var(--color-primary-400);
 
-  --surface-accent: var(--color-secondary-600);
-  --surface-accent-subtle: var(--color-secondary-700);
-  --surface-accent-strong: var(--color-secondary-500);
-  --surface-accent-hover: var(--color-secondary-400);
+    --surface-accent: var(--color-secondary-600);
+    --surface-accent-subtle: var(--color-secondary-700);
+    --surface-accent-strong: var(--color-secondary-500);
+    --surface-accent-hover: var(--color-secondary-400);
 
-  --surface-info: var(--color-info-700);
-  --surface-success: var(--color-success-700);
-  --surface-warning: var(--color-warning-700);
-  --surface-danger: var(--color-danger-700);
+    --surface-info: var(--color-info-700);
+    --surface-success: var(--color-success-700);
+    --surface-warning: var(--color-warning-700);
+    --surface-danger: var(--color-danger-700);
 
-  /* Text Colors */
-  --text-head: var(--color-neutral-100);
-  --text-body: var(--color-neutral-300);
-  --text-subtle: var(--color-neutral-400);
-  --text-disabled: var(--color-neutral-500);
-  --text-on-disabled: var(--color-neutral-600);
+    /* Text Colors */
+    --text-head: var(--color-neutral-100);
+    --text-body: var(--color-neutral-300);
+    --text-subtle: var(--color-neutral-400);
+    --text-disabled: var(--color-neutral-500);
+    --text-on-disabled: var(--color-neutral-600);
 
-  --text-brand: var(--color-primary-500);
-  --text-brand-hover: var(--color-primary-600);
-  --text-on-brand: var(--color-neutral-900);
+    --text-brand: var(--color-primary-500);
+    --text-brand-hover: var(--color-primary-600);
+    --text-on-brand: var(--color-neutral-900);
 
-  --text-accent: var(--color-secondary-500);
-  --text-accent-hover: var(--color-secondary-600);
-  --text-on-accent: var(--color-neutral-900);
+    --text-accent: var(--color-secondary-500);
+    --text-accent-hover: var(--color-secondary-600);
+    --text-on-accent: var(--color-neutral-900);
 
-  --text-info: var(--color-info-400);
-  --text-success: var(--color-success-400);
-  --text-warning: var(--color-warning-400);
-  --text-danger: var(--color-danger-400);
+    --text-info: var(--color-info-400);
+    --text-success: var(--color-success-400);
+    --text-warning: var(--color-warning-400);
+    --text-danger: var(--color-danger-400);
 
-  /* Border Colors */
-  --border-main: var(--color-neutral-700);
-  --border-subtle: var(--color-neutral-800);
-  --border-strong: var(--color-neutral-600);
-  --border-disabled: var(--color-neutral-800);
+    /* Border Colors */
+    --border-main: var(--color-neutral-700);
+    --border-subtle: var(--color-neutral-800);
+    --border-strong: var(--color-neutral-600);
+    --border-disabled: var(--color-neutral-800);
 
-  --border-brand: var(--color-primary-500);
-  --border-accent: var(--color-secondary-500);
+    --border-brand: var(--color-primary-500);
+    --border-accent: var(--color-secondary-500);
 
-  --border-info: var(--color-info-500);
-  --border-success: var(--color-success-500);
-  --border-warning: var(--color-warning-500);
-  --border-danger: var(--color-danger-500);
+    --border-info: var(--color-info-500);
+    --border-success: var(--color-success-500);
+    --border-warning: var(--color-warning-500);
+    --border-danger: var(--color-danger-500);
 }

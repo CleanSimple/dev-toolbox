@@ -1,9 +1,15 @@
-import type { DataFormatId, DataRef } from "@/data-formats";
-import type { Flow } from "@/flows";
-import { type Accessor, createSignal } from "solid-js";
-import { createOperation } from "./createOperation";
+import type { DataFormatId, DataRef } from '@/data-formats';
+import type { Flow } from '@/flows';
+import type { Accessor } from 'solid-js';
 
-export function createPipeline(inputDataFormatId: DataFormatId, input: Accessor<DataRef | null>, pipeline: Flow["pipelines"][number]) {
+import { createSignal } from 'solid-js';
+import { createOperation } from './createOperation';
+
+export function createPipeline(
+    inputDataFormatId: DataFormatId,
+    input: Accessor<DataRef | null>,
+    pipeline: Flow['pipelines'][number],
+) {
     const [name, setName] = createSignal(pipeline.name);
     const [operations, setOperations] = createSignal<ReturnType<typeof createOperation>[]>([]);
 
@@ -22,12 +28,12 @@ export function createPipeline(inputDataFormatId: DataFormatId, input: Accessor<
         setOperations(operations => operations.slice(0, -1));
     };
 
-    const addOperation = (operation: Flow["pipelines"][number]["operations"][number]) => {
+    const addOperation = (operation: Flow['pipelines'][number]['operations'][number]) => {
         const lastOperation = operations()[operations().length];
         const operationInstance = createOperation(
             lastOperation ? lastOperation.outputDataFormatId : inputDataFormatId,
             lastOperation ? lastOperation.output : input,
-            operation
+            operation,
         );
         setOperations(operations => [...operations, operationInstance]);
     };

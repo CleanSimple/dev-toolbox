@@ -1,17 +1,16 @@
-import { decodeString } from "@/utils";
-import { Base64 } from "../base64";
-import { Bytes } from "../bytes";
-import { Text } from "../text";
-import { extendPrototype } from "@cleansimple/utils-js";
+import { decodeString } from '@/utils';
+import { extendPrototype } from '@cleansimple/utils-js';
+import { Base64 } from '../base64';
+import { Bytes } from '../bytes';
+import { Text } from '../text';
 
 interface BytesExtensions {
-    toBase64(): Base64;
-    toText(): Text;
+    toBase64: () => Base64;
+    toText: () => Text;
 }
 
-
-declare module "@/data-formats/bytes" {
-    interface Bytes extends BytesExtensions { }
+declare module '@/data-formats/bytes' {
+    interface Bytes extends BytesExtensions {}
 }
 
 const bytesExtensions = (): BytesExtensions => ({
@@ -21,7 +20,7 @@ const bytesExtensions = (): BytesExtensions => ({
 
     toText(this: Bytes): Text {
         return new Text(decodeString(this.value));
-    }
+    },
 });
 
 extendPrototype(Bytes.prototype, bytesExtensions());

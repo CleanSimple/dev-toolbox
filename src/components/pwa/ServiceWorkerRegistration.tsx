@@ -1,7 +1,9 @@
-import { Show, type Component } from 'solid-js';
+import type { Component } from 'solid-js';
+
+import { Show } from 'solid-js';
 import { useRegisterSW } from 'virtual:pwa-register/solid';
-import ReloadPrompt from './ReloadPrompt';
 import OfflinePrompt from './OfflinePrompt';
+import ReloadPrompt from './ReloadPrompt';
 
 const ServiceWorkerRegistration: Component = () => {
     const {
@@ -15,7 +17,7 @@ const ServiceWorkerRegistration: Component = () => {
             if (import.meta.env.DEV && swRegistration) {
                 setInterval(() => {
                     console.log('Checking for sw update');
-                    swRegistration.update();
+                    void swRegistration.update();
                 }, 20000 /* 20s for testing purposes */);
             } else {
                 console.log(`Service Worker Registered.`);
@@ -39,7 +41,7 @@ const ServiceWorkerRegistration: Component = () => {
             <Show when={needRefresh()}>
                 <ReloadPrompt
                     onClose={closeReload}
-                    onUpdate={() => updateServiceWorker(true)}
+                    onUpdate={() => void updateServiceWorker(true)}
                 />
             </Show>
             <Show when={offlineReady()}>

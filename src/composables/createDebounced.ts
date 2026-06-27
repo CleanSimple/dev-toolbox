@@ -1,5 +1,4 @@
-import { createSignal, createEffect, onCleanup } from "solid-js";
-
+import { createEffect, createSignal, onCleanup } from 'solid-js';
 
 export function createDebounced<T>(source: () => T, delay: number) {
     const [value, setValue] = createSignal(source());

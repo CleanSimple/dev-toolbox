@@ -1,10 +1,10 @@
-import type { IFormatter } from "@/types";
-import type { Text } from "@/data-formats";
+import type { Text } from '@/data-formats';
+import type { IFormatter } from '@/types';
 
 export class TextFormatter implements IFormatter<Text> {
-    readonly name = "Text";
+    public readonly name = 'Text';
 
-    format(value: Text): string {
+    public format(value: Text): string {
         return value.value;
     }
 }

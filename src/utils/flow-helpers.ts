@@ -1,10 +1,20 @@
-import { type DataFormat, type DataRef, type LocalData, type WorkerData } from "@/data-formats";
-import { Formatters, type FormatterId } from "@/formatters";
-import { Operations } from "@/operations";
-import { Parsers, type ParserId } from "@/parsers";
-import type { IFormatter } from "@/types";
-import type { ErrorResultMessage, FormatResultMessage, ParseResultMessage, ProcessingMessage, RunOperationResultMessage, SuccessResultMessage } from "@/types/messages";
-import { deserializeError } from "./serialization";
+import type { DataFormat, DataRef, LocalData, WorkerData } from '@/data-formats';
+import type { FormatterId } from '@/formatters';
+import type { ParserId } from '@/parsers';
+import type { IFormatter } from '@/types';
+import type {
+    ErrorResultMessage,
+    FormatResultMessage,
+    ParseResultMessage,
+    ProcessingMessage,
+    RunOperationResultMessage,
+    SuccessResultMessage,
+} from '@/types/messages';
+
+import { Formatters } from '@/formatters';
+import { Operations } from '@/operations';
+import { Parsers } from '@/parsers';
+import { deserializeError } from './serialization';
 
 const BACKGROUND_THRESHOLD = 1 * 1024 * 1024;
 let lastId = 0;
@@ -16,8 +26,8 @@ let lastId = 0;
 // const largeByteArray = new BytesToHexFormatter({ mode: "compact", bytesPerRow: 0 }).format(new Bytes(encodeString(makeLargeString(100))));
 
 const worker = new Worker(
-    new URL("../workers/background-worker.ts", import.meta.url),
-    { type: "module" }
+    new URL('../workers/background-worker.ts', import.meta.url),
+    { type: 'module' },
 );
 
 function postMessage(message: ProcessingMessage) {
@@ -26,15 +36,16 @@ function postMessage(message: ProcessingMessage) {
 
 export async function parse(parserId: ParserId, input: string) {
     // input = largeByteArray;
-    if (input.length >= BACKGROUND_THRESHOLD)
+    if (input.length >= BACKGROUND_THRESHOLD) {
         return await parseInBackground(parserId, input);
+    }
     return parseInForeground(parserId, input);
 }
 
 function parseInForeground(parserId: ParserId, input: string): LocalData {
     const parser = Parsers[parserId].parser;
-    const result = parser.parse(input)
-    return { scope: "local", instance: result };
+    const result = parser.parse(input);
+    return { scope: 'local', instance: result };
 }
 
 async function parseInBackground(parserId: ParserId, input: string) {
@@ -42,36 +53,41 @@ async function parseInBackground(parserId: ParserId, input: string) {
         const messageId = ++lastId;
         postMessage({
             id: messageId,
-            type: "parse",
+            type: 'parse',
             parserId,
             data: input,
         });
 
         const handler = (message: MessageEvent<ParseResultMessage | ErrorResultMessage>) => {
-            if (message.data.id !== messageId)
+            if (message.data.id !== messageId) {
                 return;
+            }
 
-            worker.removeEventListener("message", handler);
-            if (message.data.type === "error")
+            worker.removeEventListener('message', handler);
+            if (message.data.type === 'error') {
                 reject(deserializeError(message.data.error));
-            else
+            }
+            else {
                 resolve(message.data.data);
+            }
         };
-        worker.addEventListener("message", handler);
+        worker.addEventListener('message', handler);
     });
 }
 
 export async function runOperation(operationId: string, input: DataRef) {
-    if (input.scope === "local")
+    if (input.scope === 'local') {
         return runOperationInForeground(operationId, input);
-    else
+    }
+    else {
         return await runOperationInBackground(operationId, input);
+    }
 }
 
 function runOperationInForeground(operationId: string, input: LocalData): LocalData {
     const operation = Operations[operationId].operation;
     const result = operation.handler(input.instance);
-    return { scope: "local", instance: result };
+    return { scope: 'local', instance: result };
 }
 
 async function runOperationInBackground(operationId: string, input: WorkerData) {
@@ -79,30 +95,35 @@ async function runOperationInBackground(operationId: string, input: WorkerData) 
         const messageId = ++lastId;
         postMessage({
             id: messageId,
-            type: "runOperation",
+            type: 'runOperation',
             operationId,
             data: input,
         });
 
         const handler = (message: MessageEvent<RunOperationResultMessage | ErrorResultMessage>) => {
-            if (message.data.id !== messageId)
+            if (message.data.id !== messageId) {
                 return;
+            }
 
-            worker.removeEventListener("message", handler);
-            if (message.data.type === "error")
+            worker.removeEventListener('message', handler);
+            if (message.data.type === 'error') {
                 reject(deserializeError(message.data.error));
-            else
+            }
+            else {
                 resolve(message.data.data);
+            }
         };
-        worker.addEventListener("message", handler);
+        worker.addEventListener('message', handler);
     });
 }
 
 export async function format(formatterId: FormatterId, input: DataRef) {
-    if (input.scope === "local")
+    if (input.scope === 'local') {
         return formatInForeground(formatterId, input);
-    else
+    }
+    else {
         return await formatInBackground(formatterId, input);
+    }
 }
 
 function formatInForeground(formatterId: FormatterId, input: LocalData) {
@@ -115,22 +136,25 @@ function formatInBackground(formatterId: FormatterId, input: WorkerData) {
         const messageId = ++lastId;
         postMessage({
             id: messageId,
-            type: "format",
+            type: 'format',
             formatterId,
             data: input,
         });
 
         const handler = (message: MessageEvent<FormatResultMessage | ErrorResultMessage>) => {
-            if (message.data.id !== messageId)
+            if (message.data.id !== messageId) {
                 return;
+            }
 
-            worker.removeEventListener("message", handler);
-            if (message.data.type === "error")
+            worker.removeEventListener('message', handler);
+            if (message.data.type === 'error') {
                 reject(deserializeError(message.data.error));
-            else
+            }
+            else {
                 resolve(message.data.data);
+            }
         };
-        worker.addEventListener("message", handler);
+        worker.addEventListener('message', handler);
     });
 }
 
@@ -139,20 +163,23 @@ export function releaseData(data: WorkerData) {
         const messageId = ++lastId;
         postMessage({
             id: messageId,
-            type: "releaseValue",
+            type: 'releaseValue',
             data,
         });
 
         const handler = (message: MessageEvent<SuccessResultMessage | ErrorResultMessage>) => {
-            if (message.data.id !== messageId)
+            if (message.data.id !== messageId) {
                 return;
+            }
 
-            worker.removeEventListener("message", handler);
-            if (message.data.type === "error")
+            worker.removeEventListener('message', handler);
+            if (message.data.type === 'error') {
                 reject(deserializeError(message.data.error));
-            else
+            }
+            else {
                 resolve();
+            }
         };
-        worker.addEventListener("message", handler);
+        worker.addEventListener('message', handler);
     });
 }

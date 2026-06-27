@@ -1,76 +1,76 @@
-import type { DataFormat, WorkerData } from "@/data-formats";
-import { Formatters } from "@/formatters";
-import { Operations } from "@/operations";
-import { Parsers } from "@/parsers"
-import type { IFormatter } from "@/types";
-import type { ProcessingMessage, ResultMessage } from "@/types/messages"
-import { serializeError } from "@/utils/serialization";
-import { fail } from "@cleansimple/utils-js";
+import type { DataFormat, WorkerData } from '@/data-formats';
+import type { IFormatter } from '@/types';
+import type { ProcessingMessage, ResultMessage } from '@/types/messages';
+
+import { Formatters } from '@/formatters';
+import { Operations } from '@/operations';
+import { Parsers } from '@/parsers';
+import { serializeError } from '@/utils/serialization';
+import { fail } from '@cleansimple/utils-js';
 
 let lastId = 0;
-const DataStore: Map<number, DataFormat> = new Map();
+const DataStore = new Map<number, DataFormat>();
 
 function storeData(data: DataFormat): WorkerData {
     const instanceId = ++lastId;
     DataStore.set(instanceId, data);
-    return {
-        scope: "worker",
-        instanceId,
-    }
+    return { scope: 'worker', instanceId };
 }
 
 function getData(data: WorkerData): DataFormat {
-    return DataStore.get(data.instanceId) ?? fail(new Error("Value instance not found"));
+    return DataStore.get(data.instanceId) ?? fail(new Error('Value instance not found'));
 }
 
 function releaseData(data: WorkerData) {
-    console.info("releasing", data);
+    console.info('releasing', data);
     DataStore.delete(data.instanceId);
 }
 
 function handleMessage(message: ProcessingMessage): ResultMessage {
     try {
         switch (message.type) {
-            case "parse":
+            case 'parse': {
                 const parser = Parsers[message.parserId].parser;
                 return {
                     id: message.id,
-                    type: "parse",
+                    type: 'parse',
                     data: storeData(parser.parse(message.data)),
                 };
-            case "runOperation":
+            }
+            case 'runOperation': {
                 const operation = Operations[message.operationId].operation;
                 return {
                     id: message.id,
-                    type: "runOperation",
+                    type: 'runOperation',
                     data: storeData(operation.handler(getData(message.data))),
-                }
-            case "format":
-                const formatter = Formatters[message.formatterId].formatter as IFormatter<DataFormat>;
+                };
+            }
+            case 'format': {
+                const formatter = Formatters[message.formatterId].formatter as IFormatter<
+                    DataFormat
+                >;
                 return {
                     id: message.id,
-                    type: "format",
+                    type: 'format',
                     data: formatter.format(getData(message.data)),
-                }
-            case "releaseValue":
+                };
+            }
+            case 'releaseValue': {
                 releaseData(message.data);
-                return {
-                    id: message.id,
-                    type: "success",
-                }
+                return { id: message.id, type: 'success' };
+            }
         }
     }
     catch (error) {
         return {
             id: message.id,
-            type: "error",
+            type: 'error',
             error: serializeError(error),
-        }
+        };
     }
 }
 
-self.addEventListener("message", (message: MessageEvent<ProcessingMessage>) => {
+self.addEventListener('message', (message: MessageEvent<ProcessingMessage>) => {
     const result = handleMessage(message.data);
     self.postMessage(result);
-})
-
+});

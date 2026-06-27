@@ -1,33 +1,35 @@
-import type { IFormatter } from "@/types";
-import { DataFormats, type DataFormatId, type DataFormatById, } from "@/data-formats";
-import { BytesToHexFormatter } from "./bytes";
-import { TextFormatter } from "./text";
-import { isSubclassOf } from "@/utils";
+import type { DataFormatById, DataFormatId } from '@/data-formats';
+import type { IFormatter } from '@/types';
+
+import { DataFormats } from '@/data-formats';
+import { isSubclassOf } from '@/utils';
+import { BytesToHexFormatter } from './bytes';
+import { TextFormatter } from './text';
 
 interface FormatterRecord<T extends DataFormatId> {
     dataFormatId: T;
-    formatter: IFormatter<DataFormatById<T>>
+    formatter: IFormatter<DataFormatById<T>>;
 }
 
 const formatter = <T extends DataFormatId>(record: FormatterRecord<T>) => record;
 
 export const Formatters = {
-    'text': formatter({ dataFormatId: "text", formatter: new TextFormatter() }),
+    'text': formatter({ dataFormatId: 'text', formatter: new TextFormatter() }),
     'bytes-hex-compact-16': formatter({
-        dataFormatId: "bytes",
-        formatter: new BytesToHexFormatter({ mode: "compact", bytesPerRow: 16 })
+        dataFormatId: 'bytes',
+        formatter: new BytesToHexFormatter({ mode: 'compact', bytesPerRow: 16 }),
     }),
     'bytes-hex-spaced-16': formatter({
-        dataFormatId: "bytes",
-        formatter: new BytesToHexFormatter({ mode: "spaced", bytesPerRow: 16 })
+        dataFormatId: 'bytes',
+        formatter: new BytesToHexFormatter({ mode: 'spaced', bytesPerRow: 16 }),
     }),
     'bytes-hex-prefixed-16': formatter({
-        dataFormatId: "bytes",
-        formatter: new BytesToHexFormatter({ mode: "prefixed", bytesPerRow: 16 })
+        dataFormatId: 'bytes',
+        formatter: new BytesToHexFormatter({ mode: 'prefixed', bytesPerRow: 16 }),
     }),
     'bytes-hex-cArray-16': formatter({
-        dataFormatId: "bytes",
-        formatter: new BytesToHexFormatter({ mode: "cArray", bytesPerRow: 16 })
+        dataFormatId: 'bytes',
+        formatter: new BytesToHexFormatter({ mode: 'cArray', bytesPerRow: 16 }),
     }),
 };
 
@@ -37,8 +39,9 @@ export function getFormatters(dataFormatId: DataFormatId) {
     const dataFormatType = DataFormats[dataFormatId].type;
     for (const [id, record] of Object.entries(Formatters)) {
         const formatterDataFormatType = DataFormats[record.dataFormatId].type;
-        if (isSubclassOf(dataFormatType, formatterDataFormatType))
+        if (isSubclassOf(dataFormatType, formatterDataFormatType)) {
             formatters.push(id as FormatterId);
+        }
     }
 
     return formatters;

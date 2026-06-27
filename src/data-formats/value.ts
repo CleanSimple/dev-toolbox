@@ -1,9 +1,9 @@
-import type { IDataFormat } from "@/types";
+import type { IDataFormat } from '@/types';
 
 export abstract class Value<T> implements IDataFormat<T> {
-    readonly value: T;
+    public readonly value: T;
 
-    constructor(value: T) {
+    public constructor(value: T) {
         this.value = value;
     }
 }

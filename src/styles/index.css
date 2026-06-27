@@ -3,39 +3,39 @@
 @import "./theme.css";
 
 @layer base {
-  /* Update color scheme based on theme (to correctly render browser native elements like scroll bars) */
-  :root[data-theme="light"] {
-    color-scheme: light;
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-  }
+    /* Update color scheme based on theme (to correctly render browser native elements like scroll bars) */
+    :root[data-theme="light"] {
+        color-scheme: light;
+    }
+    :root[data-theme="dark"] {
+        color-scheme: dark;
+    }
 
-  /* customize default outline */
-  * {
-    outline-color: var(--border-brand);
-  }
-  :focus-visible, select:focus {
-    outline-color: inherit;
-    outline-width: 2px;
-    outline-style: solid;
-    outline-offset: 1px;
-  }
+    /* customize default outline */
+    * {
+        outline-color: var(--border-brand);
+    }
+    :focus-visible, select:focus {
+        outline-color: inherit;
+        outline-width: 2px;
+        outline-style: solid;
+        outline-offset: 1px;
+    }
 }
 
 /* Animations */
 @theme {
-  --animate-spin-slow: spin 3s linear infinite;
-  --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
+    --animate-spin-slow: spin 3s linear infinite;
+    --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
 
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 }

@@ -3,5 +3,12 @@
         "*.css": "tailwindcss"
     },
     "tailwindCSS.classFunctions": ["tv"],
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "cSpell.words": [
+        "cleansimple"
+    ],
+    "editor.defaultFormatter": "dprint.dprint",
+    "workbench.editorAssociations": {
+        "*.svg": "default"
+    }
 }

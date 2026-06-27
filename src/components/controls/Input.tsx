@@ -1,5 +1,8 @@
-import { type JSX, splitProps, type Component } from "solid-js";
-import { tv, type VariantProps } from "tailwind-variants/lite";
+import type { Component, JSX } from 'solid-js';
+import type { VariantProps } from 'tailwind-variants/lite';
+
+import { splitProps } from 'solid-js';
+import { tv } from 'tailwind-variants/lite';
 
 const variant = tv({
     base: `
@@ -12,26 +15,24 @@ const variant = tv({
     `,
     variants: {
         size: {
-            sm: "text-sm px-2 py-0.5",
-            md: "text-base px-2 py-0.75",
-            lg: "text-lg px-2 py-1",
-        }
+            sm: 'text-sm px-2 py-0.5',
+            md: 'text-base px-2 py-0.75',
+            lg: 'text-lg px-2 py-1',
+        },
     },
     defaultVariants: {
-        size: "md"
-    }
+        size: 'md',
+    },
 });
 
 type InputVariants = VariantProps<typeof variant>;
 type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & InputVariants;
 
 const Input: Component<InputProps> = (props) => {
-    const [variantProps, rest] = splitProps(props, ["class", "size"]);
+    const [variantProps, rest] = splitProps(props, ['class', 'size']);
 
-    return (
-        <input class={variant(variantProps)} {...rest} />
-    );
-}
+    return <input class={variant(variantProps)} {...rest} />;
+};
 
 export { variant };
 export default Input;

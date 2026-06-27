@@ -1,23 +1,26 @@
-import type { RouteDefinition } from "@solidjs/router";
-import Home from "./pages/home.tsx";
-import Layout from "./components/Layout.tsx";
-import UIPreview from "./pages/ui-preview.tsx";
+import type { RouteDefinition } from '@solidjs/router';
+
+import Layout from './components/Layout.tsx';
+import Home from './pages/home.tsx';
+import UIPreview from './pages/ui-preview.tsx';
 
 export const routes: RouteDefinition[] = [
     {
-        path: "/",
+        path: '/',
         component: Layout,
         children: [
             {
-                path: "/:flowId?",
+                path: '/:flowId?',
                 component: Home,
             },
-            ...(import.meta.env.DEV
-                ? [{
-                    path: "/ui-preview",
-                    component: UIPreview
-                }] : []
-            )
+            ...(
+                import.meta.env.DEV
+                    ? [{
+                        path: '/ui-preview',
+                        component: UIPreview,
+                    }]
+                    : []
+            ),
         ],
     },
-]
+];

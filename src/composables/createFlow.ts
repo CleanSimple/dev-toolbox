@@ -1,12 +1,12 @@
-import type { DataFormatId, DataRef } from "@/data-formats";
-import type { Flow } from "@/flows";
-import { getParsers, Parsers } from "@/parsers";
-import { createSignal, createMemo, createEffect, batch, createDeferred } from "solid-js";
-import { createPipeline } from "./createPipeline";
-import { parse, releaseData } from "@/utils/flow-helpers";
-import { createDebounced } from "./createDebounced";
-import { createDisposable } from "./createDisposable";
+import type { DataFormatId, DataRef } from '@/data-formats';
+import type { Flow } from '@/flows';
 
+import { getParsers, Parsers } from '@/parsers';
+import { parse, releaseData } from '@/utils/flow-helpers';
+import { batch, createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
+import { createDebounced } from './createDebounced';
+import { createDisposable } from './createDisposable';
+import { createPipeline } from './createPipeline';
 
 export function createFlow(flow: Flow) {
     const [dataFormatId, _setDataFormatId] = createSignal(flow.dataFormatId);
@@ -16,8 +16,9 @@ export function createFlow(flow: Flow) {
     const [parserExample, setParserExample] = createSignal<string | null>(null);
     const [_rawInput, setRawInput] = createSignal<string | null>(null);
     const [input, setInput] = createDisposable<DataRef>((output) => {
-        if (output.scope === "worker")
-            releaseData(output).catch((error) => console.error("failed to release worker data", error));
+        if (output.scope === 'local') return;
+
+        releaseData(output).catch((error) => console.error('failed to release worker data', error));
     });
     const [inputError, setInputError] = createSignal<string | null>(null);
     const [pipelines, setPipelines] = createSignal<ReturnType<typeof createPipeline>[]>([]);
@@ -28,12 +29,12 @@ export function createFlow(flow: Flow) {
 
     const availableParsers = createMemo(() => {
         return new Map(
-            getParsers(dataFormatId()).map((id) => [id, Parsers[id].parser] as const)
+            getParsers(dataFormatId()).map((id) => [id, Parsers[id].parser] as const),
         );
     });
 
     setPipelines(flow.pipelines.map(
-        pipeline => createPipeline(flow.dataFormatId, input, pipeline)
+        pipeline => createPipeline(flow.dataFormatId, input, pipeline),
     ));
 
     createEffect(() => {
@@ -47,9 +48,11 @@ export function createFlow(flow: Flow) {
             setParserExample(parser.example ?? null);
         }
         else {
-            setParserError("The selected parser does not exit or is not compatible with the input data format");
+            setParserError(
+                'The selected parser does not exit or is not compatible with the input data format',
+            );
         }
-    })
+    });
 
     createEffect(async () => {
         if (parserError()) {
@@ -73,7 +76,7 @@ export function createFlow(flow: Flow) {
         } catch (error) {
             setInputError(error instanceof Error ? error.message : new String(error) as string);
             setInput(null);
-            console.info("parse error", error);
+            console.info('parse error', error);
         }
         finally {
             setIsParsing(false);
@@ -87,15 +90,18 @@ export function createFlow(flow: Flow) {
         }
         batch(() => {
             _setDataFormatId(dataFormatId);
-            setParserId(Array.from(availableParsers().keys()).at(0) ?? "text");
-        })
+            setParserId(Array.from(availableParsers().keys()).at(0) ?? 'text');
+        });
     };
 
     const deletePipeline = (pipelineIndex: number) => {
         setPipelines(pipelines => pipelines.toSpliced(pipelineIndex, 1));
     };
     const addPipeline = () => {
-        const pipeline = createPipeline(dataFormatId(), input, { name: "New Pipeline", operations: [] });
+        const pipeline = createPipeline(dataFormatId(), input, {
+            name: 'New Pipeline',
+            operations: [],
+        });
         setPipelines(pipelines => [...pipelines, pipeline]);
     };
 

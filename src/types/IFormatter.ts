@@ -1,6 +1,6 @@
-import type { IDataFormat } from "./IDataFormat";
+import type { IDataFormat } from './IDataFormat';
 
-export interface IFormatter<T extends IDataFormat<any>> {
+export interface IFormatter<T extends IDataFormat<unknown>> {
     name: string;
-    format(value: T): string;
+    format: (value: T) => string;
 }

@@ -1,13 +1,14 @@
-import { For, type Component } from "solid-js";
 import type { Flow } from '@/flows';
-import { ArrowRight } from "lucide-solid";
-import Card from "./controls/Card";
-import Chip from "./controls/Chip";
-import { Operations } from "@/operations";
-import { Formatters } from "@/formatters";
-import { DataFormats } from "@/data-formats";
-import { Parsers } from "@/parsers";
+import type { Component } from 'solid-js';
 
+import { DataFormats } from '@/data-formats';
+import { Formatters } from '@/formatters';
+import { Operations } from '@/operations';
+import { Parsers } from '@/parsers';
+import { ArrowRight } from 'lucide-solid';
+import { For } from 'solid-js';
+import Card from './controls/Card';
+import Chip from './controls/Chip';
 
 interface FlowInfoProps {
     flow: Flow;
@@ -17,16 +18,19 @@ interface FlowInfoProps {
 const FlowInfo: Component<FlowInfoProps> = (props) => {
     return (
         <Card
-            class="flex flex-col gap-3 hover:border-brand/50 transition-colors cursor-pointer group"
+            class='flex flex-col gap-3 hover:border-brand/50 transition-colors cursor-pointer group'
             onClick={props.onClick}
         >
-            <h3 class="text-lg font-bold text-head group-hover:text-brand transition-colors">{props.flow.name}</h3>
+            <h3 class='text-lg font-bold text-head group-hover:text-brand transition-colors'>
+                {props.flow.name}
+            </h3>
             <For each={props.flow.pipelines}>
                 {(pipeline) => (
                     <Pipeline
                         dataFormatId={props.flow.dataFormatId}
                         parserId={props.flow.parserId}
-                        pipeline={pipeline} />
+                        pipeline={pipeline}
+                    />
                 )}
             </For>
         </Card>
@@ -34,9 +38,9 @@ const FlowInfo: Component<FlowInfoProps> = (props) => {
 };
 
 interface PipelineInfo {
-    dataFormatId: Flow["dataFormatId"];
-    parserId: Flow["parserId"];
-    pipeline: Flow["pipelines"][number]
+    dataFormatId: Flow['dataFormatId'];
+    parserId: Flow['parserId'];
+    pipeline: Flow['pipelines'][number];
 }
 
 const Pipeline: Component<PipelineInfo> = (props) => {
@@ -49,34 +53,36 @@ const Pipeline: Component<PipelineInfo> = (props) => {
             const operationName = operation.operation.name;
             const outputFormat = DataFormats[operation.outDataFormatId].name;
             const formatterName = Formatters[op.formatterId].formatter.name;
-            return { operationName, outputFormat, formatterName }
-        }
+            return { operationName, outputFormat, formatterName };
+        },
     );
 
     return (
-        <div class="flex flex-col gap-3 p-3 border border-subtle rounded-md bg-subtle/10">
-            <span class="text-xs font-bold">{props.pipeline.name} Pipeline</span>
-            <div class="flex flex-wrap items-center gap-2 text-sm">
-                <Chip style="outlined" color="neutral">
-                    Input: {inputFormat} {parserName !== "Default" ? ` as ${parserName}` : null}
+        <div class='flex flex-col gap-3 p-3 border border-subtle rounded-md bg-subtle/10'>
+            <span class='text-xs font-bold'>{props.pipeline.name} Pipeline</span>
+            <div class='flex flex-wrap items-center gap-2 text-sm'>
+                <Chip style='outlined' color='neutral'>
+                    Input: {inputFormat} {parserName !== 'Default' ? ` as ${parserName}` : null}
                 </Chip>
-                <ArrowRight class="h-4 w-4 text-subtle" />
+                <ArrowRight class='h-4 w-4 text-subtle' />
                 <For each={operations}>
                     {(op, index) => (
                         <>
-                            <Chip style="outlined" color="neutral">
-                                {op.operationName}: {op.outputFormat} {op.formatterName !== op.outputFormat ? ` as ${op.formatterName}` : null}
+                            <Chip style='outlined' color='neutral'>
+                                {op.operationName}: {op.outputFormat}{' '}
+                                {op.formatterName !== op.outputFormat
+                                    ? ` as ${op.formatterName}`
+                                    : null}
                             </Chip>
                             {index() !== props.pipeline.operations.length - 1
-                                ? <ArrowRight class="h-4 w-4 text-subtle" />
-                                : null
-                            }
+                                ? <ArrowRight class='h-4 w-4 text-subtle' />
+                                : null}
                         </>
                     )}
                 </For>
             </div>
         </div>
     );
-}
+};
 
 export default FlowInfo;

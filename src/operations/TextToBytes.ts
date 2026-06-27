@@ -1,11 +1,12 @@
-import { Bytes, Text } from "@/data-formats"
-import type { IOperation } from "@/types"
+import type { IOperation } from '@/types';
+
+import { Bytes, Text } from '@/data-formats';
 
 export class TextToBytes implements IOperation<Text, Bytes> {
-    readonly name = 'Text to Bytes';
-    readonly type = 'convert';
+    public readonly name = 'Text to Bytes';
+    public readonly type = 'convert';
 
-    handler(input: Text): Bytes {
+    public handler(input: Text): Bytes {
         return input.toBytes();
     }
-};
+}

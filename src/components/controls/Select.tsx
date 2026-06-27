@@ -1,5 +1,8 @@
-import { type JSX, splitProps, type Component } from "solid-js";
-import { tv, type VariantProps } from "tailwind-variants/lite";
+import type { Component, JSX } from 'solid-js';
+import type { VariantProps } from 'tailwind-variants/lite';
+
+import { splitProps } from 'solid-js';
+import { tv } from 'tailwind-variants/lite';
 
 const variant = tv({
     base: `
@@ -11,27 +14,27 @@ const variant = tv({
     `,
     variants: {
         size: {
-            sm: "text-sm px-2 py-0.5",
-            md: "text-base px-2 py-0.75",
-            lg: "text-lg px-2 py-1",
-        }
+            sm: 'text-sm px-2 py-0.5',
+            md: 'text-base px-2 py-0.75',
+            lg: 'text-lg px-2 py-1',
+        },
     },
     defaultVariants: {
-        size: "md"
-    }
+        size: 'md',
+    },
 });
 
 type SelectVariants = VariantProps<typeof variant>;
 type SelectProps = JSX.SelectHTMLAttributes<HTMLSelectElement> & SelectVariants;
 
 const Select: Component<SelectProps> = (props) => {
-    const [variantProps, parentProps, rest] = splitProps(props, ["class", "size"], ["children"]);
+    const [variantProps, parentProps, rest] = splitProps(props, ['class', 'size'], ['children']);
 
     return (
         <select class={variant(variantProps)} {...rest}>
             {parentProps.children}
         </select>
     );
-}
+};
 
 export default Select;

@@ -1,4 +1,4 @@
-import { createReaction, createSignal } from "solid-js";
+import { createReaction, createSignal } from 'solid-js';
 
 export function createLazyAsyncComputed<T>(fn: () => Promise<T>) {
     const [value, setValue] = createSignal<T>();
@@ -13,12 +13,12 @@ export function createLazyAsyncComputed<T>(fn: () => Promise<T>) {
         catch (error) {
             console.error(error);
         }
-    }
+    };
 
     return () => {
         if (dirty()) {
             setDirty(false);
-            track(compute);
+            track(() => void compute());
         }
 
         return value();

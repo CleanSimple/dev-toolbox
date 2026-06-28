@@ -1,6 +1,6 @@
 import type { DataFormat, WorkerData } from '@/data-formats';
 import type { IFormatter, IOperation } from '@/types';
-import type { ProcessingMessage, ResultMessage } from '@/types/messages';
+import type { Message, ProcessingMessage, ResultMessage } from '@/types/messages';
 
 import { Formatters } from '@/formatters';
 import { Operations } from '@/operations';
@@ -22,7 +22,6 @@ function getData(data: WorkerData): DataFormat {
 }
 
 function releaseData(data: WorkerData) {
-    console.info('releasing', data);
     DataStore.delete(data.instanceId);
 }
 
@@ -32,7 +31,6 @@ function handleMessage(message: ProcessingMessage): ResultMessage {
             case 'parse': {
                 const parser = Parsers[message.parserId].parser;
                 return {
-                    id: message.id,
                     type: 'parse',
                     data: storeData(parser.parse(message.data)),
                 };
@@ -43,7 +41,6 @@ function handleMessage(message: ProcessingMessage): ResultMessage {
                     DataFormat
                 >;
                 return {
-                    id: message.id,
                     type: 'runOperation',
                     data: storeData(operation.handler(getData(message.data))),
                 };
@@ -53,27 +50,25 @@ function handleMessage(message: ProcessingMessage): ResultMessage {
                     DataFormat
                 >;
                 return {
-                    id: message.id,
                     type: 'format',
                     data: formatter.format(getData(message.data)),
                 };
             }
             case 'releaseValue': {
                 releaseData(message.data);
-                return { id: message.id, type: 'success' };
+                return { type: 'success' };
             }
         }
     }
     catch (error) {
         return {
-            id: message.id,
             type: 'error',
             error: serializeError(error),
         };
     }
 }
 
-self.addEventListener('message', (message: MessageEvent<ProcessingMessage>) => {
-    const result = handleMessage(message.data);
-    self.postMessage(result);
+self.addEventListener('message', (message: MessageEvent<Message<ProcessingMessage>>) => {
+    const result = handleMessage(message.data.payload);
+    self.postMessage({ id: message.data.id, payload: result } satisfies Message<ResultMessage>);
 });

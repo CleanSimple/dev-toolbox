@@ -4,12 +4,10 @@ import type { OperationId } from '@/operations';
 import type { ParserId } from '@/parsers';
 import type { IFormatter, IOperation } from '@/types';
 import type {
-    ErrorResultMessage,
-    FormatResultMessage,
-    ParseResultMessage,
+    InferMessageResult,
+    Message,
     ProcessingMessage,
-    RunOperationResultMessage,
-    SuccessResultMessage,
+    ResultMessage,
 } from '@/types/messages';
 
 import { Formatters } from '@/formatters';
@@ -31,8 +29,27 @@ const worker = new Worker(
     { type: 'module' },
 );
 
-function postMessage(message: ProcessingMessage) {
-    worker.postMessage(message);
+function sendMessage<T extends ProcessingMessage>(message: T) {
+    return new Promise<InferMessageResult<T>>((resolve, reject) => {
+        const messageId = ++lastId;
+        const handler = (result: MessageEvent<Message<ResultMessage>>) => {
+            if (result.data.id !== messageId) {
+                return;
+            }
+
+            worker.removeEventListener('message', handler);
+
+            if (result.data.payload.type === 'error') {
+                reject(deserializeError(result.data.payload.error));
+            }
+            else {
+                resolve(result.data.payload as InferMessageResult<T>);
+            }
+        };
+
+        worker.addEventListener('message', handler);
+        worker.postMessage({ id: messageId, payload: message } satisfies Message<T>);
+    });
 }
 
 export async function parse(parserId: ParserId, input: string) {
@@ -50,30 +67,8 @@ function parseInForeground(parserId: ParserId, input: string): LocalData {
 }
 
 async function parseInBackground(parserId: ParserId, input: string) {
-    return new Promise<WorkerData>((resolve, reject) => {
-        const messageId = ++lastId;
-        postMessage({
-            id: messageId,
-            type: 'parse',
-            parserId,
-            data: input,
-        });
-
-        const handler = (message: MessageEvent<ParseResultMessage | ErrorResultMessage>) => {
-            if (message.data.id !== messageId) {
-                return;
-            }
-
-            worker.removeEventListener('message', handler);
-            if (message.data.type === 'error') {
-                reject(deserializeError(message.data.error));
-            }
-            else {
-                resolve(message.data.data);
-            }
-        };
-        worker.addEventListener('message', handler);
-    });
+    const result = await sendMessage({ type: 'parse', parserId, data: input });
+    return result.data;
 }
 
 export async function runOperation(operationId: OperationId, input: DataRef) {
@@ -92,30 +87,8 @@ function runOperationInForeground(operationId: OperationId, input: LocalData): L
 }
 
 async function runOperationInBackground(operationId: OperationId, input: WorkerData) {
-    return new Promise<WorkerData>((resolve, reject) => {
-        const messageId = ++lastId;
-        postMessage({
-            id: messageId,
-            type: 'runOperation',
-            operationId,
-            data: input,
-        });
-
-        const handler = (message: MessageEvent<RunOperationResultMessage | ErrorResultMessage>) => {
-            if (message.data.id !== messageId) {
-                return;
-            }
-
-            worker.removeEventListener('message', handler);
-            if (message.data.type === 'error') {
-                reject(deserializeError(message.data.error));
-            }
-            else {
-                resolve(message.data.data);
-            }
-        };
-        worker.addEventListener('message', handler);
-    });
+    const result = await sendMessage({ type: 'runOperation', operationId, data: input });
+    return result.data;
 }
 
 export async function format(formatterId: FormatterId, input: DataRef) {
@@ -132,55 +105,11 @@ function formatInForeground(formatterId: FormatterId, input: LocalData) {
     return formatter.format(input.instance);
 }
 
-function formatInBackground(formatterId: FormatterId, input: WorkerData) {
-    return new Promise<string>((resolve, reject) => {
-        const messageId = ++lastId;
-        postMessage({
-            id: messageId,
-            type: 'format',
-            formatterId,
-            data: input,
-        });
-
-        const handler = (message: MessageEvent<FormatResultMessage | ErrorResultMessage>) => {
-            if (message.data.id !== messageId) {
-                return;
-            }
-
-            worker.removeEventListener('message', handler);
-            if (message.data.type === 'error') {
-                reject(deserializeError(message.data.error));
-            }
-            else {
-                resolve(message.data.data);
-            }
-        };
-        worker.addEventListener('message', handler);
-    });
+async function formatInBackground(formatterId: FormatterId, input: WorkerData) {
+    const result = await sendMessage({ type: 'format', formatterId, data: input });
+    return result.data;
 }
 
-export function releaseData(data: WorkerData) {
-    return new Promise<void>((resolve, reject) => {
-        const messageId = ++lastId;
-        postMessage({
-            id: messageId,
-            type: 'releaseValue',
-            data,
-        });
-
-        const handler = (message: MessageEvent<SuccessResultMessage | ErrorResultMessage>) => {
-            if (message.data.id !== messageId) {
-                return;
-            }
-
-            worker.removeEventListener('message', handler);
-            if (message.data.type === 'error') {
-                reject(deserializeError(message.data.error));
-            }
-            else {
-                resolve();
-            }
-        };
-        worker.addEventListener('message', handler);
-    });
+export async function releaseData(data: WorkerData) {
+    await sendMessage({ type: 'releaseValue', data });
 }

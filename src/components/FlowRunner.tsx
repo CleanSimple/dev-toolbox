@@ -12,9 +12,9 @@ import { ArrowLeft, ArrowRight, RefreshCcw } from 'lucide-solid';
 import { createSignal, For, onCleanup, onMount, Show } from 'solid-js';
 import Card from './controls/Card';
 import Chip from './controls/Chip';
+import CodeMirror from './controls/CodeMirror';
 import Label from './controls/Label';
 import Select from './controls/Select';
-import TextArea from './controls/TextArea';
 
 interface FlowRunnerProps {
     flow: Flow;
@@ -104,11 +104,11 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
                 </div>
 
                 <div class='flex flex-col gap-2'>
-                    <TextArea
-                        class='w-full min-h-50 font-mono resize-y'
+                    <CodeMirror
+                        class='w-full h-50'
                         placeholder={parserDescription() ?? ''}
                         value=''
-                        onInput={(e) => setInput(e.currentTarget.value)}
+                        onValueChange={(value) => setInput(value)}
                     />
                     <Show when={inputError()}>
                         <span class='text-sm text-danger'>Error: {inputError()}</span>
@@ -193,10 +193,10 @@ const OperationOutput: Component<OperationOutputProps> = (props) => {
                 </Show>
             </div>
 
-            <TextArea
-                class='w-full min-h-50 p-2 font-mono resize-y'
-                readOnly
-                value={props.formattedOutput()?.slice(0, 500) ?? ''}
+            <CodeMirror
+                class='w-full h-50'
+                readonly
+                value={props.formattedOutput() ?? ''}
             />
         </div>
     );

@@ -5,7 +5,8 @@
     "tailwindCSS.classFunctions": ["tv"],
     "typescript.tsdk": "node_modules\\typescript\\lib",
     "cSpell.words": [
-        "cleansimple"
+        "cleansimple",
+        "keymap"
     ],
     "editor.defaultFormatter": "dprint.dprint",
     "workbench.editorAssociations": {

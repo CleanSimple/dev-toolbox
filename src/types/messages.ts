@@ -1,5 +1,6 @@
 import type { WorkerData } from '@/data-formats';
 import type { FormatterId } from '@/formatters';
+import type { OperationId } from '@/operations';
 import type { ParserId } from '@/parsers';
 import type { SerializedError } from '@/utils/serialization';
 
@@ -19,7 +20,7 @@ export interface ParseResultMessage {
 export interface RunOperationMessage {
     id: number;
     type: 'runOperation';
-    operationId: string;
+    operationId: OperationId;
     data: WorkerData;
 }
 

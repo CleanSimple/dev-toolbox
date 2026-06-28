@@ -1,5 +1,5 @@
 import type { DataFormat, WorkerData } from '@/data-formats';
-import type { IFormatter } from '@/types';
+import type { IFormatter, IOperation } from '@/types';
 import type { ProcessingMessage, ResultMessage } from '@/types/messages';
 
 import { Formatters } from '@/formatters';
@@ -38,7 +38,10 @@ function handleMessage(message: ProcessingMessage): ResultMessage {
                 };
             }
             case 'runOperation': {
-                const operation = Operations[message.operationId].operation;
+                const operation = Operations[message.operationId].operation as IOperation<
+                    DataFormat,
+                    DataFormat
+                >;
                 return {
                     id: message.id,
                     type: 'runOperation',

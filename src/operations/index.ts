@@ -50,18 +50,20 @@ export const Operations = {
         outDataFormatId: 'text',
         operation: new Base64Decode(),
     }),
-} as Record<string, OperationRecord<DataFormatId, DataFormatId>>;
+};
 
 export function getOperations(dataFormatId: DataFormatId) {
-    const operations: string[] = [];
+    const operations: OperationId[] = [];
 
     const dataFormatType = DataFormats[dataFormatId].type;
     for (const [id, operation] of Object.entries(Operations)) {
         const operationInDataFormatType = DataFormats[operation.inDataFormatId].type;
         if (isSubclassOf(dataFormatType, operationInDataFormatType)) {
-            operations.push(id);
+            operations.push(id as OperationId);
         }
     }
 
     return operations;
 }
+
+export type OperationId = keyof typeof Operations;

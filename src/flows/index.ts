@@ -1,17 +1,17 @@
-import type { DataFormats } from '@/data-formats';
-import type { Formatters } from '@/formatters';
-import type { Operations } from '@/operations';
-import type { Parsers } from '@/parsers';
+import type { DataFormatId } from '@/data-formats';
+import type { FormatterId } from '@/formatters';
+import type { OperationId } from '@/operations';
+import type { ParserId } from '@/parsers';
 
 export interface Flow {
     name: string;
-    dataFormatId: keyof typeof DataFormats;
-    parserId: keyof typeof Parsers;
+    dataFormatId: DataFormatId;
+    parserId: ParserId;
     pipelines: {
         name: string;
         operations: {
-            operationId: keyof typeof Operations;
-            formatterId: keyof typeof Formatters;
+            operationId: OperationId;
+            formatterId: FormatterId;
         }[];
     }[];
 }

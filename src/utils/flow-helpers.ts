@@ -1,7 +1,8 @@
 import type { DataFormat, DataRef, LocalData, WorkerData } from '@/data-formats';
 import type { FormatterId } from '@/formatters';
+import type { OperationId } from '@/operations';
 import type { ParserId } from '@/parsers';
-import type { IFormatter } from '@/types';
+import type { IFormatter, IOperation } from '@/types';
 import type {
     ErrorResultMessage,
     FormatResultMessage,
@@ -75,7 +76,7 @@ async function parseInBackground(parserId: ParserId, input: string) {
     });
 }
 
-export async function runOperation(operationId: string, input: DataRef) {
+export async function runOperation(operationId: OperationId, input: DataRef) {
     if (input.scope === 'local') {
         return runOperationInForeground(operationId, input);
     }
@@ -84,13 +85,13 @@ export async function runOperation(operationId: string, input: DataRef) {
     }
 }
 
-function runOperationInForeground(operationId: string, input: LocalData): LocalData {
-    const operation = Operations[operationId].operation;
+function runOperationInForeground(operationId: OperationId, input: LocalData): LocalData {
+    const operation = Operations[operationId].operation as IOperation<DataFormat, DataFormat>;
     const result = operation.handler(input.instance);
     return { scope: 'local', instance: result };
 }
 
-async function runOperationInBackground(operationId: string, input: WorkerData) {
+async function runOperationInBackground(operationId: OperationId, input: WorkerData) {
     return new Promise<WorkerData>((resolve, reject) => {
         const messageId = ++lastId;
         postMessage({

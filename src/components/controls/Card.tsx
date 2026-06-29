@@ -12,13 +12,9 @@ type CardVariants = VariantProps<typeof variant>;
 type CardProps = JSX.HTMLAttributes<HTMLDivElement> & CardVariants;
 
 const Card: Component<CardProps> = (props) => {
-    const [variantProps, parentProps, rest] = splitProps(props, ['class'], ['children']);
+    const [variantProps, rest] = splitProps(props, ['class']);
 
-    return (
-        <div class={variant(variantProps)} {...rest}>
-            {parentProps.children}
-        </div>
-    );
+    return <div class={variant(variantProps)} {...rest} />;
 };
 
 export default Card;

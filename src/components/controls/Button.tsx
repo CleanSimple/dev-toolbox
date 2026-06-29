@@ -33,17 +33,12 @@ type ButtonVariants = VariantProps<typeof variant>;
 type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> & ButtonVariants;
 
 const Button: Component<ButtonProps> = (props) => {
-    const [variantProps, parentProps, rest] = splitProps(
+    const [variantProps, rest] = splitProps(
         props,
         ['class', 'color', 'size'],
-        ['children'],
     );
 
-    return (
-        <button class={variant(variantProps)} {...rest}>
-            {parentProps.children}
-        </button>
-    );
+    return <button class={variant(variantProps)} {...rest} />;
 };
 
 export default Button;

@@ -65,17 +65,9 @@ type ChipVariants = VariantProps<typeof variant>;
 type ChipProps = JSX.HTMLAttributes<HTMLDivElement> & ChipVariants;
 
 const Chip: Component<ChipProps> = (props) => {
-    const [variantProps, parentProps, rest] = splitProps(
-        props,
-        ['class', 'style', 'color', 'size'],
-        ['children'],
-    );
+    const [variantProps, rest] = splitProps(props, ['class', 'style', 'color', 'size']);
 
-    return (
-        <div class={variant(variantProps)} {...rest}>
-            {parentProps.children}
-        </div>
-    );
+    return <div class={variant(variantProps)} {...rest} />;
 };
 
 export default Chip;

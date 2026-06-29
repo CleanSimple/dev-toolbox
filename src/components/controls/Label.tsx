@@ -22,13 +22,9 @@ type LabelVariants = VariantProps<typeof variant>;
 type LabelProps = JSX.LabelHTMLAttributes<HTMLLabelElement> & LabelVariants;
 
 const Label: Component<LabelProps> = (props) => {
-    const [variantProps, parentProps, rest] = splitProps(props, ['class', 'size'], ['children']);
+    const [variantProps, rest] = splitProps(props, ['class', 'size']);
 
-    return (
-        <label class={variant(variantProps)} {...rest}>
-            {parentProps.children}
-        </label>
-    );
+    return <label class={variant(variantProps)} {...rest} />;
 };
 
 export default Label;

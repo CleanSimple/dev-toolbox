@@ -28,13 +28,9 @@ type SelectVariants = VariantProps<typeof variant>;
 type SelectProps = JSX.SelectHTMLAttributes<HTMLSelectElement> & SelectVariants;
 
 const Select: Component<SelectProps> = (props) => {
-    const [variantProps, parentProps, rest] = splitProps(props, ['class', 'size'], ['children']);
+    const [variantProps, rest] = splitProps(props, ['class', 'size']);
 
-    return (
-        <select class={variant(variantProps)} {...rest}>
-            {parentProps.children}
-        </select>
-    );
+    return <select class={variant(variantProps)} {...rest} />;
 };
 
 export default Select;

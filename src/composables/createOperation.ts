@@ -1,11 +1,12 @@
 import type { DataFormatId, DataRef } from '@/data-formats';
 import type { Flow } from '@/flows';
+import type { OperationType } from '@/types';
 import type { Accessor } from 'solid-js';
 
 import { Formatters, getFormatters } from '@/formatters';
 import { getOperations, Operations } from '@/operations';
 import { format, releaseData, runOperation } from '@/utils/flow-helpers';
-import { createEffect, createMemo, createSignal } from 'solid-js';
+import { createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
 import { createDisposable } from './createDisposable';
 import { createLazyAsyncComputed } from './createLazyAsyncComputed';
 
@@ -17,7 +18,7 @@ export function createOperation(
     const [operationError, setOperationError] = createSignal<string | null>(null);
     const [formatterId, setFormatterId] = createSignal(operation.formatterId);
     const [formatterError, setFormatterError] = createSignal<string | null>(null);
-    const [output, setOutput] = createDisposable<DataRef>((output) => {
+    const [_output, setOutput] = createDisposable<DataRef>((output) => {
         if (output.scope === 'local') return;
 
         releaseData(output).catch((error) => console.error('failed to release worker data', error));
@@ -26,13 +27,15 @@ export function createOperation(
     const [isRunning, setIsRunning] = createSignal(false);
     const [isFormatting, setIsFormatting] = createSignal(false);
 
+    const output = createDeferred(_output);
+
     const operationInst =
         inputDataFormatId && getOperations(inputDataFormatId).includes(operation.operationId)
             ? Operations[operation.operationId]
             : null;
     if (!operationInst) {
         setOperationError(
-            'The selected operation does not exit or not compatible with the input data format',
+            "The selected operation does not exist or is not compatible with the input's data format",
         );
     }
 
@@ -46,7 +49,7 @@ export function createOperation(
     const validatedFormatterId = createMemo(() => {
         if (!availableFormatters.has(formatterId())) {
             setFormatterError(
-                "The selected formatter does not exit or is not compatible with the operation's output data format",
+                "The selected formatter does not exist or is not compatible with the operation output's data format",
             );
             return null;
         }
@@ -67,12 +70,14 @@ export function createOperation(
             return null;
         }
 
+        setOutputError(null);
         setIsFormatting(true);
         try {
             return await format(validatedFormatterIdLocal, outputLocal);
         }
         catch (error) {
-            console.info('formatting error', error);
+            console.error('formatting error', error);
+            setOutputError(error instanceof Error ? error.message : new String(error) as string);
             return null;
         }
         finally {
@@ -98,28 +103,34 @@ export function createOperation(
             const result = await runOperation(operation.operationId, inputLocal);
             setOutput(result);
         } catch (error) {
+            console.error('operation error', error);
             setOutputError(error instanceof Error ? error.message : new String(error) as string);
             setOutput(null);
-            console.info('operation error', error);
         }
         finally {
-            setIsRunning(true);
+            await new Promise((resolve) => requestIdleCallback(resolve));
+            setIsRunning(false);
         }
     });
 
+    const operationInfo: { name: string; type: OperationType | 'unknown' } =
+        operationInst?.operation ?? Operations[operation.operationId]?.operation
+            ?? { name: operation.operationId, type: 'unknown' };
+
     return {
-        name: operationInst?.operation.name ?? operation.operationId,
+        name: operationInfo.name,
+        type: operationInfo.type,
         isInactive: inputDataFormatId === null,
         operationError,
         availableFormatters,
         setFormatterId,
         formatterId,
         formatterError,
+        outputDataFormatId,
         output,
         outputError,
         formattedOutput,
         isFormatting,
-        outputDataFormatId,
         isRunning,
     };
 }

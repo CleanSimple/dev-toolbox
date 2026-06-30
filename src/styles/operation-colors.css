@@ -1,0 +1,61 @@
+@theme {
+    /* Surface Colors */
+    --background-color-encode: var(--surface-encode);
+    --background-color-decode: var(--surface-decode);
+    --background-color-convert: var(--surface-convert);
+    --background-color-format: var(--surface-format);
+
+    /* Text Colors */
+    --text-color-encode: var(--text-encode);
+    --text-color-decode: var(--text-decode);
+    --text-color-convert: var(--text-convert);
+    --text-color-format: var(--text-format);
+
+    /* Border Colors */
+    --border-color-encode: var(--border-encode);
+    --border-color-decode: var(--border-decode);
+    --border-color-convert: var(--border-convert);
+    --border-color-format: var(--border-format);
+}
+
+/* --- Light Theme --- */
+:root[data-theme="light"] {
+    /* Surface Colors */
+    --surface-encode: var(--color-lime-600);
+    --surface-decode: var(--color-teal-600);
+    --surface-convert: var(--color-cyan-600);
+    --surface-format: var(--color-orange-600);
+
+    /* Text Colors */
+    --text-encode: var(--color-lime-600);
+    --text-decode: var(--color-teal-600);
+    --text-convert: var(--color-cyan-600);
+    --text-format: var(--color-orange-600);
+
+    /* Border Colors */
+    --border-encode: var(--color-lime-600);
+    --border-decode: var(--color-teal-600);
+    --border-convert: var(--color-cyan-600);
+    --border-format: var(--color-orange-600);
+}
+
+/* --- Dark Theme --- */
+:root[data-theme="dark"] {
+    /* Surface Colors */
+    --surface-encode: var(--color-lime-500);
+    --surface-decode: var(--color-teal-500);
+    --surface-convert: var(--color-cyan-500);
+    --surface-format: var(--color-orange-500);
+
+    /* Text Colors */
+    --text-encode: var(--color-lime-500);
+    --text-decode: var(--color-teal-500);
+    --text-convert: var(--color-cyan-500);
+    --text-format: var(--color-orange-500);
+
+    /* Border Colors */
+    --border-encode: var(--color-lime-500);
+    --border-decode: var(--color-teal-500);
+    --border-convert: var(--color-cyan-500);
+    --border-format: var(--color-orange-500);
+}

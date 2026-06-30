@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./color-pallet.css";
 @import "./theme.css";
+@import "./operation-colors.css";
 @import "./code-mirror.css";
 
 @layer base {

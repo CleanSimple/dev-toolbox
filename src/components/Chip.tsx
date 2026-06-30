@@ -5,7 +5,7 @@ import { splitProps } from 'solid-js';
 import { tv } from 'tailwind-variants/lite';
 
 const variant = tv({
-    base: 'inline-flex items-center justify-center pointer-none',
+    base: 'inline-flex items-center justify-center pointer-none overflow-clip',
     variants: {
         style: {
             filled: null,

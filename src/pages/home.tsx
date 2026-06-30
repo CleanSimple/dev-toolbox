@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js';
 
-import FlowRunner from '@/components/FlowRunner';
-import FlowSelector from '@/components/FlowSelector';
+import FlowRunner from '@/components/flow/FlowRunner';
+import FlowSelector from '@/components/flow/FlowSelector';
 import { Flows } from '@/flows';
 import { hasKey } from '@cleansimple/utils-js';
 import { useNavigate, useParams } from '@solidjs/router';

@@ -8,7 +8,7 @@ type TextAreaVariants = VariantProps<typeof variant>;
 type TextAreaProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement> & TextAreaVariants;
 
 const TextArea: Component<TextAreaProps> = (props) => {
-    const [variantProps, rest] = splitProps(props, ['class', 'size']);
+    const [variantProps, rest] = splitProps(props, ['class', 'size', 'hasError']);
 
     return <textarea class={variant(variantProps)} {...rest} />;
 };

@@ -12,14 +12,14 @@ export function createFlow(flow: Flow) {
     const [dataFormatId, _setDataFormatId] = createSignal(flow.dataFormatId);
     const [_parserId, setParserId] = createSignal(flow.parserId);
     const [parserError, setParserError] = createSignal<string | null>(null);
-    const [parserDescription, setParserDescription] = createSignal<string | null>(null);
-    const [parserExample, setParserExample] = createSignal<string | null>(null);
     const [_rawInput, setRawInput] = createSignal<string | null>(null);
     const [input, setInput] = createDisposable<DataRef>((output) => {
         if (output.scope === 'local') return;
 
         releaseData(output).catch((error) => console.error('failed to release worker data', error));
     });
+    const [inputPlaceholder, setInputPlaceholder] = createSignal<string | null>(null);
+    const [inputExample, setInputExample] = createSignal<string | null>(null);
     const [inputError, setInputError] = createSignal<string | null>(null);
     const [pipelines, setPipelines] = createSignal<ReturnType<typeof createPipeline>[]>([]);
     const [isParsing, setIsParsing] = createSignal(false);
@@ -38,14 +38,14 @@ export function createFlow(flow: Flow) {
     ));
 
     createEffect(() => {
-        setParserDescription(null);
-        setParserExample(null);
+        setInputPlaceholder(null);
+        setInputExample(null);
         setParserError(null);
 
         const parser = availableParsers().get(parserId());
         if (parser) {
-            setParserDescription(parser.description);
-            setParserExample(parser.example ?? null);
+            setInputPlaceholder(parser.placeholder);
+            setInputExample(parser.example ?? null);
         }
         else {
             setParserError(
@@ -74,9 +74,9 @@ export function createFlow(flow: Flow) {
             const result = await parse(parserId(), rawInputLocal);
             setInput(result);
         } catch (error) {
+            console.error('parse error', error);
             setInputError(error instanceof Error ? error.message : new String(error) as string);
             setInput(null);
-            console.info('parse error', error);
         }
         finally {
             setIsParsing(false);
@@ -84,10 +84,13 @@ export function createFlow(flow: Flow) {
     });
 
     // Cannot edit input data format when there are existing operations
+    const canSetDataFormatId = createMemo(() =>
+        pipelines().every(pipeline => pipeline.operations().length === 0)
+    );
+
     const setDataFormatId = (dataFormatId: DataFormatId) => {
-        if (pipelines().some(pipeline => pipeline.operations().length > 0)) {
-            return;
-        }
+        if (!canSetDataFormatId()) return;
+
         batch(() => {
             _setDataFormatId(dataFormatId);
             setParserId(Array.from(availableParsers().keys()).at(0) ?? 'text');
@@ -108,13 +111,14 @@ export function createFlow(flow: Flow) {
     return {
         setInput: setRawInput,
         dataFormatId,
+        canSetDataFormatId,
         setDataFormatId,
         availableParsers,
         parserId,
         setParserId,
         parserError,
-        parserDescription,
-        parserExample,
+        inputPlaceholder,
+        inputExample,
         inputError,
         pipelines,
         deletePipeline,

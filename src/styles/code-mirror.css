@@ -5,3 +5,7 @@
 .cm-focused {
     @apply outline-2! outline-brand! outline-offset-1!;
 }
+
+.cm-editor.has-error {
+    @apply border-danger!;
+}

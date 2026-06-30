@@ -1,4 +1,5 @@
 import type { Flow } from '@/flows';
+import type { OperationType } from '@/types';
 import type { Component } from 'solid-js';
 
 import { DataFormats } from '@/data-formats';
@@ -7,8 +8,8 @@ import { Operations } from '@/operations';
 import { Parsers } from '@/parsers';
 import { ArrowRight } from 'lucide-solid';
 import { For } from 'solid-js';
-import Card from './controls/Card';
-import Chip from './controls/Chip';
+import Card from '../Card';
+import Chip from '../Chip';
 
 interface FlowInfoProps {
     flow: Flow;
@@ -44,33 +45,51 @@ interface PipelineInfo {
 }
 
 const Pipeline: Component<PipelineInfo> = (props) => {
-    const inputFormat = DataFormats[props.dataFormatId].name;
-    const parserName = Parsers[props.parserId].parser.name;
+    const inputFormat = DataFormats[props.dataFormatId]?.name ?? props.dataFormatId;
+    const parserName = Parsers[props.parserId]?.parser.name ?? props.parserId;
 
     const operations = props.pipeline.operations.map(
         op => {
             const operation = Operations[op.operationId];
-            const operationName = operation.operation.name;
-            const outputFormat = DataFormats[operation.outDataFormatId].name;
-            const formatterName = Formatters[op.formatterId].formatter.name;
-            return { operationName, outputFormat, formatterName };
+            const operationName = operation?.operation.name ?? op.operationId;
+            const operationType = operation?.operation.type ?? 'unknown';
+            const outputFormat = operation
+                ? DataFormats[operation.outDataFormatId].name
+                : 'Unknown';
+            const formatterName = Formatters[op.formatterId]?.formatter.name ?? op.formatterId;
+            return { operationName, operationType, outputFormat, formatterName };
         },
     );
+
+    const operationStyle = (operationType: OperationType | 'unknown') => {
+        switch (operationType) {
+            case 'unknown':
+                return 'bg-main! text-body';
+            case 'encode':
+                return 'bg-encode! text-on-brand';
+            case 'decode':
+                return 'bg-decode! text-on-brand';
+            case 'convert':
+                return 'bg-convert! text-on-brand';
+            case 'format':
+                return 'bg-format! text-on-brand';
+        }
+    };
 
     return (
         <div class='flex flex-col gap-3 p-3 border border-subtle rounded-md bg-subtle/10'>
             <span class='text-xs font-bold'>{props.pipeline.name} Pipeline</span>
             <div class='flex flex-wrap items-center gap-2 text-sm'>
-                <Chip style='outlined' color='neutral'>
+                <Chip style='filled' color='neutral'>
                     Input: {inputFormat} {parserName !== 'Default' ? ` as ${parserName}` : null}
                 </Chip>
                 <ArrowRight class='h-4 w-4 text-subtle' />
                 <For each={operations}>
                     {(op, index) => (
                         <>
-                            <Chip style='outlined' color='neutral'>
-                                {op.operationName}: {op.outputFormat}{' '}
-                                {op.formatterName !== op.outputFormat
+                            <Chip style='filled' class={operationStyle(op.operationType)}>
+                                {op.operationName}: {op.outputFormat} {op.outputFormat !== 'Unknown'
+                                        && op.formatterName !== op.outputFormat
                                     ? ` as ${op.formatterName}`
                                     : null}
                             </Chip>

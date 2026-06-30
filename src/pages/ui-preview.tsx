@@ -1,11 +1,11 @@
 import type { Component } from 'solid-js';
 
-import Button from '@/components/controls/Button';
-import Card from '@/components/controls/Card';
-import Chip from '@/components/controls/Chip';
-import Input from '@/components/controls/Input';
-import Label from '@/components/controls/Label';
-import Select from '@/components/controls/Select';
+import Button from '@/components/Button';
+import Card from '@/components/Card';
+import Chip from '@/components/Chip';
+import Input from '@/components/Input';
+import Label from '@/components/Label';
+import Select from '@/components/Select';
 import { For } from 'solid-js';
 
 const UIPreview: Component = () => {

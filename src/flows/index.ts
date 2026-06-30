@@ -49,6 +49,34 @@ export const Flows: Record<string, Flow> = {
             },
         ],
     },
+    'bad-flow': {
+        name: 'Bad Flow',
+        dataFormatId: 'text',
+        parserId: 'hex',
+        pipelines: [
+            {
+                name: 'Broken',
+                operations: [
+                    {
+                        operationId: 'text-as-base64',
+                        formatterId: 'text',
+                    },
+                    {
+                        operationId: 'base64-encode-text',
+                        formatterId: 'bytes-hex-spaced-16',
+                    },
+                    {
+                        operationId: 'bytes-to-text',
+                        formatterId: 'text',
+                    },
+                    {
+                        operationId: 'base64-decode',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
     'base64-encode-text': {
         name: 'Base64 Encode',
         dataFormatId: 'text',

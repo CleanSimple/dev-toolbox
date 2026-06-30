@@ -2,7 +2,7 @@ import type { Component, ParentProps } from 'solid-js';
 
 import { Bookmark, Info, Wifi, X } from 'lucide-solid';
 import { createSignal, Show } from 'solid-js';
-import Button from '../controls/Button';
+import Button from '../Button';
 
 interface OfflinePromptProps {
     onClose: () => void;

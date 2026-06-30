@@ -1,6 +1,10 @@
 @theme {
     /* Global Colors */
     --color-brand: var(--color-brand);
+    --color-info: var(--color-info);
+    --color-success: var(--color-success);
+    --color-warning: var(--color-warning);
+    --color-danger: var(--color-danger);
 
     /* Surface Colors */
     --background-color-base: var(--surface-base);
@@ -66,6 +70,10 @@
 :root[data-theme="light"] {
     /* Global Colors */
     --color-brand: var(--color-primary-600);
+    --color-info: var(--color-info-600);
+    --color-success: var(--color-success-600);
+    --color-warning: var(--color-warning-600);
+    --color-danger: var(--color-danger-600);
 
     /* Surface Colors */
     --surface-base: var(--color-neutral-050);
@@ -87,10 +95,10 @@
     --surface-accent-strong: var(--color-secondary-900);
     --surface-accent-hover: var(--color-secondary-800);
 
-    --surface-info: var(--color-info-200);
-    --surface-success: var(--color-success-200);
-    --surface-warning: var(--color-warning-200);
-    --surface-danger: var(--color-danger-200);
+    --surface-info: var(--color-info-300);
+    --surface-success: var(--color-success-300);
+    --surface-warning: var(--color-warning-300);
+    --surface-danger: var(--color-danger-300);
 
     /* Text Colors */
     --text-head: var(--color-neutral-950);
@@ -131,6 +139,10 @@
 :root[data-theme="dark"] {
     /* Global Colors */
     --color-brand: var(--color-primary-600);
+    --color-info: var(--color-info-600);
+    --color-success: var(--color-success-600);
+    --color-warning: var(--color-warning-600);
+    --color-danger: var(--color-danger-600);
 
     /* Surface Colors */
     --surface-base: var(--color-neutral-950);

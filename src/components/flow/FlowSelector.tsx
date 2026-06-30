@@ -3,7 +3,7 @@ import type { Component } from 'solid-js';
 import { Flows } from '@/flows';
 import { Frown, Search } from 'lucide-solid';
 import { createSignal, For } from 'solid-js';
-import Input from './controls/Input';
+import Input from '../Input';
 import FlowInfo from './FlowInfo';
 
 interface FlowSelectorProps {

@@ -4,7 +4,7 @@ import { Bytes } from '@/data-formats';
 
 export class BytesHexParser implements IParser<Bytes> {
     public readonly name = 'Hex';
-    public readonly description = 'Enter bytes as hexadecimal values';
+    public readonly placeholder = 'Enter bytes as hexadecimal values';
     public readonly example = "'0x61 0x62 0x63', '61 62 63', '616263'";
 
     public parse(text: string): Bytes {

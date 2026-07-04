@@ -2,7 +2,7 @@ import type { OperationType } from '@/types';
 
 import { tv } from 'tailwind-variants/lite';
 
-export const operationStyleBase = tv({
+export const operationBaseStyles = tv({
     base: null,
     variants: {
         type: {
@@ -28,27 +28,27 @@ export const operationStyleBase = tv({
         {
             type: 'transform',
             inactive: false,
-            class: 'bg-cyan-600 dark:bg-cyan-600 text-on-brand',
+            class: 'bg-cyan-600 dark:bg-cyan-600 text-inverse',
         },
         {
             type: 'parse',
             inactive: false,
-            class: 'bg-amber-600 dark:bg-amber-600 text-on-brand',
+            class: 'bg-amber-600 dark:bg-amber-600 text-inverse',
         },
         {
             type: 'format',
             inactive: false,
-            class: 'bg-yellow-600 dark:bg-yellow-600text-on-brand',
+            class: 'bg-yellow-600 dark:bg-yellow-600 text-inverse',
         },
         {
             type: 'encode',
             inactive: false,
-            class: 'bg-lime-600 dark:bg-lime-600 text-on-brand',
+            class: 'bg-lime-600 dark:bg-lime-600 text-inverse',
         },
         {
             type: 'decode',
             inactive: false,
-            class: 'bg-teal-600 dark:bg-teal-600 text-on-brand',
+            class: 'bg-teal-600 dark:bg-teal-600 text-inverse',
         },
         {
             hasError: true,

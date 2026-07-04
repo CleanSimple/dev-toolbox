@@ -3,26 +3,20 @@ import type { VariantProps } from 'tailwind-variants/lite';
 
 import { Loader } from '@/components/Loader';
 import { Show, splitProps } from 'solid-js';
-import { tv } from 'tailwind-variants/lite';
-import { operationStyleBase } from './operationStyleBase';
+import { operationTabItemStyles } from './OperationTabItem.styles';
 
-const variant = tv({
-    extend: operationStyleBase,
-    base: 'relative inline-flex items-center justify-center rounded-md px-2 py-1',
-});
-
-type OperationTabItemVariants = VariantProps<typeof variant>;
-type OperationTabItemProps = {
+type OperationTabItemVariantProps = VariantProps<typeof operationTabItemStyles>;
+interface OperationTabItemProps extends OperationTabItemVariantProps {
     operation: ReturnType<typeof createOperation>;
     onClick: () => void;
-} & OperationTabItemVariants;
+}
 
 export function OperationTabItem(props: OperationTabItemProps) {
     const [variantProps] = splitProps(props, ['type', 'selected', 'hasError', 'inactive']);
 
     return (
         <div
-            class={variant(variantProps)}
+            class={operationTabItemStyles(variantProps)}
             onClick={props.onClick}
         >
             <span>{props.operation.name}</span>

@@ -2,13 +2,16 @@ import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { splitProps } from 'solid-js';
-import { variant } from './Input';
+import { inputStyles } from './Input.styles';
 
-type TextAreaVariants = VariantProps<typeof variant>;
-type TextAreaProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement> & TextAreaVariants;
+type TextAreaVariantProps = VariantProps<typeof inputStyles>;
+interface TextAreaProps
+    extends JSX.TextareaHTMLAttributes<HTMLTextAreaElement>, TextAreaVariantProps
+{
+}
 
 export function TextArea(props: TextAreaProps) {
     const [variantProps, rest] = splitProps(props, ['class', 'size', 'hasError']);
 
-    return <textarea class={variant(variantProps)} {...rest} />;
+    return <textarea class={inputStyles(variantProps)} {...rest} />;
 }

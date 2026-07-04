@@ -12,7 +12,9 @@ import {
 } from '@codemirror/view';
 import { createEffect, on, onCleanup, onMount, splitProps } from 'solid-js';
 
-type CodeMirrorProps = JSX.HTMLAttributes<HTMLDivElement> & {
+import './CodeMirror.styles.css';
+
+interface CodeMirrorProps extends JSX.HTMLAttributes<HTMLDivElement> {
     value: string;
     placeholder?: string;
     readonly?: boolean;
@@ -20,7 +22,7 @@ type CodeMirrorProps = JSX.HTMLAttributes<HTMLDivElement> & {
     lineWrapping?: boolean;
     hasError?: boolean;
     onValueChange?: (value: string) => void;
-};
+}
 
 export function CodeMirror(props: CodeMirrorProps) {
     const [, rest] = splitProps(props, [

@@ -1,3 +1,5 @@
+@reference "../../styles/index.css";
+
 .cm-editor {
     @apply bg-transparent border border-main rounded-md hover:border-brand/50 overflow-clip h-full;
 }

@@ -1,19 +1,14 @@
 import type { VariantProps } from 'tailwind-variants/lite';
 
-import { tv } from 'tailwind-variants/lite';
-import { operationStyleBase } from './operationStyleBase';
+import { operationChipStyles } from './OperationChip.styles';
 
-const variant = tv({
-    extend: operationStyleBase,
-    base: 'inline-flex items-center justify-center text-sm rounded-full px-2 py-0.5',
-});
-
-type OperationChipVariants = VariantProps<typeof variant>;
-type OperationChipProps = Pick<OperationChipVariants, 'type'>;
+type OperationChipVariantProps = VariantProps<typeof operationChipStyles>;
+interface OperationChipProps extends Pick<OperationChipVariantProps, 'type'> {
+}
 
 export function OperationChip(props: OperationChipProps) {
     return (
-        <span class={variant(props)}>
+        <span class={operationChipStyles(props)}>
             {props.type}
         </span>
     );

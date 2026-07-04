@@ -57,7 +57,7 @@ export function UIPreview() {
             <For each={['sm', 'md', 'lg'] as const}>
                 {(size) => (
                     <div class='flex flex-row gap-5'>
-                        <For each={['primary', 'secondary', 'neutral'] as const}>
+                        <For each={['default', 'primary', 'secondary'] as const}>
                             {(color) => <Button color={color} size={size}>Button</Button>}
                         </For>
                         <Button color='primary' size={size} disabled>Button</Button>
@@ -67,13 +67,15 @@ export function UIPreview() {
 
             <h1>Chip</h1>
             <For each={['filled', 'outlined'] as const}>
-                {(style) => (
+                {(variant) => (
                     <For each={['sm', 'md', 'lg'] as const}>
                         {(size) => (
                             <div class='flex flex-row gap-5'>
-                                <For each={['primary', 'secondary', 'neutral'] as const}>
+                                <For each={['default', 'primary', 'secondary'] as const}>
                                     {(color) => (
-                                        <Chip style={style} color={color} size={size}>Chip</Chip>
+                                        <Chip variant={variant} color={color} size={size}>
+                                            Chip
+                                        </Chip>
                                     )}
                                 </For>
                             </div>

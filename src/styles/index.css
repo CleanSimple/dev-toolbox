@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "./color-pallet.css";
 @import "./theme.css";
-@import "./operation-colors.css";
-@import "./code-mirror.css";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 

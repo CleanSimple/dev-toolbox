@@ -2,27 +2,14 @@ import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { splitProps } from 'solid-js';
-import { tv } from 'tailwind-variants/lite';
+import { labelStyles } from './Label.styles';
 
-const variant = tv({
-    base: 'text-body',
-    variants: {
-        size: {
-            sm: 'text-sm',
-            md: 'text-base',
-            lg: 'text-lg',
-        },
-    },
-    defaultVariants: {
-        size: 'md',
-    },
-});
-
-type LabelVariants = VariantProps<typeof variant>;
-type LabelProps = JSX.LabelHTMLAttributes<HTMLLabelElement> & LabelVariants;
+type LabelVariantProps = VariantProps<typeof labelStyles>;
+interface LabelProps extends JSX.LabelHTMLAttributes<HTMLLabelElement>, LabelVariantProps {
+}
 
 export function Label(props: LabelProps) {
     const [variantProps, rest] = splitProps(props, ['class', 'size']);
 
-    return <label class={variant(variantProps)} {...rest} />;
+    return <label class={labelStyles(variantProps)} {...rest} />;
 }

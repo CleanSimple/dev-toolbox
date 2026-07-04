@@ -37,6 +37,7 @@
     --text-color-subtle: var(--text-subtle);
     --text-color-disabled: var(--text-disabled);
     --text-color-on-disabled: var(--text-on-disabled);
+    --text-color-inverse: var(--text-inverse);
 
     --text-color-brand: var(--text-brand);
     --text-color-brand-hover: var(--text-brand-hover);
@@ -106,6 +107,7 @@
     --text-subtle: var(--color-neutral-500);
     --text-disabled: var(--color-neutral-400);
     --text-on-disabled: var(--color-neutral-400);
+    --text-inverse: var(--color-neutral-200);
 
     --text-brand: var(--color-primary-700);
     --text-brand-hover: var(--color-primary-600);
@@ -175,6 +177,7 @@
     --text-subtle: var(--color-neutral-400);
     --text-disabled: var(--color-neutral-500);
     --text-on-disabled: var(--color-neutral-600);
+    --text-inverse: var(--color-neutral-900);
 
     --text-brand: var(--color-primary-500);
     --text-brand-hover: var(--color-primary-600);

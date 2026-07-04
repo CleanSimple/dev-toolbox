@@ -64,7 +64,7 @@ function PipelineInfo(props: PipelineInfoProps) {
         <div class='flex flex-col gap-3 p-3 border border-subtle rounded-md bg-subtle/10'>
             <span class='text-xs font-bold'>{props.pipeline.name} Pipeline</span>
             <div class='flex flex-wrap items-center gap-2 text-sm'>
-                <Chip style='outlined' color='neutral'>
+                <Chip variant='outlined'>
                     Input: {inputFormat} {parserName !== inputFormat ? ` as ${parserName}` : null}
                 </Chip>
                 <ArrowRight class='h-4 w-4 text-subtle' />

@@ -1,17 +1,15 @@
-import type { Component } from 'solid-js';
-
-import { Flows } from '@/flows';
+import { Input } from '@/components/ui/Input';
+import { Flows as Flows_ } from '@/flows';
 import { Frown, Search } from 'lucide-solid';
 import { createSignal, For } from 'solid-js';
-import Input from '../../components/ui/Input';
-import FlowInfo from './parts/FlowInfo';
+import { FlowInfo } from './parts/FlowInfo';
 
-const FlowSelector: Component = () => {
+export function Flows() {
     const [search, setSearch] = createSignal('');
 
     const filteredFlows = () => {
         const query = search().toLowerCase();
-        return Object.entries(Flows).filter(([id, flow]) =>
+        return Object.entries(Flows_).filter(([id, flow]) =>
             flow.name.toLowerCase().includes(query) || id.toLowerCase().includes(query)
         );
     };
@@ -43,6 +41,4 @@ const FlowSelector: Component = () => {
             </div>
         </div>
     );
-};
-
-export default FlowSelector;
+}

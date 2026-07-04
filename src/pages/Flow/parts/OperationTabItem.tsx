@@ -1,10 +1,9 @@
 import type { createOperation } from '@/composables/createOperation';
-import type { Component } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
+import { Loader } from '@/components/Loader';
 import { Show, splitProps } from 'solid-js';
 import { tv } from 'tailwind-variants/lite';
-import Loader from '../../../components/Loader';
 import { operationStyleBase } from './operationStyleBase';
 
 const variant = tv({
@@ -13,12 +12,12 @@ const variant = tv({
 });
 
 type OperationTabItemVariants = VariantProps<typeof variant>;
-type OperationPillProps = {
+type OperationTabItemProps = {
     operation: ReturnType<typeof createOperation>;
     onClick: () => void;
 } & OperationTabItemVariants;
 
-const OperationTabItem: Component<OperationPillProps> = (props) => {
+export function OperationTabItem(props: OperationTabItemProps) {
     const [variantProps] = splitProps(props, ['type', 'selected', 'hasError', 'inactive']);
 
     return (
@@ -32,5 +31,4 @@ const OperationTabItem: Component<OperationPillProps> = (props) => {
             </Show>
         </div>
     );
-};
-export default OperationTabItem;
+}

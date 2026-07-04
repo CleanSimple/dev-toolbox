@@ -1,14 +1,12 @@
-import type { Component } from 'solid-js';
-
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
-import Chip from '@/components/ui/Chip';
-import Input from '@/components/ui/Input';
-import Label from '@/components/ui/Label';
-import Select from '@/components/ui/Select';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { Chip } from '@/components/ui/Chip';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Select } from '@/components/ui/Select';
 import { For } from 'solid-js';
 
-const UIPreview: Component = () => {
+export function UIPreview() {
     return (
         <div class='w-full flex flex-col items-center gap-5'>
             <h1>Surface</h1>
@@ -124,6 +122,4 @@ const UIPreview: Component = () => {
             </div>
         </div>
     );
-};
-
-export default UIPreview;
+}

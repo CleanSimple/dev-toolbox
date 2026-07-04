@@ -1,4 +1,4 @@
-import type { Component, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 
 import { useTheme } from '@/contexts/ThemeContext';
 import { defaultKeymap } from '@codemirror/commands';
@@ -22,7 +22,7 @@ type CodeMirrorProps = JSX.HTMLAttributes<HTMLDivElement> & {
     onValueChange?: (value: string) => void;
 };
 
-const CodeMirror: Component<CodeMirrorProps> = (props) => {
+export function CodeMirror(props: CodeMirrorProps) {
     const [, rest] = splitProps(props, [
         'value',
         'placeholder',
@@ -122,6 +122,4 @@ const CodeMirror: Component<CodeMirrorProps> = (props) => {
     });
 
     return <div ref={container} {...rest} />;
-};
-
-export default CodeMirror;
+}

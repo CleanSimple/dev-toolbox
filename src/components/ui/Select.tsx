@@ -1,4 +1,4 @@
-import type { Component, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { splitProps } from 'solid-js';
@@ -30,10 +30,8 @@ const variant = tv({
 type SelectVariants = VariantProps<typeof variant>;
 type SelectProps = JSX.SelectHTMLAttributes<HTMLSelectElement> & SelectVariants;
 
-const Select: Component<SelectProps> = (props) => {
+export function Select(props: SelectProps) {
     const [variantProps, rest] = splitProps(props, ['class', 'size', 'hasError']);
 
     return <select class={variant(variantProps)} {...rest} />;
-};
-
-export default Select;
+}

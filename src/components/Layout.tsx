@@ -1,10 +1,10 @@
-import type { Component, ParentProps } from 'solid-js';
+import type { ParentProps } from 'solid-js';
 
 import logo from '@/assets/logo.svg';
 import { A } from '@solidjs/router';
-import ThemeToggle from './ThemeToggle';
+import { ThemeToggle } from './ThemeToggle';
 
-const Layout: Component<ParentProps> = (props) => {
+export function Layout(props: ParentProps) {
     return (
         <div class='min-h-screen flex flex-col bg-base text-body'>
             <nav class='bg-content sticky top-0 z-40 shadow px-8 py-4 border-b border-subtle'>
@@ -27,6 +27,4 @@ const Layout: Component<ParentProps> = (props) => {
             </main>
         </div>
     );
-};
-
-export default Layout;
+}

@@ -1,10 +1,10 @@
-import type { Component, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { splitProps } from 'solid-js';
 import { tv } from 'tailwind-variants/lite';
 
-const variant = tv({
+export const variant = tv({
     base: `
         bg-transparent text-body border border-main rounded-md
         transition-colors
@@ -31,11 +31,8 @@ const variant = tv({
 type InputVariants = VariantProps<typeof variant>;
 type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & InputVariants;
 
-const Input: Component<InputProps> = (props) => {
+export function Input(props: InputProps) {
     const [variantProps, rest] = splitProps(props, ['class', 'size', 'hasError']);
 
     return <input class={variant(variantProps)} {...rest} />;
-};
-
-export { variant };
-export default Input;
+}

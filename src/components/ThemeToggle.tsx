@@ -1,10 +1,8 @@
-import type { Component } from 'solid-js';
-
 import { useTheme } from '@/contexts/ThemeContext';
 import { Monitor, Moon, Sun } from 'lucide-solid';
 import { Match, Switch } from 'solid-js';
 
-const ThemeToggle: Component = () => {
+export function ThemeToggle() {
     const { theme, toggleTheme } = useTheme();
 
     const buttonTitle = () => {
@@ -38,6 +36,4 @@ const ThemeToggle: Component = () => {
             </Switch>
         </button>
     );
-};
-
-export default ThemeToggle;
+}

@@ -3,8 +3,14 @@ import type { createPipeline } from '@/composables/createPipeline';
 import type { DataFormatId } from '@/data-formats';
 import type { FormatterId } from '@/formatters';
 import type { ParserId } from '@/parsers';
-import type { Component } from 'solid-js';
 
+import { Loader } from '@/components/Loader';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { CodeMirror } from '@/components/ui/CodeMirror';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Select } from '@/components/ui/Select';
 import { createFlow } from '@/composables/createFlow';
 import { DataFormats } from '@/data-formats';
 import { Flows } from '@/flows';
@@ -12,16 +18,9 @@ import { hasKey } from '@cleansimple/utils-js';
 import { useNavigate, useParams } from '@solidjs/router';
 import { ArrowLeft, ArrowRight, PenLine, Save } from 'lucide-solid';
 import { createSignal, For, Match, Show, Switch } from 'solid-js';
-import Loader from '../../components/Loader';
-import Button from '../../components/ui/Button';
-import Card from '../../components/ui/Card';
-import CodeMirror from '../../components/ui/CodeMirror';
-import Input from '../../components/ui/Input';
-import Label from '../../components/ui/Label';
-import Select from '../../components/ui/Select';
-import OperationTabItem from './parts/OperationTabItem';
+import { OperationTabItem } from './parts/OperationTabItem';
 
-const FlowRunner: Component = () => {
+export function FlowRunner() {
     const params = useParams<{ flowId: string }>();
     const navigate = useNavigate();
 
@@ -129,13 +128,13 @@ const FlowRunner: Component = () => {
             </For>
         </div>
     );
-};
+}
 
 interface PipelineProps {
     pipeline: ReturnType<typeof createPipeline>;
 }
 
-const Pipeline: Component<PipelineProps> = (props) => {
+function Pipeline(props: PipelineProps) {
     const { name, setName, operations } = props.pipeline;
     const [isEditingName, setIsEditingName] = createSignal(false);
 
@@ -224,13 +223,13 @@ const Pipeline: Component<PipelineProps> = (props) => {
             </Show>
         </Card>
     );
-};
+}
 
 interface OperationOutputProps {
     operation: ReturnType<typeof createOperation>;
 }
 
-const OperationOutput: Component<OperationOutputProps> = (props) => {
+function OperationOutput(props: OperationOutputProps) {
     return (
         <div class='flex flex-col gap-4'>
             <div class='flex items-center gap-2'>
@@ -273,6 +272,4 @@ const OperationOutput: Component<OperationOutputProps> = (props) => {
             </div>
         </div>
     );
-};
-
-export default FlowRunner;
+}

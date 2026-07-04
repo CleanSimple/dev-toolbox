@@ -1,4 +1,3 @@
-import type { Component } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { RefreshCw } from 'lucide-solid';
@@ -22,10 +21,8 @@ const variant = tv({
 type SpinnerVariants = VariantProps<typeof variant>;
 type SpinnerProps = Parameters<typeof RefreshCw>[0] & SpinnerVariants;
 
-const Spinner: Component<SpinnerProps> = (props) => {
+export function Spinner(props: SpinnerProps) {
     const [variantProps, rest] = splitProps(props, ['class', 'size']);
 
     return <RefreshCw class={variant(variantProps)} {...rest} />;
-};
-
-export default Spinner;
+}

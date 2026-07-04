@@ -1,4 +1,3 @@
-import type { Component } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { tv } from 'tailwind-variants/lite';
@@ -12,12 +11,10 @@ const variant = tv({
 type OperationChipVariants = VariantProps<typeof variant>;
 type OperationChipProps = Pick<OperationChipVariants, 'type'>;
 
-const OperationChip: Component<OperationChipProps> = (props) => {
+export function OperationChip(props: OperationChipProps) {
     return (
         <span class={variant(props)}>
             {props.type}
         </span>
     );
-};
-
-export default OperationChip;
+}

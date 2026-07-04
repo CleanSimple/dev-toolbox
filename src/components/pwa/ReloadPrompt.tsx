@@ -1,14 +1,12 @@
-import type { Component } from 'solid-js';
-
+import { Button } from '@/components/ui/Button';
 import { RefreshCw, X } from 'lucide-solid';
-import Button from '../ui/Button';
 
 interface ReloadPromptProps {
     onClose: () => void;
     onUpdate: () => void;
 }
 
-const ReloadPrompt: Component<ReloadPromptProps> = (props) => {
+export function ReloadPrompt(props: ReloadPromptProps) {
     return (
         <div class='fixed bottom-0 right-0 z-50 p-4 md:p-8 pointer-events-none'>
             <div class='pointer-events-auto flex flex-col gap-4 p-4 min-w-[320px] max-w-sm bg-content border border-subtle rounded-2xl shadow-lg animate-fade-in-up'>
@@ -50,6 +48,4 @@ const ReloadPrompt: Component<ReloadPromptProps> = (props) => {
             </div>
         </div>
     );
-};
-
-export default ReloadPrompt;
+}

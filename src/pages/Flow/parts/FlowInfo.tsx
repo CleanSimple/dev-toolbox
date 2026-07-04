@@ -1,6 +1,7 @@
 import type { Flow } from '@/flows';
-import type { Component } from 'solid-js';
 
+import { Card } from '@/components/ui/Card';
+import { Chip } from '@/components/ui/Chip';
 import { DataFormats } from '@/data-formats';
 import { Formatters } from '@/formatters';
 import { Operations } from '@/operations';
@@ -8,16 +9,14 @@ import { Parsers } from '@/parsers';
 import { A } from '@solidjs/router';
 import { ArrowRight } from 'lucide-solid';
 import { For } from 'solid-js';
-import Card from '../../../components/ui/Card';
-import Chip from '../../../components/ui/Chip';
-import OperationChip from './OperationChip';
+import { OperationChip } from './OperationChip';
 
 interface FlowInfoProps {
     flowId: string;
     flow: Flow;
 }
 
-const FlowInfo: Component<FlowInfoProps> = (props) => {
+export function FlowInfo(props: FlowInfoProps) {
     return (
         <A href={`/flows/${props.flowId}`}>
             <Card class='flex flex-col gap-3 hover:border-brand/50 transition-colors group'>
@@ -36,7 +35,7 @@ const FlowInfo: Component<FlowInfoProps> = (props) => {
             </Card>
         </A>
     );
-};
+}
 
 interface PipelineInfoProps {
     dataFormatId: Flow['dataFormatId'];
@@ -44,7 +43,7 @@ interface PipelineInfoProps {
     pipeline: Flow['pipelines'][number];
 }
 
-const PipelineInfo: Component<PipelineInfoProps> = (props) => {
+function PipelineInfo(props: PipelineInfoProps) {
     const inputFormat = DataFormats[props.dataFormatId]?.name ?? props.dataFormatId;
     const parserName = Parsers[props.parserId]?.parser.name ?? props.parserId;
 
@@ -95,6 +94,4 @@ const PipelineInfo: Component<PipelineInfoProps> = (props) => {
             </div>
         </div>
     );
-};
-
-export default FlowInfo;
+}

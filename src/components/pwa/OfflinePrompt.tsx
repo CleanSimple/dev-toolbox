@@ -1,14 +1,14 @@
 import type { Component, ParentProps } from 'solid-js';
 
+import { Button } from '@/components/ui/Button';
 import { Bookmark, Info, Wifi, X } from 'lucide-solid';
 import { createSignal, Show } from 'solid-js';
-import Button from '../ui/Button';
 
 interface OfflinePromptProps {
     onClose: () => void;
 }
 
-const OfflinePrompt: Component<OfflinePromptProps> = (props) => {
+export function OfflinePrompt(props: OfflinePromptProps) {
     const [showBookmarkInfo, setShowBookmarkInfo] = createSignal(false);
 
     const close = () => {
@@ -75,6 +75,4 @@ const OfflinePrompt: Component<OfflinePromptProps> = (props) => {
             </div>
         </div>
     );
-};
-
-export default OfflinePrompt;
+}

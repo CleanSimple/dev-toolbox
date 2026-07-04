@@ -1,4 +1,4 @@
-import type { Component, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { splitProps } from 'solid-js';
@@ -64,10 +64,8 @@ const variant = tv({
 type ChipVariants = VariantProps<typeof variant>;
 type ChipProps = JSX.HTMLAttributes<HTMLDivElement> & ChipVariants;
 
-const Chip: Component<ChipProps> = (props) => {
+export function Chip(props: ChipProps) {
     const [variantProps, rest] = splitProps(props, ['class', 'style', 'color', 'size']);
 
     return <div class={variant(variantProps)} {...rest} />;
-};
-
-export default Chip;
+}

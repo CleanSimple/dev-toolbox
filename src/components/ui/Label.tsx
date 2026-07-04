@@ -1,4 +1,4 @@
-import type { Component, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { splitProps } from 'solid-js';
@@ -21,10 +21,8 @@ const variant = tv({
 type LabelVariants = VariantProps<typeof variant>;
 type LabelProps = JSX.LabelHTMLAttributes<HTMLLabelElement> & LabelVariants;
 
-const Label: Component<LabelProps> = (props) => {
+export function Label(props: LabelProps) {
     const [variantProps, rest] = splitProps(props, ['class', 'size']);
 
     return <label class={variant(variantProps)} {...rest} />;
-};
-
-export default Label;
+}

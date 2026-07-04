@@ -1,11 +1,9 @@
-import type { Component } from 'solid-js';
-
 import { Show } from 'solid-js';
 import { useRegisterSW } from 'virtual:pwa-register/solid';
-import OfflinePrompt from './OfflinePrompt';
-import ReloadPrompt from './ReloadPrompt';
+import { OfflinePrompt } from './OfflinePrompt';
+import { ReloadPrompt } from './ReloadPrompt';
 
-const ServiceWorkerRegistration: Component = () => {
+export function ServiceWorkerRegistration() {
     const {
         needRefresh: [needRefresh, setNeedRefresh],
         offlineReady: [offlineReady, setOfflineReady],
@@ -51,6 +49,4 @@ const ServiceWorkerRegistration: Component = () => {
             </Show>
         </>
     );
-};
-
-export default ServiceWorkerRegistration;
+}

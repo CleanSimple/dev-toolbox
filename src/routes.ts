@@ -1,9 +1,9 @@
 import type { RouteDefinition } from '@solidjs/router';
 
-import Layout from './components/Layout.tsx';
-import { FlowRunner, Flows } from './pages/Flow';
-import Home from './pages/Home.tsx';
-import UIPreview from './pages/UIPreview.tsx';
+import { Layout } from '@/components/Layout.tsx';
+import { FlowRunner, Flows } from '@/pages/Flow';
+import { Home } from '@/pages/Home.tsx';
+import { UIPreview } from '@/pages/UIPreview.tsx';
 
 export const routes: RouteDefinition[] = [
     {

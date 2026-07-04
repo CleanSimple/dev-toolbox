@@ -1,4 +1,4 @@
-import type { Component, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { splitProps } from 'solid-js';
@@ -11,10 +11,8 @@ const variant = tv({
 type CardVariants = VariantProps<typeof variant>;
 type CardProps = JSX.HTMLAttributes<HTMLDivElement> & CardVariants;
 
-const Card: Component<CardProps> = (props) => {
+export function Card(props: CardProps) {
     const [variantProps, rest] = splitProps(props, ['class']);
 
     return <div class={variant(variantProps)} {...rest} />;
-};
-
-export default Card;
+}

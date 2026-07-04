@@ -4,6 +4,8 @@
 @import "./operation-colors.css";
 @import "./code-mirror.css";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @layer base {
     /* Update color scheme based on theme (to correctly render browser native elements like scroll bars) */
     :root[data-theme="light"] {

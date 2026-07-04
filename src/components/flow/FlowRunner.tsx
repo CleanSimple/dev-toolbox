@@ -18,7 +18,7 @@ import Label from '../Label';
 import Loader from '../Loader';
 import Select from '../Select';
 import Spinner from '../Spinner';
-import OperationPill from './OperationPill';
+import OperationTabItem from './OperationTabItem';
 
 interface FlowRunnerProps {
     flow: Flow;
@@ -29,6 +29,7 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
     const {
         setInput,
         dataFormatId,
+        dataFormatName,
         canSetDataFormatId,
         setDataFormatId,
         availableParsers,
@@ -95,7 +96,9 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
                             <For each={Array.from(availableParsers().entries())}>
                                 {([id, parser]) => (
                                     <option value={id}>
-                                        {parser.name}
+                                        {parser.name === dataFormatName()
+                                            ? 'Default'
+                                            : parser.name}
                                     </option>
                                 )}
                             </For>
@@ -195,7 +198,7 @@ const Pipeline: Component<PipelineProps> = (props) => {
                 <For each={operations()}>
                     {(operation, index) => (
                         <>
-                            <OperationPill
+                            <OperationTabItem
                                 operation={operation}
                                 type={operation.type}
                                 selected={index() == selectedOperation()}

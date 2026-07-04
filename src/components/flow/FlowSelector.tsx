@@ -6,11 +6,7 @@ import { createSignal, For } from 'solid-js';
 import Input from '../Input';
 import FlowInfo from './FlowInfo';
 
-interface FlowSelectorProps {
-    onSelectFlow?: (flowId: string) => void;
-}
-
-const FlowSelector: Component<FlowSelectorProps> = (props) => {
+const FlowSelector: Component = () => {
     const [search, setSearch] = createSignal('');
 
     const filteredFlows = () => {
@@ -34,17 +30,12 @@ const FlowSelector: Component<FlowSelectorProps> = (props) => {
                 <Search class='absolute left-2 top-1.5 h-5 w-5 text-subtle' />
             </div>
 
-            <div class='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div class='grid gap-4'>
                 <For each={filteredFlows()}>
-                    {([id, flow]) => (
-                        <FlowInfo
-                            flow={flow}
-                            onClick={() => props.onSelectFlow?.(id)}
-                        />
-                    )}
+                    {([id, flow]) => <FlowInfo flowId={id} flow={flow} />}
                 </For>
                 {filteredFlows().length === 0 && (
-                    <div class='col-span-1 md:col-span-2 flex flex-col py-8 items-center justify-center text-subtle bg-content border border-subtle border-dashed rounded-xl'>
+                    <div class='flex flex-col py-8 items-center justify-center text-subtle bg-content border border-subtle border-dashed rounded-xl'>
                         <Frown class='h-10 w-10 mb-3' />
                         <p class='text-sm'>No flows found matching your search.</p>
                     </div>

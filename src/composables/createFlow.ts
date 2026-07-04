@@ -1,6 +1,7 @@
 import type { DataFormatId, DataRef } from '@/data-formats';
 import type { Flow } from '@/flows';
 
+import { DataFormats } from '@/data-formats';
 import { getParsers, Parsers } from '@/parsers';
 import { parse, releaseData } from '@/utils/flow-helpers';
 import { batch, createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
@@ -24,6 +25,7 @@ export function createFlow(flow: Flow) {
     const [pipelines, setPipelines] = createSignal<ReturnType<typeof createPipeline>[]>([]);
     const [isParsing, setIsParsing] = createSignal(false);
 
+    const dataFormatName = createMemo(() => DataFormats[dataFormatId()].name);
     const parserId = createDeferred(_parserId);
     const rawInput = createDebounced(_rawInput, 500);
 
@@ -111,6 +113,7 @@ export function createFlow(flow: Flow) {
     return {
         setInput: setRawInput,
         dataFormatId,
+        dataFormatName,
         canSetDataFormatId,
         setDataFormatId,
         availableParsers,

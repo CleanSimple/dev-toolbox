@@ -2,11 +2,14 @@ import type { DataFormatById, DataFormatId } from '@/data-formats';
 import type { IOperation } from '@/types';
 
 import { DataFormats } from '@/data-formats';
+import { Formatters } from '@/formatters';
+import { Parsers } from '@/parsers';
 import { isSubclassOf } from '@/utils';
 import { Base64Decode } from './Base64Decode';
 import { Base64Encode, Base64EncodeBytes } from './Base64Encode';
 import { BytesToText } from './BytesToText';
-import { TextAsBase64 } from './TextAsBase64';
+import { Format } from './Format';
+import { Parse } from './Parse';
 import { TextToBytes } from './TextToBytes';
 
 interface OperationRecord<TIn extends DataFormatId, TOut extends DataFormatId> {
@@ -30,11 +33,6 @@ export const Operations = {
         outDataFormatId: 'bytes',
         operation: new TextToBytes(),
     }),
-    'text-as-base64': operation({
-        inDataFormatId: 'text',
-        outDataFormatId: 'base64',
-        operation: new TextAsBase64(),
-    }),
     'base64-encode-text': operation({
         inDataFormatId: 'text',
         outDataFormatId: 'base64',
@@ -49,6 +47,20 @@ export const Operations = {
         inDataFormatId: 'base64',
         outDataFormatId: 'text',
         operation: new Base64Decode(),
+    }),
+
+    /* --- Parsers --- */
+    'parse-base64': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'base64',
+        operation: new Parse(Parsers.base64.parser),
+    }),
+
+    /* --- Formatters --- */
+    'format-bytes-hex-compact-16': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['bytes-hex-compact-16'].formatter),
     }),
 };
 

@@ -1,6 +1,6 @@
 import type { IDataFormat } from './IDataFormat';
 
-export type OperationType = 'encode' | 'decode' | 'convert' | 'format';
+export type OperationType = 'transform' | 'parse' | 'format' | 'encode' | 'decode';
 
 export interface IOperation<TIn extends IDataFormat<unknown>, TOut extends IDataFormat<unknown>> {
     name: string;

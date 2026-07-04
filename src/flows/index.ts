@@ -38,7 +38,7 @@ export const Flows: Record<string, Flow> = {
                         formatterId: 'text',
                     },
                     {
-                        operationId: 'text-as-base64',
+                        operationId: 'parse-base64',
                         formatterId: 'text',
                     },
                     {
@@ -58,7 +58,11 @@ export const Flows: Record<string, Flow> = {
                 name: 'Broken',
                 operations: [
                     {
-                        operationId: 'text-as-base64',
+                        operationId: 'parse-base64',
+                        formatterId: 'text',
+                    },
+                    {
+                        operationId: 'format-bytes-hex-compact-16',
                         formatterId: 'text',
                     },
                     {

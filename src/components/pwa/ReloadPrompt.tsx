@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js';
 
 import { RefreshCw, X } from 'lucide-solid';
-import Button from '../Button';
+import Button from '../ui/Button';
 
 interface ReloadPromptProps {
     onClose: () => void;

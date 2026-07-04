@@ -8,8 +8,8 @@ import { Parsers } from '@/parsers';
 import { A } from '@solidjs/router';
 import { ArrowRight } from 'lucide-solid';
 import { For } from 'solid-js';
-import Card from '../Card';
-import Chip from '../Chip';
+import Card from '../../../components/ui/Card';
+import Chip from '../../../components/ui/Chip';
 import OperationChip from './OperationChip';
 
 interface FlowInfoProps {

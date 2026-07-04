@@ -2,7 +2,7 @@ import type { OperationType } from '@/types';
 
 import { tv } from 'tailwind-variants/lite';
 
-export const operationVariantBase = tv({
+export const operationStyleBase = tv({
     base: null,
     variants: {
         type: {

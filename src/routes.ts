@@ -1,9 +1,9 @@
 import type { RouteDefinition } from '@solidjs/router';
 
 import Layout from './components/Layout.tsx';
+import { FlowRunner, Flows } from './pages/Flow';
 import Home from './pages/Home.tsx';
 import UIPreview from './pages/UIPreview.tsx';
-import Flows from './pages/Flows.tsx';
 
 export const routes: RouteDefinition[] = [
     {
@@ -15,8 +15,17 @@ export const routes: RouteDefinition[] = [
                 component: Home,
             },
             {
-                path: 'flows/:flowId?',
-                component: Flows,
+                path: 'flows',
+                children: [
+                    {
+                        path: '/',
+                        component: Flows,
+                    },
+                    {
+                        path: '/:flowId',
+                        component: FlowRunner,
+                    },
+                ],
             },
             ...(
                 import.meta.env.DEV

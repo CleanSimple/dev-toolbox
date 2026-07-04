@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js';
 
 import { Show } from 'solid-js';
-import Spinner from './Spinner';
+import Spinner from './ui/Spinner';
 
 interface LoaderProps {
     spinnerSize?: 'sm' | 'md' | 'lg';

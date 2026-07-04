@@ -4,11 +4,11 @@ import type { VariantProps } from 'tailwind-variants/lite';
 
 import { Show, splitProps } from 'solid-js';
 import { tv } from 'tailwind-variants/lite';
-import Loader from '../Loader';
-import { operationVariantBase } from './shared';
+import Loader from '../../../components/Loader';
+import { operationStyleBase } from './operationStyleBase';
 
 const variant = tv({
-    extend: operationVariantBase,
+    extend: operationStyleBase,
     base: 'relative inline-flex items-center justify-center rounded-md px-2 py-1',
 });
 

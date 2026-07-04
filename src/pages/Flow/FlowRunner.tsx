@@ -1,31 +1,36 @@
 import type { createOperation } from '@/composables/createOperation';
 import type { createPipeline } from '@/composables/createPipeline';
 import type { DataFormatId } from '@/data-formats';
-import type { Flow } from '@/flows';
 import type { FormatterId } from '@/formatters';
 import type { ParserId } from '@/parsers';
 import type { Component } from 'solid-js';
 
 import { createFlow } from '@/composables/createFlow';
 import { DataFormats } from '@/data-formats';
+import { Flows } from '@/flows';
+import { hasKey } from '@cleansimple/utils-js';
+import { useNavigate, useParams } from '@solidjs/router';
 import { ArrowLeft, ArrowRight, PenLine, Save } from 'lucide-solid';
-import { createSignal, For, Match, onCleanup, onMount, Show, Switch } from 'solid-js';
-import Button from '../Button';
-import Card from '../Card';
-import CodeMirror from '../CodeMirror';
-import Input from '../Input';
-import Label from '../Label';
-import Loader from '../Loader';
-import Select from '../Select';
-import Spinner from '../Spinner';
-import OperationTabItem from './OperationTabItem';
+import { createSignal, For, Match, Show, Switch } from 'solid-js';
+import Loader from '../../components/Loader';
+import Button from '../../components/ui/Button';
+import Card from '../../components/ui/Card';
+import CodeMirror from '../../components/ui/CodeMirror';
+import Input from '../../components/ui/Input';
+import Label from '../../components/ui/Label';
+import Select from '../../components/ui/Select';
+import OperationTabItem from './parts/OperationTabItem';
 
-interface FlowRunnerProps {
-    flow: Flow;
-    onBack: () => void;
-}
+const FlowRunner: Component = () => {
+    const params = useParams<{ flowId: string }>();
+    const navigate = useNavigate();
 
-const FlowRunner: Component<FlowRunnerProps> = (props) => {
+    if (!params.flowId || !hasKey(Flows, params.flowId)) {
+        navigate('/flows');
+        return;
+    }
+
+    const flow = Flows[params.flowId];
     const {
         setInput,
         dataFormatId,
@@ -43,26 +48,16 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
         // deletePipeline,
         // addPipeline,
         isParsing,
-    } = createFlow(props.flow);
-
-    const [count, setCount] = createSignal(0);
-    onMount(() => {
-        const id = setInterval(() => {
-            setCount(count => count + 1);
-        }, 100);
-        onCleanup(() => {
-            clearInterval(id);
-        });
-    });
+    } = createFlow(flow);
 
     return (
         <div class='w-full flex flex-col gap-6'>
             {/* Header */}
             <div class='flex items-center gap-3 pb-2 border-b border-subtle'>
-                <Button class='w-10 h-10' onclick={props.onBack}>
+                <Button class='w-10 h-10' onclick={() => navigate('/flows')}>
                     <ArrowLeft class='shrink-0 w-6 h-6 text-brand' />
                 </Button>
-                <h1 class='text-2xl font-bold text-head'>{props.flow.name}</h1>
+                <h1 class='text-2xl font-bold text-head'>{flow.name}</h1>
             </div>
 
             {/* Input Section */}
@@ -106,12 +101,6 @@ const FlowRunner: Component<FlowRunnerProps> = (props) => {
                         <Show when={parserError()}>
                             <span class='text-danger'>{parserError()}</span>
                         </Show>
-                    </div>
-                    <div>
-                        <Spinner />
-                    </div>
-                    <div>
-                        {count()}
                     </div>
                 </div>
 

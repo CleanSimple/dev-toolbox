@@ -2,10 +2,10 @@ import type { Component } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { tv } from 'tailwind-variants/lite';
-import { operationVariantBase } from './shared';
+import { operationStyleBase } from './operationStyleBase';
 
 const variant = tv({
-    extend: operationVariantBase,
+    extend: operationStyleBase,
     base: 'inline-flex items-center justify-center text-sm rounded-full px-2 py-0.5',
 });
 

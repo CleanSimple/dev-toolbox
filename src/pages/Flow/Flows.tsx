@@ -3,8 +3,8 @@ import type { Component } from 'solid-js';
 import { Flows } from '@/flows';
 import { Frown, Search } from 'lucide-solid';
 import { createSignal, For } from 'solid-js';
-import Input from '../Input';
-import FlowInfo from './FlowInfo';
+import Input from '../../components/ui/Input';
+import FlowInfo from './parts/FlowInfo';
 
 const FlowSelector: Component = () => {
     const [search, setSearch] = createSignal('');

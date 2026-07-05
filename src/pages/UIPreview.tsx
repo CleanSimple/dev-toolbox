@@ -3,10 +3,18 @@ import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
+import { createModal, Modal } from '@/components/ui/Modal';
 import { Select } from '@/components/ui/Select';
 import { For } from 'solid-js';
 
 export function UIPreview() {
+    const modal = createModal();
+
+    async function handleOpenModal() {
+        const result = await modal.show();
+        console.log('Modal closed', result);
+    }
+
     return (
         <div class='w-full flex flex-col items-center gap-5'>
             <h1>Surface</h1>
@@ -121,6 +129,14 @@ export function UIPreview() {
                     <Input size='md' placeholder='Enter text (readonly)' readonly />
                     <Input size='md' placeholder='Enter text (disabled)' disabled />
                 </Card>
+            </div>
+
+            <h1>Modal</h1>
+            <div>
+                <Button onClick={() => void handleOpenModal()}>Open Modal</Button>
+                <Modal title='Test' {...modal.props}>
+                    Test
+                </Modal>
             </div>
         </div>
     );

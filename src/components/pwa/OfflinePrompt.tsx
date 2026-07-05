@@ -68,7 +68,7 @@ export function OfflinePrompt(props: OfflinePromptProps) {
                         <Bookmark size={16} />
                         Bookmark
                     </Button>
-                    <Button color='neutral' size='lg' class='flex-1' onClick={close}>
+                    <Button size='lg' class='flex-1' onClick={close}>
                         Ok
                     </Button>
                 </div>

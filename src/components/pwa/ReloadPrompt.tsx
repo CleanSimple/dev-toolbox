@@ -41,7 +41,7 @@ export function ReloadPrompt(props: ReloadPromptProps) {
                     >
                         Reload Now
                     </Button>
-                    <Button color='neutral' size='lg' class='flex-1' onClick={props.onClose}>
+                    <Button size='lg' class='flex-1' onClick={props.onClose}>
                         Later
                     </Button>
                 </div>

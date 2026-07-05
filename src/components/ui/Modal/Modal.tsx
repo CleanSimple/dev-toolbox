@@ -18,28 +18,28 @@ interface ModalProps extends ParentProps, ModalVariantProps {
 
 export function Modal(props: ModalProps) {
     const [variantProps] = splitProps(props, ['size']);
-    const { backdrop, container, body, header, footer, title, closeButton } = modalStyles();
+    const styles = modalStyles(variantProps);
 
     return (
         <Show when={props.show}>
-            <div class={backdrop()}>
-                <div class={container(variantProps)}>
+            <div class={styles.backdrop()}>
+                <div class={styles.container(variantProps)}>
                     {/* Header */}
-                    <div class={header()}>
-                        <h3 class={title()}>{props.title}</h3>
+                    <div class={styles.header()}>
+                        <h3 class={styles.title()}>{props.title}</h3>
 
-                        <button onClick={props.cancelAction} class={closeButton()}>
+                        <button onClick={props.cancelAction} class={styles.closeButton()}>
                             <X size={16} />
                         </button>
                     </div>
 
                     {/* Content */}
-                    <div class={body()}>
+                    <div class={styles.body()}>
                         {props.children}
                     </div>
 
                     {/* Footer */}
-                    <div class={footer()}>
+                    <div class={styles.footer()}>
                         <Button color='primary' onClick={props.confirmAction}>
                             {props.confirmText ?? 'Confirm'}
                         </Button>

@@ -4,7 +4,9 @@ import { Chip } from '@/components/ui/Chip';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { createModal, Modal } from '@/components/ui/Modal';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 import { Select } from '@/components/ui/Select';
+import { Apple } from 'lucide-solid';
 import { For } from 'solid-js';
 
 export function UIPreview() {
@@ -13,6 +15,17 @@ export function UIPreview() {
     async function handleOpenModal() {
         const result = await modal.show();
         console.log('Modal closed', result);
+    }
+
+    const fruits = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig', 'Grape', 'Lemon', 'Mango'];
+
+    function renderFruit(item: string) {
+        return (
+            <div class='flex items-center gap-2'>
+                <Apple size={16} />
+                {item}
+            </div>
+        );
     }
 
     return (
@@ -120,6 +133,29 @@ export function UIPreview() {
                 )}
             </For>
 
+            <h1>SearchableSelect</h1>
+            <For each={['sm', 'md', 'lg'] as const}>
+                {(size) => (
+                    <div class='flex flex-row gap-5'>
+                        <SearchableSelect
+                            size={size}
+                            items={fruits}
+                            renderItem={renderFruit}
+                            renderListItem={renderFruit}
+                            placeholder='Select your favorite fruit'
+                        />
+                        <SearchableSelect
+                            size={size}
+                            items={fruits}
+                            renderItem={renderFruit}
+                            renderListItem={renderFruit}
+                            placeholder='Select your favorite fruit'
+                            disabled
+                        />
+                    </div>
+                )}
+            </For>
+
             <h1>Card</h1>
             <div class='self-stretch'>
                 <Card class='flex flex-col gap-5'>
@@ -128,6 +164,13 @@ export function UIPreview() {
                     <Input size='md' placeholder='Enter text' />
                     <Input size='md' placeholder='Enter text (readonly)' readonly />
                     <Input size='md' placeholder='Enter text (disabled)' disabled />
+                    <SearchableSelect
+                        size='md'
+                        items={fruits}
+                        renderItem={renderFruit}
+                        renderListItem={renderFruit}
+                        placeholder='Select your favorite fruit'
+                    />
                 </Card>
             </div>
 

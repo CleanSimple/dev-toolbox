@@ -19,8 +19,8 @@ type SearchableSelectVariantProps = VariantProps<typeof searchableSelectStyles>;
 export interface SearchableSelectProps<T> extends SearchableSelectVariantProps {
     items: T[];
     value?: T | null;
+    renderValue: (item: T) => JSX.Element;
     renderItem: (item: T) => JSX.Element;
-    renderListItem: (item: T) => JSX.Element;
     placeholder?: string;
     class?: string;
     disabled?: boolean;
@@ -109,7 +109,7 @@ export function SearchableSelect<T>(props: SearchableSelectProps<T>) {
                         }
                         keyed
                     >
-                        {(value) => props.renderItem(value)}
+                        {(value) => props.renderValue(value)}
                     </Show>
                 </div>
                 <div class='flex items-center shrink-0'>
@@ -157,7 +157,7 @@ export function SearchableSelect<T>(props: SearchableSelectProps<T>) {
                                     class={styles.listItem()}
                                     onClick={() => handleSelect(item)}
                                 >
-                                    {props.renderListItem(item)}
+                                    {props.renderItem(item)}
                                 </div>
                             )}
                         </For>

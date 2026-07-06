@@ -140,15 +140,15 @@ export function UIPreview() {
                         <SearchableSelect
                             size={size}
                             items={fruits}
+                            renderValue={renderFruit}
                             renderItem={renderFruit}
-                            renderListItem={renderFruit}
                             placeholder='Select your favorite fruit'
                         />
                         <SearchableSelect
                             size={size}
                             items={fruits}
+                            renderValue={renderFruit}
                             renderItem={renderFruit}
-                            renderListItem={renderFruit}
                             placeholder='Select your favorite fruit'
                             disabled
                         />
@@ -167,8 +167,8 @@ export function UIPreview() {
                     <SearchableSelect
                         size='md'
                         items={fruits}
+                        renderValue={renderFruit}
                         renderItem={renderFruit}
-                        renderListItem={renderFruit}
                         placeholder='Select your favorite fruit'
                     />
                 </Card>

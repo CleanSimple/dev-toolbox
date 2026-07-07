@@ -7,6 +7,7 @@ import {
     createEffect,
     createSignal,
     For,
+    on,
     onCleanup,
     onMount,
     Show,
@@ -74,12 +75,19 @@ export function SearchableSelect<T>(props: SearchableSelectProps<T>) {
         setIsOpen(prev => !prev);
     };
 
-    // external updates
+    // handle external value updates
     createComputed(() => {
         setValue(() => props.value ?? null);
     });
 
-    // internal updates
+    // handle items updates
+    createComputed(on(() => props.items, () => {
+        const val = value();
+        if (val && !props.items.includes(val)) {
+            setValue(null);
+        }
+    }));
+
     createEffect(() => {
         props.onChange?.(value());
     });

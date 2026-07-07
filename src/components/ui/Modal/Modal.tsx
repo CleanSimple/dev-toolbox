@@ -14,6 +14,7 @@ interface ModalProps extends ParentProps, ModalVariantProps {
     confirmAction?: () => void;
     cancelText?: string;
     cancelAction?: () => void;
+    canConfirm?: boolean;
 }
 
 export function Modal(props: ModalProps) {
@@ -34,13 +35,17 @@ export function Modal(props: ModalProps) {
                     </div>
 
                     {/* Content */}
-                    <div class={styles.body()}>
+                    <div class={styles.content()}>
                         {props.children}
                     </div>
 
                     {/* Footer */}
                     <div class={styles.footer()}>
-                        <Button color='primary' onClick={props.confirmAction}>
+                        <Button
+                            color='primary'
+                            onClick={props.confirmAction}
+                            disabled={props.canConfirm === false}
+                        >
                             {props.confirmText ?? 'Confirm'}
                         </Button>
                         <Button onClick={props.cancelAction}>

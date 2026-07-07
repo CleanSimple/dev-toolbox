@@ -12,6 +12,7 @@ export const buttonStyles = tv({
             default: 'bg-main text-body hover:bg-hover',
             primary: 'bg-brand text-on-brand hover:bg-brand-hover',
             secondary: 'bg-accent text-on-accent hover:bg-accent-hover',
+            danger: 'bg-danger/80 text-danger hover:bg-danger',
         },
         size: {
             sm: 'text-sm px-2 py-0.5 rounded-md',

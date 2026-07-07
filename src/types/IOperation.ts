@@ -5,5 +5,6 @@ export type OperationType = 'transform' | 'parse' | 'format' | 'encode' | 'decod
 export interface IOperation<TIn extends IDataFormat<unknown>, TOut extends IDataFormat<unknown>> {
     name: string;
     type: OperationType;
+    description?: string;
     handler: (input: TIn) => TOut;
 }

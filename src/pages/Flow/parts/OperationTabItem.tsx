@@ -1,14 +1,18 @@
-import type { createOperation } from '@/composables/createOperation';
+import type { OperationViewModel } from '@/view-models/operation';
 import type { VariantProps } from 'tailwind-variants/lite';
 
 import { Loader } from '@/components/Loader';
+import { Button } from '@/components/ui/Button';
+import { X } from 'lucide-solid';
 import { Show, splitProps } from 'solid-js';
 import { operationTabItemStyles } from './OperationTabItem.styles';
 
 type OperationTabItemVariantProps = VariantProps<typeof operationTabItemStyles>;
 interface OperationTabItemProps extends OperationTabItemVariantProps {
-    operation: ReturnType<typeof createOperation>;
+    operation: OperationViewModel;
+    canDelete: boolean;
     onClick: () => void;
+    onDelete: () => void;
 }
 
 export function OperationTabItem(props: OperationTabItemProps) {
@@ -20,6 +24,12 @@ export function OperationTabItem(props: OperationTabItemProps) {
             onClick={props.onClick}
         >
             <span>{props.operation.name}</span>
+            <Show when={props.canDelete}>
+                <Button color='danger' size='sm' class='p-0.5!' onClick={() => props.onDelete()}>
+                    <X class='w-4 h-4' />
+                </Button>
+            </Show>
+
             <Show when={props.operation.isRunning()}>
                 <Loader text='' spinnerSize='sm' />
             </Show>

@@ -1,19 +1,19 @@
 import type { DataFormatId, DataRef } from '@/data-formats';
-import type { Flow } from '@/flows';
 import type { OperationType } from '@/types';
+import type { Operation } from '@/types/models';
 import type { Accessor } from 'solid-js';
 
 import { Formatters, getFormatters } from '@/formatters';
 import { getOperations, Operations } from '@/operations';
 import { format, releaseData, runOperation } from '@/utils/flow-helpers';
 import { createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
-import { createDisposable } from './createDisposable';
-import { createLazyAsyncComputed } from './createLazyAsyncComputed';
+import { createDisposable } from '../primitives/createDisposable';
+import { createLazyAsyncComputed } from '../primitives/createLazyAsyncComputed';
 
-export function createOperation(
+export function createOperationViewModel(
+    operation: Operation,
     inputDataFormatId: DataFormatId | null,
     input: Accessor<DataRef | null>,
-    operation: Flow['pipelines'][number]['operations'][number],
 ) {
     const [operationError, setOperationError] = createSignal<string | null>(null);
     const [formatterId, setFormatterId] = createSignal(operation.formatterId);
@@ -134,3 +134,5 @@ export function createOperation(
         isRunning,
     };
 }
+
+export type OperationViewModel = ReturnType<typeof createOperationViewModel>;

@@ -1,15 +1,22 @@
 import type { DataFormatId, DataRef } from '@/data-formats';
-import type { Flow } from '@/flows';
 
 import { DataFormats } from '@/data-formats';
+import { Flows } from '@/flows';
 import { getParsers, Parsers } from '@/parsers';
 import { parse, releaseData } from '@/utils/flow-helpers';
 import { batch, createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
-import { createDebounced } from './createDebounced';
-import { createDisposable } from './createDisposable';
-import { createPipeline } from './createPipeline';
+import { createDebounced } from '../primitives/createDebounced';
+import { createDisposable } from '../primitives/createDisposable';
+import { createPipelineViewModel } from './pipeline';
 
-export function createFlow(flow: Flow) {
+export function createFlowViewModel(flowId: string) {
+    const flow = Flows[flowId] /* ?? CustomFlows[flowId] */;
+    if (!flow) {
+        throw new Error(`Flow "${flowId}" not found`);
+    }
+    const isCustom = flowId in Flows === false;
+
+    const [name, _setName] = createSignal(flow.name);
     const [dataFormatId, _setDataFormatId] = createSignal(flow.dataFormatId);
     const [_parserId, setParserId] = createSignal(flow.parserId);
     const [parserError, setParserError] = createSignal<string | null>(null);
@@ -22,8 +29,11 @@ export function createFlow(flow: Flow) {
     const [inputPlaceholder, setInputPlaceholder] = createSignal<string | null>(null);
     const [inputExample, setInputExample] = createSignal<string | null>(null);
     const [inputError, setInputError] = createSignal<string | null>(null);
-    const [pipelines, setPipelines] = createSignal<ReturnType<typeof createPipeline>[]>([]);
+    const [pipelines, setPipelines] = createSignal<ReturnType<typeof createPipelineViewModel>[]>(
+        [],
+    );
     const [isParsing, setIsParsing] = createSignal(false);
+    const [isEditing, _setIsEditing] = createSignal(false);
 
     const dataFormatName = createMemo(() => DataFormats[dataFormatId()].name);
     const parserId = createDeferred(_parserId);
@@ -34,10 +44,6 @@ export function createFlow(flow: Flow) {
             getParsers(dataFormatId()).map((id) => [id, Parsers[id].parser] as const),
         );
     });
-
-    setPipelines(flow.pipelines.map(
-        pipeline => createPipeline(flow.dataFormatId, input, pipeline),
-    ));
 
     createEffect(() => {
         setInputPlaceholder(null);
@@ -85,14 +91,18 @@ export function createFlow(flow: Flow) {
         }
     });
 
+    const setName = (name: string) => {
+        if (!isEditing()) return;
+        _setName(name);
+    };
+
     // Cannot edit input data format when there are existing operations
     const canSetDataFormatId = createMemo(() =>
-        pipelines().every(pipeline => pipeline.operations().length === 0)
+        isEditing() && pipelines().every(pipeline => pipeline.operations().length === 0)
     );
 
     const setDataFormatId = (dataFormatId: DataFormatId) => {
         if (!canSetDataFormatId()) return;
-
         batch(() => {
             _setDataFormatId(dataFormatId);
             setParserId(Array.from(availableParsers().keys()).at(0) ?? 'text');
@@ -100,17 +110,45 @@ export function createFlow(flow: Flow) {
     };
 
     const deletePipeline = (pipelineIndex: number) => {
+        if (!isEditing()) return;
         setPipelines(pipelines => pipelines.toSpliced(pipelineIndex, 1));
     };
     const addPipeline = () => {
-        const pipeline = createPipeline(dataFormatId(), input, {
-            name: 'New Pipeline',
-            operations: [],
-        });
-        setPipelines(pipelines => [...pipelines, pipeline]);
+        if (!isEditing()) return;
+        const pipelineVM = createPipelineViewModel(
+            {
+                name: 'New Pipeline',
+                operations: [],
+            },
+            dataFormatId,
+            input,
+            isEditing,
+        );
+        setPipelines(pipelines => [...pipelines, pipelineVM]);
     };
 
+    const editFlow = () => {
+        if (!isCustom) return;
+        _setIsEditing(true);
+    };
+
+    const saveFlow = () => {
+        if (!isCustom) return;
+        _setIsEditing(false);
+        // TODO: commit changes to backing storage
+    };
+
+    setPipelines(flow.pipelines.map(
+        pipeline => createPipelineViewModel(pipeline, dataFormatId, input, isEditing),
+    ));
+
     return {
+        isEditing,
+        name,
+        setName,
+        isCustom,
+        editFlow,
+        saveFlow,
         setInput: setRawInput,
         dataFormatId,
         dataFormatName,
@@ -129,3 +167,5 @@ export function createFlow(flow: Flow) {
         isParsing,
     };
 }
+
+export type FlowViewModel = ReturnType<typeof createFlowViewModel>;

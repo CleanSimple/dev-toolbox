@@ -3,5 +3,5 @@ import { operationBaseStyles } from './operationBaseStyles';
 
 export const operationTabItemStyles = tv({
     extend: operationBaseStyles,
-    base: 'relative inline-flex items-center justify-center rounded-md px-2 py-1',
+    base: 'relative inline-flex items-center justify-center rounded-md gap-2 px-2 py-1',
 });

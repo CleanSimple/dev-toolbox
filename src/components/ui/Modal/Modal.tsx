@@ -24,7 +24,7 @@ export function Modal(props: ModalProps) {
     return (
         <Show when={props.show}>
             <div class={styles.backdrop()}>
-                <div class={styles.container(variantProps)}>
+                <div class={styles.container()}>
                     {/* Header */}
                     <div class={styles.header()}>
                         <h3 class={styles.title()}>{props.title}</h3>

@@ -13,6 +13,11 @@
         color-scheme: dark;
     }
 
+    /* Set default font */
+    :root {
+        font-family: Arial, sans-serif;
+    }
+
     /* customize default outline */
     * {
         outline-color: var(--border-brand);

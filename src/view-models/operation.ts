@@ -1,5 +1,4 @@
 import type { DataFormatId, DataRef } from '@/data-formats';
-import type { OperationType } from '@/types';
 import type { Operation } from '@/types/models';
 import type { Accessor } from 'solid-js';
 
@@ -113,13 +112,12 @@ export function createOperationViewModel(
         }
     });
 
-    const operationInfo: { name: string; type: OperationType | 'unknown' } =
-        operationInst?.operation ?? Operations[operation.operationId]?.operation
-            ?? { name: operation.operationId, type: 'unknown' };
-
     return {
-        name: operationInfo.name,
-        type: operationInfo.type,
+        id: operation.operationId,
+        name: operationInst?.operation.name ?? Operations[operation.operationId]?.operation.name
+            ?? operation.operationId,
+        type: operationInst?.operation.type ?? Operations[operation.operationId]?.operation.type
+            ?? 'unknown',
         isInactive: inputDataFormatId === null,
         operationError,
         availableFormatters,

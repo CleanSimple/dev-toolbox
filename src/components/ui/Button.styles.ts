@@ -17,7 +17,7 @@ export const buttonStyles = tv({
         size: {
             sm: 'text-sm px-2 py-0.5 rounded-md',
             md: 'text-base px-3 py-0.75 rounded-lg',
-            lg: 'text-lg px-4 py-1 rounded-xl font-semibold',
+            lg: 'text-lg px-4 py-1 rounded-xl',
         },
     },
     defaultVariants: {

@@ -1,20 +1,24 @@
 import type { DataFormatId, DataRef } from '@/data-formats';
+import type { Flow } from '@/types/models';
 
 import { DataFormats } from '@/data-formats';
-import { Flows } from '@/flows';
+import { CustomFlows, Flows } from '@/flows';
 import { getParsers, Parsers } from '@/parsers';
 import { parse, releaseData } from '@/utils/flow-helpers';
+import { hasKey } from '@cleansimple/utils-js';
 import { batch, createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
 import { createDebounced } from '../primitives/createDebounced';
 import { createDisposable } from '../primitives/createDisposable';
 import { createPipelineViewModel } from './pipeline';
 
 export function createFlowViewModel(flowId: string) {
-    const flow = Flows[flowId] /* ?? CustomFlows[flowId] */;
-    if (!flow) {
-        throw new Error(`Flow "${flowId}" not found`);
-    }
-    const isCustom = flowId in Flows === false;
+    const flow: Flow = Flows[flowId] ?? CustomFlows.get(flowId) ?? {
+        name: 'New Flow',
+        dataFormatId: 'text',
+        parserId: 'text',
+        pipelines: [],
+    };
+    const isCustom = !hasKey(Flows, flowId);
 
     const [name, _setName] = createSignal(flow.name);
     const [dataFormatId, _setDataFormatId] = createSignal(flow.dataFormatId);
@@ -135,7 +139,24 @@ export function createFlowViewModel(flowId: string) {
     const saveFlow = () => {
         if (!isCustom) return;
         _setIsEditing(false);
-        // TODO: commit changes to backing storage
+
+        CustomFlows.set(flowId, {
+            name: name(),
+            dataFormatId: dataFormatId(),
+            parserId: parserId(),
+            pipelines: pipelines().map(pipeline => ({
+                name: pipeline.name(),
+                operations: pipeline.operations().map(operation => ({
+                    operationId: operation.id,
+                    formatterId: operation.formatterId(),
+                })),
+            })),
+        });
+    };
+
+    const deleteFlow = () => {
+        if (!isCustom) return;
+        CustomFlows.delete(flowId);
     };
 
     setPipelines(flow.pipelines.map(
@@ -149,6 +170,7 @@ export function createFlowViewModel(flowId: string) {
         isCustom,
         editFlow,
         saveFlow,
+        deleteFlow,
         setInput: setRawInput,
         dataFormatId,
         dataFormatName,

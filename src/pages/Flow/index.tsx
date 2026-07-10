@@ -1,4 +1,3 @@
-import { FlowRunner } from './FlowRunner';
-import { Flows } from './Flows';
-
-export { FlowRunner, Flows };
+export { FlowRunner } from './FlowRunner';
+export { Flows } from './Flows';
+export { NewFlow } from './NewFlow';

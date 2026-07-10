@@ -3,7 +3,7 @@ import type { PipelineViewModel } from '@/view-models/pipeline';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
-import { ArrowRight, PenLine, Save, Trash2 } from 'lucide-solid';
+import { ArrowRight, Trash2 } from 'lucide-solid';
 import { createComputed, createMemo, createSignal, For, Match, Show, Switch } from 'solid-js';
 import { AddOperationButton } from './AddOperationButton';
 import { OperationTab } from './OperationTab';
@@ -16,8 +16,8 @@ interface PipelineProps {
 }
 
 export function Pipeline(props: PipelineProps) {
-    const { name, setName, operations, addOperation, popOperation } = props.pipeline;
-    const [isEditingName, setIsEditingName] = createSignal(false);
+    const { name, setName, inputDataFormatId, operations, addOperation, popOperation } =
+        props.pipeline;
 
     const lastActiveOperationIndex = () =>
         operations()
@@ -27,7 +27,6 @@ export function Pipeline(props: PipelineProps) {
 
     const [selectedOperation, _setSelectedOperation] = createSignal(0);
 
-    const toggleIsEditingName = () => setIsEditingName(prev => !prev);
     const setSelectedOperation = (index: number) => {
         const op = operations().at(index);
         if (!op || op.isInactive) {
@@ -43,7 +42,7 @@ export function Pipeline(props: PipelineProps) {
     const newOperationDataFormat = createMemo(() => {
         const ops = operations();
         if (ops.length === 0) {
-            return props.pipeline.inputDataFormatId();
+            return inputDataFormatId();
         }
 
         return ops[ops.length - 1].outputDataFormatId;
@@ -53,7 +52,7 @@ export function Pipeline(props: PipelineProps) {
         <Card class='flex flex-col gap-4'>
             <div class='flex items-center gap-2'>
                 <Show
-                    when={isEditingName()}
+                    when={props.isEditing}
                     fallback={<h1 class='text-lg font-bold text-head'>{name()}</h1>}
                 >
                     <Input
@@ -61,19 +60,7 @@ export function Pipeline(props: PipelineProps) {
                         type='text'
                         value={name()}
                         onInput={(e) => setName(e.currentTarget.value)}
-                        onkeydown={(e) => {
-                            if (e.key === 'Enter') {
-                                toggleIsEditingName();
-                            }
-                        }}
                     />
-                </Show>
-                <Show when={props.isEditing}>
-                    <Button class='p-1!' onClick={toggleIsEditingName}>
-                        {isEditingName()
-                            ? <Save class='w-4 h-4' />
-                            : <PenLine class='w-4 h-4' />}
-                    </Button>
                 </Show>
 
                 <div class='flex-1' />
@@ -86,6 +73,7 @@ export function Pipeline(props: PipelineProps) {
             </div>
 
             <div class='flex flex-wrap gap-1 items-center'>
+                <span>Operations:</span>
                 <For each={operations()}>
                     {(operation, index) => (
                         <>

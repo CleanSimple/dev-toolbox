@@ -1,7 +1,7 @@
 import type { RouteDefinition } from '@solidjs/router';
 
 import { Layout } from '@/components/Layout';
-import { FlowRunner, Flows } from '@/pages/Flow';
+import { FlowRunner, Flows, NewFlow } from '@/pages/Flow';
 import { Home } from '@/pages/Home';
 import { UIPreview } from '@/pages/UIPreview';
 
@@ -20,6 +20,10 @@ export const routes: RouteDefinition[] = [
                     {
                         path: '/',
                         component: Flows,
+                    },
+                    {
+                        path: '/new',
+                        component: NewFlow,
                     },
                     {
                         path: '/:flowId',

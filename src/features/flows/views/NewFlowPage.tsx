@@ -1,19 +1,18 @@
 import { nextCustomFlowId } from '@/flows';
-import { createFlowViewModel } from '@/view-models/flow';
 import { useNavigate } from '@solidjs/router';
-import { Flow } from './parts/Flow';
+import { Flow } from '../components/Flow';
+import { createFlowViewModel } from '../view-models/FlowViewModel';
 
-export function NewFlow() {
-    console.info('Created new flow');
+export function NewFlowPage() {
     const navigate = useNavigate();
 
     const flowId = nextCustomFlowId();
-    const flow = createFlowViewModel(flowId);
-    flow.editFlow();
+    const flowVM = createFlowViewModel(flowId);
+    flowVM.editFlow();
 
     return (
         <Flow
-            flow={flow}
+            flowVM={flowVM}
             onBack={() => navigate('/flows')}
             onSave={() => navigate(`/flows/${flowId}`)}
             onDelete={() => navigate('/flows')}

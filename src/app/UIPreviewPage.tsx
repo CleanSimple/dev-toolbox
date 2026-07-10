@@ -9,7 +9,7 @@ import { Select } from '@/components/ui/Select';
 import { Apple } from 'lucide-solid';
 import { For } from 'solid-js';
 
-export function UIPreview() {
+export function UIPreviewPage() {
     const modal = createModal();
 
     async function handleOpenModal() {

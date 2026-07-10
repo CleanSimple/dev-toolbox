@@ -5,12 +5,12 @@ import type { Pipeline } from '@/types/models';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { DataFormats } from '@/data-formats';
+import { OperationChip } from '@/features/flows/components/OperationChip';
 import { Formatters } from '@/formatters';
 import { Operations } from '@/operations';
 import { Parsers } from '@/parsers';
 import { ArrowRight } from 'lucide-solid';
 import { For } from 'solid-js';
-import { OperationChip } from './OperationChip';
 
 interface PipelineInfoProps {
     dataFormatId: DataFormatId;

@@ -1,5 +1,5 @@
 import { tv } from 'tailwind-variants/lite';
-import { operationBaseStyles } from './operationBaseStyles';
+import { operationBaseStyles } from './OperationBase.styles';
 
 export const operationTabItemStyles = tv({
     extend: operationBaseStyles,

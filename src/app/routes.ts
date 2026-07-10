@@ -1,9 +1,9 @@
 import type { RouteDefinition } from '@solidjs/router';
 
+import { UIPreviewPage } from '@/app/UIPreviewPage';
 import { Layout } from '@/components/Layout';
-import { FlowRunner, Flows, NewFlow } from '@/pages/Flow';
-import { Home } from '@/pages/Home';
-import { UIPreview } from '@/pages/UIPreview';
+import { FlowByIdPage, FlowsListPage, NewFlowPage } from '@/features/flows';
+import { HomePage } from '@/features/home';
 
 export const routes: RouteDefinition[] = [
     {
@@ -12,22 +12,22 @@ export const routes: RouteDefinition[] = [
         children: [
             {
                 path: '/',
-                component: Home,
+                component: HomePage,
             },
             {
                 path: 'flows',
                 children: [
                     {
                         path: '/',
-                        component: Flows,
+                        component: FlowsListPage,
                     },
                     {
                         path: '/new',
-                        component: NewFlow,
+                        component: NewFlowPage,
                     },
                     {
                         path: '/:flowId',
-                        component: FlowRunner,
+                        component: FlowByIdPage,
                     },
                 ],
             },
@@ -35,7 +35,7 @@ export const routes: RouteDefinition[] = [
                 import.meta.env.DEV
                     ? [{
                         path: '/ui-preview',
-                        component: UIPreview,
+                        component: UIPreviewPage,
                     }]
                     : []
             ),

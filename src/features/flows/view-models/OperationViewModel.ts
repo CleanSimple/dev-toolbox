@@ -4,10 +4,10 @@ import type { Accessor } from 'solid-js';
 
 import { Formatters, getFormatters } from '@/formatters';
 import { getOperations, Operations } from '@/operations';
+import { createDisposable } from '@/primitives/createDisposable';
+import { createLazyAsyncComputed } from '@/primitives/createLazyAsyncComputed';
 import { format, releaseData, runOperation } from '@/utils/flow-helpers';
 import { createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
-import { createDisposable } from '../primitives/createDisposable';
-import { createLazyAsyncComputed } from '../primitives/createLazyAsyncComputed';
 
 export function createOperationViewModel(
     operation: Operation,

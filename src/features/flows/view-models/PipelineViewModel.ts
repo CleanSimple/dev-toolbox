@@ -1,9 +1,10 @@
 import type { DataFormatId, DataRef } from '@/data-formats';
 import type { Operation, Pipeline } from '@/types/models';
 import type { Accessor } from 'solid-js';
+import type { OperationViewModel } from './OperationViewModel';
 
 import { createSignal } from 'solid-js';
-import { createOperationViewModel } from './operation';
+import { createOperationViewModel } from './OperationViewModel';
 
 export function createPipelineViewModel(
     pipeline: Pipeline,
@@ -12,11 +13,11 @@ export function createPipelineViewModel(
     isEditing: Accessor<boolean>,
 ) {
     const [name, _setName] = createSignal(pipeline.name);
-    const [operations, setOperations] = createSignal<ReturnType<typeof createOperationViewModel>[]>(
+    const [operations, setOperations] = createSignal<OperationViewModel[]>(
         [],
     );
 
-    const operationsLocal: ReturnType<typeof createOperationViewModel>[] = [];
+    const operationsLocal: OperationViewModel[] = [];
     let nextInputDataFormatId: DataFormatId | null = inputDataFormatId();
     for (const operation of pipeline.operations) {
         const operationVM = createOperationViewModel(operation, nextInputDataFormatId, input);

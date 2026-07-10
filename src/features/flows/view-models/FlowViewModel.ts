@@ -1,15 +1,16 @@
 import type { DataFormatId, DataRef } from '@/data-formats';
 import type { Flow } from '@/types/models';
+import type { PipelineViewModel } from './PipelineViewModel';
 
 import { DataFormats } from '@/data-formats';
 import { CustomFlows, Flows } from '@/flows';
 import { getParsers, Parsers } from '@/parsers';
+import { createDebounced } from '@/primitives/createDebounced';
+import { createDisposable } from '@/primitives/createDisposable';
 import { parse, releaseData } from '@/utils/flow-helpers';
 import { hasKey } from '@cleansimple/utils-js';
 import { batch, createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
-import { createDebounced } from '../primitives/createDebounced';
-import { createDisposable } from '../primitives/createDisposable';
-import { createPipelineViewModel } from './pipeline';
+import { createPipelineViewModel } from './PipelineViewModel';
 
 export function createFlowViewModel(flowId: string) {
     const flow: Flow = Flows[flowId] ?? CustomFlows.get(flowId) ?? {
@@ -33,7 +34,7 @@ export function createFlowViewModel(flowId: string) {
     const [inputPlaceholder, setInputPlaceholder] = createSignal<string | null>(null);
     const [inputExample, setInputExample] = createSignal<string | null>(null);
     const [inputError, setInputError] = createSignal<string | null>(null);
-    const [pipelines, setPipelines] = createSignal<ReturnType<typeof createPipelineViewModel>[]>(
+    const [pipelines, setPipelines] = createSignal<PipelineViewModel[]>(
         [],
     );
     const [isParsing, setIsParsing] = createSignal(false);

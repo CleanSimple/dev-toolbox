@@ -1,6 +1,6 @@
 import type { DataFormatId } from '@/data-formats';
 import type { ParserId } from '@/parsers';
-import type { FlowViewModel } from '@/view-models/flow';
+import type { FlowViewModel } from '../view-models/FlowViewModel';
 
 import { Loader } from '@/components/Loader';
 import { Button } from '@/components/ui/Button';
@@ -15,14 +15,14 @@ import { ArrowLeft, Plus, Save, SquarePen, Trash2 } from 'lucide-solid';
 import { For, Show } from 'solid-js';
 import { Pipeline } from './Pipeline';
 
-interface FlowRunnerProps {
-    flow: FlowViewModel;
+interface FlowProps {
+    flowVM: FlowViewModel;
     onBack: () => void;
     onSave?: () => void;
     onDelete?: () => void;
 }
 
-export function Flow(props: FlowRunnerProps) {
+export function Flow(props: FlowProps) {
     const {
         isEditing,
         name,
@@ -47,7 +47,7 @@ export function Flow(props: FlowRunnerProps) {
         deletePipeline,
         addPipeline,
         isParsing,
-    } = props.flow;
+    } = props.flowVM;
     const confirmDeleteFlowModal = createModal();
     const confirmDeletePipelineModal = createModal();
 
@@ -190,14 +190,19 @@ export function Flow(props: FlowRunnerProps) {
             <For each={pipelines()}>
                 {(pipeline, index) => (
                     <Pipeline
-                        pipeline={pipeline}
+                        pipelineVM={pipeline}
                         isEditing={isEditing()}
                         onDelete={() => void handleDeletePipeline(index())}
                     />
                 )}
             </For>
             <Show when={isEditing()}>
-                <Button color='secondary' size='lg' class='self-center gap-1' onClick={() => addPipeline()}>
+                <Button
+                    color='secondary'
+                    size='lg'
+                    class='self-center gap-1'
+                    onClick={() => addPipeline()}
+                >
                     <Plus class='w-5 h-5' />
                     Add Pipeline
                 </Button>

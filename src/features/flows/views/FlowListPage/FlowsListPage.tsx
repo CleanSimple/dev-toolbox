@@ -5,9 +5,9 @@ import { CustomFlows, Favorites, Flows as Flows_ } from '@/flows';
 import { useNavigate } from '@solidjs/router';
 import { Frown, Plus, Search } from 'lucide-solid';
 import { createSignal, For } from 'solid-js';
-import { FlowInfo } from './parts/FlowInfo';
+import { FlowInfo } from './components/FlowInfo';
 
-export function Flows() {
+export function FlowsListPage() {
     const [search, setSearch] = createSignal('');
     const confirmDeleteFlowModal = createModal();
     const navigate = useNavigate();

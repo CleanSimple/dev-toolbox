@@ -13,12 +13,13 @@ import { Plus } from 'lucide-solid';
 import { createMemo, createSignal } from 'solid-js';
 import { OperationChip } from './OperationChip';
 
-interface AddOperationButtonProps {
+interface AddOperationProps {
     inputDataFormatId: DataFormatId | null;
     onOperationSelected: (operation: Operation) => void;
 }
 
-export function AddOperationButton(props: AddOperationButtonProps) {
+
+export function AddOperation(props: AddOperationProps) {
     const modal = createModal();
     const [selectedOperationId, setSelectedOperationId] = createSignal<OperationId | null>(null);
     const [selectedFormatterId, setSelectedFormatterId] = createSignal<FormatterId | null>(null);
@@ -26,6 +27,7 @@ export function AddOperationButton(props: AddOperationButtonProps) {
     const operations = createMemo(() =>
         props.inputDataFormatId ? getOperations(props.inputDataFormatId) : []
     );
+
     const formatters = createMemo(() => {
         const operationId = selectedOperationId();
         if (!operationId) return [];

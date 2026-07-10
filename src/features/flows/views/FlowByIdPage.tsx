@@ -1,10 +1,10 @@
 import { CustomFlows, Flows } from '@/flows';
-import { createFlowViewModel } from '@/view-models/flow';
 import { hasKey } from '@cleansimple/utils-js';
 import { useNavigate, useParams } from '@solidjs/router';
-import { Flow } from './parts/Flow';
+import { Flow } from '../components/Flow';
+import { createFlowViewModel } from '../view-models/FlowViewModel';
 
-export function FlowRunner() {
+export function FlowByIdPage() {
     const params = useParams<{ flowId: string }>();
     const navigate = useNavigate();
 
@@ -13,11 +13,11 @@ export function FlowRunner() {
         return;
     }
 
-    const flow = createFlowViewModel(params.flowId);
+    const flowVM = createFlowViewModel(params.flowId);
 
     return (
         <Flow
-            flow={flow}
+            flowVM={flowVM}
             onBack={() => navigate('/flows')}
             onDelete={() => navigate('/flows')}
         />

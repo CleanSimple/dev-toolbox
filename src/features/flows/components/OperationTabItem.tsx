@@ -1,5 +1,5 @@
-import type { OperationViewModel } from '@/view-models/operation';
 import type { VariantProps } from 'tailwind-variants/lite';
+import type { OperationViewModel } from '../view-models/OperationViewModel';
 
 import { Loader } from '@/components/Loader';
 import { Button } from '@/components/ui/Button';
@@ -9,7 +9,7 @@ import { operationTabItemStyles } from './OperationTabItem.styles';
 
 type OperationTabItemVariantProps = VariantProps<typeof operationTabItemStyles>;
 interface OperationTabItemProps extends OperationTabItemVariantProps {
-    operation: OperationViewModel;
+    operationVM: OperationViewModel;
     canDelete: boolean;
     onClick: () => void;
     onDelete: () => void;
@@ -23,14 +23,14 @@ export function OperationTabItem(props: OperationTabItemProps) {
             class={operationTabItemStyles(variantProps)}
             onClick={props.onClick}
         >
-            <span>{props.operation.name}</span>
+            <span>{props.operationVM.name}</span>
             <Show when={props.canDelete}>
                 <Button color='danger' size='sm' class='p-0.5!' onClick={() => props.onDelete()}>
                     <X class='w-4 h-4' />
                 </Button>
             </Show>
 
-            <Show when={props.operation.isRunning()}>
+            <Show when={props.operationVM.isRunning()}>
                 <Loader text='' spinnerSize='sm' />
             </Show>
         </div>

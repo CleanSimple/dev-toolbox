@@ -1,7 +1,7 @@
 import { ServiceWorkerRegistration } from '@/components/pwa/ServiceWorkerRegistration';
 import { ThemeProvider } from '@/contexts/ThemeContext';
-import { routes } from '@/routes';
 import { Router } from '@solidjs/router';
+import { routes } from './routes';
 
 export function App() {
     return (

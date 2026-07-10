@@ -1,23 +1,23 @@
-import type { PipelineViewModel } from '@/view-models/pipeline';
+import type { PipelineViewModel } from '../view-models/PipelineViewModel';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { ArrowRight, Trash2 } from 'lucide-solid';
 import { createComputed, createMemo, createSignal, For, Match, Show, Switch } from 'solid-js';
-import { AddOperationButton } from './AddOperationButton';
-import { OperationTab } from './OperationTab';
+import { AddOperation } from './AddOperation';
+import { Operation } from './Operation';
 import { OperationTabItem } from './OperationTabItem';
 
 interface PipelineProps {
-    pipeline: PipelineViewModel;
+    pipelineVM: PipelineViewModel;
     onDelete: () => void;
     isEditing: boolean;
 }
 
 export function Pipeline(props: PipelineProps) {
     const { name, setName, inputDataFormatId, operations, addOperation, popOperation } =
-        props.pipeline;
+        props.pipelineVM;
 
     const lastActiveOperationIndex = () =>
         operations()
@@ -78,7 +78,7 @@ export function Pipeline(props: PipelineProps) {
                     {(operation, index) => (
                         <>
                             <OperationTabItem
-                                operation={operation}
+                                operationVM={operation}
                                 type={operation.type}
                                 selected={index() == selectedOperation()}
                                 inactive={operation.isInactive}
@@ -97,7 +97,7 @@ export function Pipeline(props: PipelineProps) {
                     )}
                 </For>
                 <Show when={props.isEditing}>
-                    <AddOperationButton
+                    <AddOperation
                         inputDataFormatId={newOperationDataFormat()}
                         onOperationSelected={addOperation}
                     />
@@ -115,7 +115,7 @@ export function Pipeline(props: PipelineProps) {
                             <span class='text-danger'>Error: {operation.operationError()}</span>
                         </Match>
                         <Match when={true}>
-                            <OperationTab operation={operation} />
+                            <Operation operationVM={operation} />
                         </Match>
                     </Switch>
                 )}

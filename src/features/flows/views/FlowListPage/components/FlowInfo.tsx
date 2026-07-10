@@ -14,6 +14,7 @@ interface FlowInfoProps {
     onDelete?: () => void;
 }
 
+
 export function FlowInfo(props: FlowInfoProps) {
     const isFavorite = () => Favorites.has(props.flowId);
 

@@ -1,0 +1,20 @@
+import { Text } from '#/flows/data-formats';
+import { TextParser } from '#/flows/parsers/TextParser';
+import { describe, expect, it } from 'vitest';
+
+describe('TextParser', () => {
+    it('should have correct metadata', () => {
+        const parser = new TextParser();
+
+        expect(parser.name).toBe('Text');
+        expect(parser.placeholder).toBe('Enter text content');
+    });
+
+    it('should parse text correctly', () => {
+        const parser = new TextParser();
+        const result = parser.parse('Hello World');
+
+        expect(result).toBeInstanceOf(Text);
+        expect(result.value).toBe('Hello World');
+    });
+});

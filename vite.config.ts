@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import type { ManifestOptions, VitePWAOptions } from 'vite-plugin-pwa';
 
 import tailwindcss from '@tailwindcss/vite';
@@ -47,5 +48,10 @@ export default defineConfig({
             'Cross-Origin-Opener-Policy': 'same-origin',
             'Cross-Origin-Embedder-Policy': 'credentialless',
         },
+    },
+    test: {
+        environment: 'jsdom',
+        include: ['src/**/*.test.{ts,tsx}'],
+        setupFiles: ['./vitest.setup.ts'],
     },
 });

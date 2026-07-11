@@ -4,9 +4,8 @@ import type { OperationId } from '#/flows/definitions/operations';
 import type { Operation } from '#/flows/types/models';
 
 import { OperationChip } from '#/flows/components/OperationChip';
-import { Formatters } from '#/flows/definitions/formatters';
-import { Operations } from '#/flows/definitions/operations';
-import { getFormatters, getOperations } from '#/flows/utils';
+import { Formatters, getFormatters } from '#/flows/definitions/formatters';
+import { getOperations, Operations } from '#/flows/definitions/operations';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import { createModal, Modal } from '@/components/ui/Modal';

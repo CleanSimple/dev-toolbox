@@ -1,4 +1,4 @@
-import { decodeString } from '#/flows/utils';
+import { decodeString } from '#/flows/utils/text';
 import { Text } from './text';
 
 const Identifier = Symbol();

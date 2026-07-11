@@ -1,8 +1,10 @@
 import type { DataFormatById, DataFormatId } from '#/flows/data-formats';
 import type { IFormatter } from '#/flows/types';
 
+import { DataFormats } from '#/flows/data-formats';
 import { BytesToHexFormatter } from '#/flows/formatters/BytesToHexFormatter';
 import { TextFormatter } from '#/flows/formatters/TextFormatter';
+import { isSubclassOf } from '#/flows/utils/general';
 
 interface FormatterRecord<T extends DataFormatId> {
     dataFormatId: T;
@@ -32,3 +34,17 @@ export const Formatters = {
 };
 
 export type FormatterId = keyof typeof Formatters;
+
+export function getFormatters(dataFormatId: DataFormatId) {
+    const formatters: FormatterId[] = [];
+
+    const dataFormatType = DataFormats[dataFormatId].type;
+    for (const [id, record] of Object.entries(Formatters)) {
+        const formatterDataFormatType = DataFormats[record.dataFormatId].type;
+        if (isSubclassOf(dataFormatType, formatterDataFormatType)) {
+            formatters.push(id as FormatterId);
+        }
+    }
+
+    return formatters;
+}

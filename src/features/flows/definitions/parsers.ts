@@ -1,6 +1,7 @@
 import type { DataFormatById, DataFormatId } from '#/flows/data-formats';
 import type { IParser } from '#/flows/types';
 
+import { DataFormats } from '#/flows/data-formats';
 import { Base64Parser } from '#/flows/parsers/Base64Parser';
 import { BytesHexParser } from '#/flows/parsers/BytesHexParser';
 import { TextParser } from '#/flows/parsers/TextParser';
@@ -19,3 +20,17 @@ export const Parsers = {
 };
 
 export type ParserId = keyof typeof Parsers;
+
+export function getParsers(dataFormatId: DataFormatId) {
+    const parsers: ParserId[] = [];
+
+    const dataFormatType = DataFormats[dataFormatId].type;
+    for (const [id, record] of Object.entries(Parsers)) {
+        const parserDataFormatType = DataFormats[record.dataFormatId].type;
+        if (dataFormatType === parserDataFormatType) {
+            parsers.push(id as ParserId);
+        }
+    }
+
+    return parsers;
+}

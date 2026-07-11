@@ -1,7 +1,7 @@
 import { Base64 } from '#/flows/data-formats/base64';
 import { Bytes } from '#/flows/data-formats/bytes';
 import { Text } from '#/flows/data-formats/text';
-import { decodeString } from '#/flows/utils';
+import { decodeString } from '#/flows/utils/text';
 import { extendPrototype } from '@cleansimple/utils-js';
 
 interface BytesExtensions {

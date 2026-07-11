@@ -1,6 +1,7 @@
 import type { DataFormatById, DataFormatId } from '#/flows/data-formats';
 import type { IOperation } from '#/flows/types';
 
+import { DataFormats } from '#/flows/data-formats';
 import { Formatters } from '#/flows/definitions/formatters';
 import { Parsers } from '#/flows/definitions/parsers';
 import { Base64Decode } from '#/flows/operations/Base64Decode';
@@ -10,6 +11,7 @@ import { BytesToText } from '#/flows/operations/BytesToText';
 import { Format } from '#/flows/operations/Format';
 import { Parse } from '#/flows/operations/Parse';
 import { TextToBytes } from '#/flows/operations/TextToBytes';
+import { isSubclassOf } from '#/flows/utils/general';
 
 interface OperationRecord<TIn extends DataFormatId, TOut extends DataFormatId> {
     inDataFormatId: TIn;
@@ -64,3 +66,17 @@ export const Operations = {
 };
 
 export type OperationId = keyof typeof Operations;
+
+export function getOperations(dataFormatId: DataFormatId) {
+    const operations: OperationId[] = [];
+
+    const dataFormatType = DataFormats[dataFormatId].type;
+    for (const [id, operation] of Object.entries(Operations)) {
+        const operationInDataFormatType = DataFormats[operation.inDataFormatId].type;
+        if (isSubclassOf(dataFormatType, operationInDataFormatType)) {
+            operations.push(id as OperationId);
+        }
+    }
+
+    return operations;
+}

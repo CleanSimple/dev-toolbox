@@ -13,5 +13,6 @@
         "*.svg": "default"
     },
     "typescript.preferences.importModuleSpecifier": "non-relative",
-    "typescript.preferences.importModuleSpecifierEnding": "minimal"
+    "typescript.preferences.importModuleSpecifierEnding": "minimal",
+    "files.eol": "\n"
 }

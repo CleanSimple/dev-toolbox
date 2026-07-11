@@ -1,7 +1,7 @@
-import { nextCustomFlowId } from '@/flows';
+import { Flow } from '#/flows/components/Flow';
+import { CustomFlows } from '#/flows/stores/custom-flow';
+import { createFlowViewModel } from '#/flows/view-models/FlowViewModel';
 import { useNavigate } from '@solidjs/router';
-import { Flow } from '../components/Flow';
-import { createFlowViewModel } from '../view-models/FlowViewModel';
 
 export function NewFlowPage() {
     const navigate = useNavigate();
@@ -18,4 +18,19 @@ export function NewFlowPage() {
             onDelete={() => navigate('/flows')}
         />
     );
+}
+
+// utils
+function parseCustomFlowNumber(flowId: string) {
+    const match = flowId.match(/custom-flow-(\d+)$/);
+    if (!match) return 0;
+    return Number(match[1]);
+}
+
+export function nextCustomFlowId() {
+    const next = CustomFlows.entries().reduce(
+        (maxId, [flowId]) => Math.max(maxId, parseCustomFlowNumber(flowId)),
+        0,
+    ) + 1;
+    return `custom-flow-${next}`;
 }

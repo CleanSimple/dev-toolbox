@@ -1,7 +1,7 @@
-import type { Flow } from '@/types/models';
+import type { Flow } from '#/flows/types/models';
 
+import { Favorites } from '#/flows/stores/favorite';
 import { Card } from '@/components/ui/Card';
-import { Favorites } from '@/flows';
 import { A } from '@solidjs/router';
 import { Star, Trash2 } from 'lucide-solid';
 import { For, Show } from 'solid-js';
@@ -13,7 +13,6 @@ interface FlowInfoProps {
     isCustom: boolean;
     onDelete?: () => void;
 }
-
 
 export function FlowInfo(props: FlowInfoProps) {
     const isFavorite = () => Favorites.has(props.flowId);

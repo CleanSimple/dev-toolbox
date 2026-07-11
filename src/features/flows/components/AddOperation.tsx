@@ -1,23 +1,23 @@
-import type { DataFormatId } from '@/data-formats';
-import type { FormatterId } from '@/formatters';
-import type { OperationId } from '@/operations';
-import type { Operation } from '@/types/models';
+import type { DataFormatId } from '#/flows/data-formats';
+import type { FormatterId } from '#/flows/definitions/formatters';
+import type { OperationId } from '#/flows/definitions/operations';
+import type { Operation } from '#/flows/types/models';
 
+import { OperationChip } from '#/flows/components/OperationChip';
+import { Formatters } from '#/flows/definitions/formatters';
+import { Operations } from '#/flows/definitions/operations';
+import { getFormatters, getOperations } from '#/flows/utils';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { SearchableSelect } from '@/components/ui/SearchableSelect';
-import { Formatters, getFormatters } from '@/formatters';
-import { getOperations, Operations } from '@/operations';
 import { Plus } from 'lucide-solid';
 import { createMemo, createSignal } from 'solid-js';
-import { OperationChip } from './OperationChip';
 
 interface AddOperationProps {
     inputDataFormatId: DataFormatId | null;
     onOperationSelected: (operation: Operation) => void;
 }
-
 
 export function AddOperation(props: AddOperationProps) {
     const modal = createModal();

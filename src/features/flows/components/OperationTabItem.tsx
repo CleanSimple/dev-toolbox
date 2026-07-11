@@ -1,5 +1,5 @@
+import type { OperationViewModel } from '#/flows/view-models/OperationViewModel';
 import type { VariantProps } from 'tailwind-variants/lite';
-import type { OperationViewModel } from '../view-models/OperationViewModel';
 
 import { Loader } from '@/components/Loader';
 import { Button } from '@/components/ui/Button';

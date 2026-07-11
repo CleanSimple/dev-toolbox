@@ -1,5 +1,5 @@
-import type { FormatterId } from '@/formatters';
-import type { OperationViewModel } from '../view-models/OperationViewModel';
+import type { FormatterId } from '#/flows/definitions/formatters';
+import type { OperationViewModel } from '#/flows/view-models/OperationViewModel';
 
 import { Loader } from '@/components/Loader';
 import { CodeMirror } from '@/components/ui/CodeMirror';

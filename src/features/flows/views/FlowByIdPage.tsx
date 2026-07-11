@@ -1,8 +1,9 @@
-import { CustomFlows, Flows } from '@/flows';
+import { Flow } from '#/flows/components/Flow';
+import { Flows } from '#/flows/definitions/flows';
+import { CustomFlows } from '#/flows/stores/custom-flow';
+import { createFlowViewModel } from '#/flows/view-models/FlowViewModel';
 import { hasKey } from '@cleansimple/utils-js';
 import { useNavigate, useParams } from '@solidjs/router';
-import { Flow } from '../components/Flow';
-import { createFlowViewModel } from '../view-models/FlowViewModel';
 
 export function FlowByIdPage() {
     const params = useParams<{ flowId: string }>();

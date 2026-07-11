@@ -14,7 +14,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     registerType: 'prompt',
     includeAssets: ['favicon.svg', 'pwa-192x192.png', 'pwa-512x512.png'],
     manifest: manifest as Partial<ManifestOptions>,
-    srcDir: 'src/workers',
+    srcDir: 'src',
     filename: 'service-worker.ts',
     strategies: 'injectManifest',
 };

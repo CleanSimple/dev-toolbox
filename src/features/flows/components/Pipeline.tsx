@@ -1,4 +1,4 @@
-import type { PipelineViewModel } from '../view-models/PipelineViewModel';
+import type { PipelineViewModel } from '#/flows/view-models/PipelineViewModel';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';

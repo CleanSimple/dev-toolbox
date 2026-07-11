@@ -1,13 +1,14 @@
-import type { DataFormatId, DataRef } from '@/data-formats';
-import type { Flow } from '@/types/models';
+import type { DataFormatId, DataRef } from '#/flows/data-formats';
+import type { Flow } from '#/flows/types/models';
 import type { PipelineViewModel } from './PipelineViewModel';
 
-import { DataFormats } from '@/data-formats';
-import { CustomFlows, Flows } from '@/flows';
-import { getParsers, Parsers } from '@/parsers';
-import { createDebounced } from '@/primitives/createDebounced';
-import { createDisposable } from '@/primitives/createDisposable';
-import { parse, releaseData } from '@/utils/flow-helpers';
+import { DataFormats } from '#/flows/data-formats';
+import { Flows } from '#/flows/definitions/flows';
+import { Parsers } from '#/flows/definitions/parsers';
+import { CustomFlows } from '#/flows/stores/custom-flow';
+import { getParsers } from '#/flows/utils';
+import { parse, releaseData } from '#/flows/utils/processing';
+import { createDebounced, createDisposable } from '@/primitives';
 import { hasKey } from '@cleansimple/utils-js';
 import { batch, createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
 import { createPipelineViewModel } from './PipelineViewModel';

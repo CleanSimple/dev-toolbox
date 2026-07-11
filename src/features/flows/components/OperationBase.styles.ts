@@ -1,4 +1,4 @@
-import type { OperationType } from '@/types';
+import type { OperationType } from '#/flows/types';
 
 import { tv } from 'tailwind-variants/lite';
 

@@ -18,6 +18,7 @@
         "jsx": "preserve",
         "jsxImportSource": "solid-js",
         "paths": {
+            "#/*": ["./src/features/*"],
             "@/*": ["./src/*"]
         },
 

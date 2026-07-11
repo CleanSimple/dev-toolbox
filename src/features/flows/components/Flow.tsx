@@ -1,7 +1,8 @@
-import type { DataFormatId } from '@/data-formats';
-import type { ParserId } from '@/parsers';
-import type { FlowViewModel } from '../view-models/FlowViewModel';
+import type { DataFormatId } from '#/flows/data-formats';
+import type { ParserId } from '#/flows/definitions/parsers';
+import type { FlowViewModel } from '#/flows/view-models/FlowViewModel';
 
+import { DataFormats } from '#/flows/data-formats';
 import { Loader } from '@/components/Loader';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -10,7 +11,6 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { Select } from '@/components/ui/Select';
-import { DataFormats } from '@/data-formats';
 import { ArrowLeft, Plus, Save, SquarePen, Trash2 } from 'lucide-solid';
 import { For, Show } from 'solid-js';
 import { Pipeline } from './Pipeline';

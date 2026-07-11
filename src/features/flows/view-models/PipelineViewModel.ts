@@ -1,5 +1,5 @@
-import type { DataFormatId, DataRef } from '@/data-formats';
-import type { Operation, Pipeline } from '@/types/models';
+import type { DataFormatId, DataRef } from '#/flows/data-formats';
+import type { Operation, Pipeline } from '#/flows/types/models';
 import type { Accessor } from 'solid-js';
 import type { OperationViewModel } from './OperationViewModel';
 

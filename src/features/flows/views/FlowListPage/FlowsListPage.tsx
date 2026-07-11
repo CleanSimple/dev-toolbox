@@ -1,7 +1,9 @@
+import { Flows } from '#/flows/definitions/flows';
+import { CustomFlows } from '#/flows/stores/custom-flow';
+import { Favorites } from '#/flows/stores/favorite';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { createModal, Modal } from '@/components/ui/Modal';
-import { CustomFlows, Favorites, Flows as Flows_ } from '@/flows';
 import { useNavigate } from '@solidjs/router';
 import { Frown, Plus, Search } from 'lucide-solid';
 import { createSignal, For } from 'solid-js';
@@ -16,7 +18,7 @@ export function FlowsListPage() {
         const query = search().toLowerCase();
         const filtered = [
             ...CustomFlows.entries().map(([id, flow]) => ({ flowId: id, flow, isCustom: true })),
-            ...Object.entries(Flows_).map(([id, flow]) => ({ flowId: id, flow, isCustom: false })),
+            ...Object.entries(Flows).map(([id, flow]) => ({ flowId: id, flow, isCustom: false })),
         ].filter(
             (item) =>
                 item.flow.name.toLowerCase().includes(query)

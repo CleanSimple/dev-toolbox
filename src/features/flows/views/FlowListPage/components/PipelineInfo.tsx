@@ -1,14 +1,14 @@
-import type { DataFormatId } from '@/data-formats';
-import type { ParserId } from '@/parsers';
-import type { Pipeline } from '@/types/models';
+import type { DataFormatId } from '#/flows/data-formats';
+import type { ParserId } from '#/flows/definitions/parsers';
+import type { Pipeline } from '#/flows/types/models';
 
+import { OperationChip } from '#/flows/components/OperationChip';
+import { DataFormats } from '#/flows/data-formats';
+import { Formatters } from '#/flows/definitions/formatters';
+import { Operations } from '#/flows/definitions/operations';
+import { Parsers } from '#/flows/definitions/parsers';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
-import { DataFormats } from '@/data-formats';
-import { OperationChip } from '@/features/flows/components/OperationChip';
-import { Formatters } from '@/formatters';
-import { Operations } from '@/operations';
-import { Parsers } from '@/parsers';
 import { ArrowRight } from 'lucide-solid';
 import { For } from 'solid-js';
 

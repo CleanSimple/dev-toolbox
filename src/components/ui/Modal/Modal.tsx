@@ -1,9 +1,9 @@
 import type { ParentProps } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants';
 
+import { Button } from '@/components/ui/Button';
 import { X } from 'lucide-solid';
 import { Show, splitProps } from 'solid-js';
-import { Button } from '../Button';
 import { modalStyles } from './Modal.styles';
 
 type ModalVariantProps = VariantProps<typeof modalStyles>;

@@ -1,4 +1,4 @@
-import { Value } from './value';
+import { Value } from './Value';
 
 const Identifier = Symbol();
 

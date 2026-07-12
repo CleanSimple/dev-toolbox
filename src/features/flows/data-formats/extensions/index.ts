@@ -1,2 +1,2 @@
-import './bytes';
-import './text';
+import './BytesExtensions';
+import './TextExtensions';

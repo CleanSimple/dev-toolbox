@@ -1,6 +1,6 @@
-import { Base64 } from '#/flows/data-formats/base64';
-import { Bytes } from '#/flows/data-formats/bytes';
-import { Text } from '#/flows/data-formats/text';
+import { Base64 } from '#/flows/data-formats/Base64';
+import { Bytes } from '#/flows/data-formats/Bytes';
+import { Text } from '#/flows/data-formats/Text';
 import { decodeString } from '#/flows/utils/text';
 import { extendPrototype } from '@cleansimple/utils-js';
 

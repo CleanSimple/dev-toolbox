@@ -1,6 +1,6 @@
-import { Base64 } from './base64';
-import { Bytes } from './bytes';
-import { Text } from './text';
+import { Base64 } from './Base64';
+import { Bytes } from './Bytes';
+import { Text } from './Text';
 
 import './extensions';
 

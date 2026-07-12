@@ -1,5 +1,5 @@
 import { decodeString } from '#/flows/utils/text';
-import { Text } from './text';
+import { Text } from './Text';
 
 const Identifier = Symbol();
 

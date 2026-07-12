@@ -5,16 +5,25 @@ import { describe, expect, it } from 'vitest';
 
 describe('BytesToText', () => {
     it('should have correct metadata', () => {
+        // Arrange
         const op = new BytesToText();
 
+        // Act
+
+        // Assert
         expect(op.name).toBe('Bytes to Text');
         expect(op.type).toBe('transform');
     });
 
     it('should transform Bytes to Text', () => {
+        // Arrange
         const op = new BytesToText();
-        const result = op.handler(new Bytes(encodeString('Hello')));
+        const input = new Bytes(encodeString('Hello'));
 
+        // Act
+        const result = op.handler(input);
+
+        // Assert
         expect(result).toBeInstanceOf(Text);
         expect(result.value).toBe('Hello');
     });

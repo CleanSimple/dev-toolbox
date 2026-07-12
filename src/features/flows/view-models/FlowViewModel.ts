@@ -1,8 +1,8 @@
-import type { DataFormatId, DataRef } from '#/flows/data-formats';
+import type { DataFormatId, DataRef } from '#/flows/definitions/data-formats';
 import type { Flow } from '#/flows/types/models';
 import type { PipelineViewModel } from './PipelineViewModel';
 
-import { DataFormats } from '#/flows/data-formats';
+import { DataFormats } from '#/flows/definitions/data-formats';
 import { Flows } from '#/flows/definitions/flows';
 import { getParsers, Parsers } from '#/flows/definitions/parsers';
 import { CustomFlows } from '#/flows/stores/custom-flow';

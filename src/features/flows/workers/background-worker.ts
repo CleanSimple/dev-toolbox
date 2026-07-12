@@ -1,4 +1,4 @@
-import type { DataFormat, WorkerData } from '#/flows/data-formats';
+import type { DataFormat, WorkerData } from '#/flows/definitions/data-formats';
 import type { IFormatter, IOperation } from '#/flows/types';
 import type { Message, ProcessingMessage, ResultMessage } from '#/flows/types/messages';
 

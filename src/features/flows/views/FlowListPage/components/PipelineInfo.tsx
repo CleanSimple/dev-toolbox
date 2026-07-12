@@ -1,9 +1,9 @@
-import type { DataFormatId } from '#/flows/data-formats';
+import type { DataFormatId } from '#/flows/definitions/data-formats';
 import type { ParserId } from '#/flows/definitions/parsers';
 import type { Pipeline } from '#/flows/types/models';
 
 import { OperationChip } from '#/flows/components/OperationChip';
-import { DataFormats } from '#/flows/data-formats';
+import { DataFormats } from '#/flows/definitions/data-formats';
 import { Formatters } from '#/flows/definitions/formatters';
 import { Operations } from '#/flows/definitions/operations';
 import { Parsers } from '#/flows/definitions/parsers';

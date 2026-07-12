@@ -1,9 +1,8 @@
-import type { DataFormat } from '#/flows/data-formats';
-import type { IFormatter, IOperation } from '#/flows/types';
+import type { IDataFormat, IFormatter, IOperation } from '#/flows/types';
 
 import { Text } from '#/flows/data-formats';
 
-export class Format<T extends DataFormat> implements IOperation<T, Text> {
+export class Format<T extends IDataFormat<unknown>> implements IOperation<T, Text> {
     private readonly _formatter: IFormatter<T>;
 
     public constructor(formatter: IFormatter<T>) {

@@ -1,4 +1,4 @@
-import type { WorkerData } from '#/flows/data-formats';
+import type { WorkerData } from '#/flows/definitions/data-formats';
 import type { FormatterId } from '#/flows/definitions/formatters';
 import type { OperationId } from '#/flows/definitions/operations';
 import type { ParserId } from '#/flows/definitions/parsers';

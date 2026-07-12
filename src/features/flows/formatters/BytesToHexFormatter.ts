@@ -3,6 +3,13 @@ import type { IFormatter } from '#/flows/types';
 
 type HexMode = 'compact' | 'spaced' | 'prefixed' | 'cArray';
 
+interface HexModeOptions {
+    separator: string;
+    prefix: string;
+    leading: string;
+    trailing: string;
+}
+
 interface BytesToHexFormatterOptions {
     mode?: HexMode;
     bytesPerRow?: number;
@@ -54,10 +61,7 @@ export class BytesToHexFormatter implements IFormatter<Bytes> {
         'cArray': 'C Array',
     };
 
-    private static readonly ModeOptions: Record<
-        HexMode,
-        { separator: string; prefix: string; leading: string; trailing: string }
-    > = {
+    private static readonly ModeOptions: Record<HexMode, HexModeOptions> = {
         'compact': { separator: '', prefix: '', leading: '', trailing: '' },
         'spaced': { separator: ' ', prefix: '', leading: '', trailing: '' },
         'prefixed': { separator: ' ', prefix: '0x', leading: '', trailing: '' },

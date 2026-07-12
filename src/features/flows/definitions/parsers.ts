@@ -1,7 +1,7 @@
-import type { DataFormatById, DataFormatId } from '#/flows/data-formats';
+import type { DataFormatById, DataFormatId } from '#/flows/definitions/data-formats';
 import type { IParser } from '#/flows/types';
 
-import { DataFormats } from '#/flows/data-formats';
+import { DataFormats } from '#/flows/definitions/data-formats';
 import { Base64Parser } from '#/flows/parsers/Base64Parser';
 import { BytesHexParser } from '#/flows/parsers/BytesHexParser';
 import { TextParser } from '#/flows/parsers/TextParser';

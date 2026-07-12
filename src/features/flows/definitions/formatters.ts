@@ -1,7 +1,7 @@
-import type { DataFormatById, DataFormatId } from '#/flows/data-formats';
+import type { DataFormatById, DataFormatId } from '#/flows/definitions/data-formats';
 import type { IFormatter } from '#/flows/types';
 
-import { DataFormats } from '#/flows/data-formats';
+import { DataFormats } from '#/flows/definitions/data-formats';
 import { BytesToHexFormatter } from '#/flows/formatters/BytesToHexFormatter';
 import { TextFormatter } from '#/flows/formatters/TextFormatter';
 import { isSubclassOf } from '#/flows/utils/general';

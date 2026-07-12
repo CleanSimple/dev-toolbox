@@ -1,8 +1,8 @@
-import type { DataFormatId } from '#/flows/data-formats';
+import type { DataFormatId } from '#/flows/definitions/data-formats';
 import type { ParserId } from '#/flows/definitions/parsers';
 import type { FlowViewModel } from '#/flows/view-models/FlowViewModel';
 
-import { DataFormats } from '#/flows/data-formats';
+import { DataFormats } from '#/flows/definitions/data-formats';
 import { Loader } from '@/components/Loader';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';

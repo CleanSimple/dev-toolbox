@@ -1,7 +1,7 @@
-import type { DataFormatById, DataFormatId } from '#/flows/data-formats';
+import type { DataFormatById, DataFormatId } from '#/flows/definitions/data-formats';
 import type { IOperation } from '#/flows/types';
 
-import { DataFormats } from '#/flows/data-formats';
+import { DataFormats } from '#/flows/definitions/data-formats';
 import { Formatters } from '#/flows/definitions/formatters';
 import { Parsers } from '#/flows/definitions/parsers';
 import { Base64Decode } from '#/flows/operations/Base64Decode';

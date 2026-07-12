@@ -1,7 +1,7 @@
-import type { DataFormat, Text } from '#/flows/data-formats';
-import type { IOperation, IParser } from '#/flows/types';
+import type { Text } from '#/flows/data-formats';
+import type { IDataFormat, IOperation, IParser } from '#/flows/types';
 
-export class Parse<T extends DataFormat> implements IOperation<Text, T> {
+export class Parse<T extends IDataFormat<unknown>> implements IOperation<Text, T> {
     private readonly _parser: IParser<T>;
 
     public constructor(parser: IParser<T>) {

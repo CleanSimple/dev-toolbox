@@ -5,8 +5,8 @@ import { encodeString } from '#/flows/utils/text';
 import { extendPrototype } from '@cleansimple/utils-js';
 
 interface TextExtensions {
-    toBytes: () => Bytes;
-    toBase64: () => Base64;
+    toBytes: (this: Text) => Bytes;
+    toBase64: (this: Text) => Base64;
 }
 
 declare module '#/flows/data-formats/text' {
@@ -14,11 +14,11 @@ declare module '#/flows/data-formats/text' {
 }
 
 const textExtensions = (): TextExtensions => ({
-    toBytes(this: Text): Bytes {
+    toBytes(): Bytes {
         return new Bytes(encodeString(this.value));
     },
 
-    toBase64(this: Text): Base64 {
+    toBase64(): Base64 {
         return this.toBytes().toBase64();
     },
 });

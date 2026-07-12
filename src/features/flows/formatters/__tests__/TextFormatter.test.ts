@@ -17,11 +17,12 @@ describe('TextFormatter', () => {
         // Arrange
         const formatter = new TextFormatter();
         const textObj = new Text('Hello World!');
+        const expected = 'Hello World!';
 
         // Act
         const result = formatter.format(textObj);
 
         // Assert
-        expect(result).toBe('Hello World!');
+        expect(result).toBe(expected);
     });
 });

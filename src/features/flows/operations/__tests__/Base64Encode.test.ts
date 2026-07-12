@@ -18,12 +18,12 @@ describe('Base64Encode', () => {
         // Arrange
         const op = new Base64Encode();
         const input = new Text('Hello');
+        const expected = new Base64('SGVsbG8=');
 
         // Act
         const result = op.handler(input);
 
         // Assert
-        expect(result).toBeInstanceOf(Base64);
-        expect(result.value).toBe('SGVsbG8=');
+        expect(result).toStrictEqual(expected);
     });
 });

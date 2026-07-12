@@ -22,7 +22,7 @@ describe('JsonParser', () => {
         const result = parser.parse('{ "key": "value" }');
 
         // Assert
-        expect(result.value).toEqual({ key: 'value' });
+        expect(result.value).toStrictEqual({ key: 'value' });
     });
 
     it('should throw error for invalid JSON string', () => {

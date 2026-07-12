@@ -22,13 +22,13 @@ describe('Parse', () => {
         const parser = new BytesHexParser();
         const op = new Parse(parser);
         const text = new Text('31 32 32');
+        const expected = new Bytes([0x31, 0x32, 0x32]);
 
         // Act
         const result = op.handler(text);
 
         // Assert
-        expect(result).toBeInstanceOf(Bytes);
-        expect(result.value).toEqual(new Uint8Array([0x31, 0x32, 0x32]));
+        expect(result).toStrictEqual(expected);
     });
 
     it('should parse Text to Text using TextParser', () => {
@@ -36,12 +36,12 @@ describe('Parse', () => {
         const parser = new TextParser();
         const op = new Parse(parser);
         const text = new Text('test');
+        const expected = new Text('test');
 
         // Act
         const result = op.handler(text);
 
         // Assert
-        expect(result).toBeInstanceOf(Text);
-        expect(result.value).toBe('test');
+        expect(result).toStrictEqual(expected);
     });
 });

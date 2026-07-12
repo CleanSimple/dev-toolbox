@@ -17,12 +17,12 @@ describe('TextParser', () => {
     it('should parse text correctly', () => {
         // Arrange
         const parser = new TextParser();
+        const expected = new Text('Hello World');
 
         // Act
         const result = parser.parse('Hello World');
 
         // Assert
-        expect(result).toBeInstanceOf(Text);
-        expect(result.value).toBe('Hello World');
+        expect(result).toStrictEqual(expected);
     });
 });

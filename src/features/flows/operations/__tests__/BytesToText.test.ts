@@ -19,12 +19,12 @@ describe('BytesToText', () => {
         // Arrange
         const op = new BytesToText();
         const input = new Bytes(encodeString('Hello'));
+        const expected = new Text('Hello');
 
         // Act
         const result = op.handler(input);
 
         // Assert
-        expect(result).toBeInstanceOf(Text);
-        expect(result.value).toBe('Hello');
+        expect(result).toStrictEqual(expected);
     });
 });

@@ -17,12 +17,13 @@ describe('Base64Parser', () => {
     it('should parse valid Base64 string', () => {
         // Arrange
         const parser = new Base64Parser();
+        const expected = 'SGVsbG8=';
 
         // Act
         const result = parser.parse('SGVsbG8=');
 
         // Assert
-        expect(result.value).toBe('SGVsbG8=');
+        expect(result.value).toBe(expected);
     });
 
     it('should throw error for invalid Base64 string', () => {

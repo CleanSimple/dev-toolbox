@@ -56,12 +56,49 @@ export const Operations = {
         outDataFormatId: 'base64',
         operation: new Parse(Parsers.base64.parser),
     }),
+    'parse-json': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'json',
+        operation: new Parse(Parsers.json.parser),
+    }),
 
     /* --- Formatters --- */
+    // Bytes
     'format-bytes-hex-compact-16': operation({
         inDataFormatId: 'bytes',
         outDataFormatId: 'text',
         operation: new Format(Formatters['bytes-hex-compact-16'].formatter),
+    }),
+    'format-bytes-hex-spaced-16': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['bytes-hex-spaced-16'].formatter),
+    }),
+    'format-bytes-hex-prefixed-16': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['bytes-hex-prefixed-16'].formatter),
+    }),
+    'format-bytes-hex-cArray-16': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['bytes-hex-cArray-16'].formatter),
+    }),
+    // JSON
+    'format-json-compact': operation({
+        inDataFormatId: 'json',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['json-compact'].formatter),
+    }),
+    'format-json-space-2': operation({
+        inDataFormatId: 'json',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['json-space-2'].formatter),
+    }),
+    'format-json-space-4': operation({
+        inDataFormatId: 'json',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['json-space-4'].formatter),
     }),
 };
 

@@ -1,7 +1,7 @@
 import type { IDataFormat } from '#/flows/types';
 import type { ConstructorOf } from '@/types';
 
-import { Base64, Bytes, Text } from '#/flows/data-formats';
+import { Base64, Bytes, Json, Text } from '#/flows/data-formats';
 
 interface DataFormatRecord {
     name: string;
@@ -20,6 +20,10 @@ export const DataFormats = {
     'base64': {
         name: 'Base64',
         type: Base64,
+    },
+    'json': {
+        name: 'JSON',
+        type: Json,
     },
 } satisfies Record<string, DataFormatRecord>;
 

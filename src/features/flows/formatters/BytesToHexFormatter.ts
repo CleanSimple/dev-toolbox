@@ -22,13 +22,13 @@ export class BytesToHexFormatter implements IFormatter<Bytes> {
     public constructor(options: BytesToHexFormatterOptions = {}) {
         this.mode = options.mode ?? 'spaced';
         this.bytesPerRow = options.bytesPerRow ?? 16;
+
+        const parts: string[] = [BytesToHexFormatter.ModeNames[this.mode]];
+        if (this.bytesPerRow > 0) parts.push(`${this.bytesPerRow} bytes per row`);
+        this.name = `Hex (${parts.join(', ')})`;
     }
 
-    public get name(): string {
-        const options: string[] = [BytesToHexFormatter.ModeNames[this.mode]];
-        if (this.bytesPerRow > 0) options.push(`${this.bytesPerRow} bytes per row`);
-        return `Hex (${options.join(', ')})`;
-    }
+    public readonly name: string;
 
     public format(value: Bytes): string {
         const { separator, prefix, leading, trailing } = BytesToHexFormatter.ModeOptions[this.mode];

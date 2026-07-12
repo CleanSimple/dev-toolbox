@@ -4,6 +4,7 @@ import type { IParser } from '#/flows/types';
 import { DataFormats } from '#/flows/definitions/data-formats';
 import { Base64Parser } from '#/flows/parsers/Base64Parser';
 import { BytesHexParser } from '#/flows/parsers/BytesHexParser';
+import { JsonParser } from '#/flows/parsers/JsonParser';
 import { TextParser } from '#/flows/parsers/TextParser';
 
 interface ParserRecord<T extends DataFormatId> {
@@ -17,6 +18,7 @@ export const Parsers = {
     'text': parser({ dataFormatId: 'text', parser: new TextParser() }),
     'hex': parser({ dataFormatId: 'bytes', parser: new BytesHexParser() }),
     'base64': parser({ dataFormatId: 'base64', parser: new Base64Parser() }),
+    'json': parser({ dataFormatId: 'json', parser: new JsonParser() }),
 };
 
 export type ParserId = keyof typeof Parsers;

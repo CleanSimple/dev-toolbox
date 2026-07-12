@@ -5,12 +5,12 @@ import { describe, expect, it } from 'vitest';
 describe('JsonFormatter', () => {
     it('should have correct name', () => {
         // Arrange
-        const formatter = new JsonFormatter();
+        const formatter = new JsonFormatter({ space: 2 });
 
         // Act
 
         // Assert
-        expect(formatter.name).toBe('JSON');
+        expect(formatter.name).toBe('JSON (Indent: 2)');
     });
 
     it('should format JSON correctly', () => {

@@ -17,9 +17,9 @@ describe('Base64Parser', () => {
         expect(result.value).toBe('SGVsbG8=');
     });
 
-    // it('should throw error for invalid Base64 string', () => {
-    //     const parser = new Base64Parser();
-    //     // invalid base64 (not valid format)
-    //     expect(() => parser.parse('!@#$')).toThrow();
-    // });
+    it('should throw error for invalid Base64 string', () => {
+        const parser = new Base64Parser();
+
+        expect(() => parser.parse('!@#$')).toThrow();
+    });
 });

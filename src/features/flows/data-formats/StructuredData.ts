@@ -1,4 +1,4 @@
 import { Value } from './Value';
 
-export class StructuredData extends Value<object> {
+export abstract class StructuredData<T extends object = object> extends Value<T> {
 }

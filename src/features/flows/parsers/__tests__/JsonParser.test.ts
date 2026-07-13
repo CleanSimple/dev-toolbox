@@ -11,7 +11,7 @@ describe('JsonParser', () => {
         // Assert
         expect(parser.name).toBe('JSON');
         expect(parser.placeholder).toBe('Enter JSON content');
-        expect(parser.example).toBe('{ "key": "value" }');
+        expect(parser.example).toBe('{ "key": "value" }, [ 1, 2, 3 ]');
     });
 
     it('should parse valid JSON string', () => {
@@ -34,5 +34,20 @@ describe('JsonParser', () => {
 
         // Assert
         expect(parse).toThrow();
+    });
+
+    it('should throw error for values other than objects and arrays', () => {
+        // Arrange
+        const parser = new JsonParser();
+
+        // Act
+        const parse1 = () => parser.parse('123');
+        const parse2 = () => parser.parse('"test"');
+        const parse3 = () => parser.parse('true');
+
+        // Assert
+        expect(parse1).toThrow();
+        expect(parse2).toThrow();
+        expect(parse3).toThrow();
     });
 });

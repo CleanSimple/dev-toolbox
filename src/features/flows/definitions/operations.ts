@@ -61,6 +61,11 @@ export const Operations = {
         outDataFormatId: 'json',
         operation: new Parse(Parsers.json.parser),
     }),
+    'parse-url-encoded-form': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'url-encoded-form',
+        operation: new Parse(Parsers['url-encoded-form'].parser),
+    }),
 
     /* --- Formatters --- */
     // Bytes
@@ -99,6 +104,12 @@ export const Operations = {
         inDataFormatId: 'json',
         outDataFormatId: 'text',
         operation: new Format(Formatters['json-space-4'].formatter),
+    }),
+    // URL-encoded form
+    'format-url-encoded-form': operation({
+        inDataFormatId: 'url-encoded-form',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['url-encoded-form'].formatter),
     }),
 };
 

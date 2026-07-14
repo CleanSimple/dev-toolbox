@@ -2,6 +2,38 @@ import type { Flow } from '#/flows/types/models';
 
 export const Flows: Readonly<Record<string, Flow>> = Object.freeze({
     ...(import.meta.env.DEV ? devFlows() : {}),
+    'url-encode': {
+        name: 'URL Encode',
+        dataFormatId: 'text',
+        parserId: 'text',
+        pipelines: [
+            {
+                name: 'URL Encode',
+                operations: [
+                    {
+                        operationId: 'url-encode',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
+    'url-decode': {
+        name: 'URL Decode',
+        dataFormatId: 'url-encoded',
+        parserId: 'url-encoded',
+        pipelines: [
+            {
+                name: 'URL Decode',
+                operations: [
+                    {
+                        operationId: 'url-decode',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
     'base64-encode-text': {
         name: 'Base64 Encode',
         dataFormatId: 'text',

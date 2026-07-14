@@ -11,6 +11,8 @@ import { BytesToText } from '#/flows/operations/BytesToText';
 import { Format } from '#/flows/operations/Format';
 import { Parse } from '#/flows/operations/Parse';
 import { TextToBytes } from '#/flows/operations/TextToBytes';
+import { UrlDecode } from '#/flows/operations/UrlDecode';
+import { UrlEncode } from '#/flows/operations/UrlEncode';
 import { isSubclassOf } from '#/flows/utils/general';
 
 interface OperationRecord<TIn extends DataFormatId, TOut extends DataFormatId> {
@@ -49,6 +51,16 @@ export const Operations = {
         outDataFormatId: 'text',
         operation: new Base64Decode(),
     }),
+    'url-encode': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'url-encoded',
+        operation: new UrlEncode(),
+    }),
+    'url-decode': operation({
+        inDataFormatId: 'url-encoded',
+        outDataFormatId: 'text',
+        operation: new UrlDecode(),
+    }),
 
     /* --- Parsers --- */
     'parse-base64': operation({
@@ -60,6 +72,11 @@ export const Operations = {
         inDataFormatId: 'text',
         outDataFormatId: 'json',
         operation: new Parse(Parsers.json.parser),
+    }),
+    'parse-url-encoded': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'url-encoded',
+        operation: new Parse(Parsers['url-encoded'].parser),
     }),
     'parse-url-encoded-form': operation({
         inDataFormatId: 'text',

@@ -1,7 +1,7 @@
 import type { IDataFormat } from '#/flows/types';
 import type { ConstructorOf } from '@/types';
 
-import { Base64, Bytes, Json, Text, UrlEncodedForm } from '#/flows/data-formats';
+import { Base64, Bytes, Json, Text, UrlEncoded, UrlEncodedForm } from '#/flows/data-formats';
 
 interface DataFormatRecord {
     name: string;
@@ -24,6 +24,10 @@ export const DataFormats = {
     'json': {
         name: 'JSON',
         type: Json,
+    },
+    'url-encoded': {
+        name: 'URL-encoded',
+        type: UrlEncoded,
     },
     'url-encoded-form': {
         name: 'URL-encoded Form Data',

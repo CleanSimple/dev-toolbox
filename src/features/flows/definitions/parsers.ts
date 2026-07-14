@@ -7,6 +7,7 @@ import { BytesHexParser } from '#/flows/parsers/BytesHexParser';
 import { JsonParser } from '#/flows/parsers/JsonParser';
 import { TextParser } from '#/flows/parsers/TextParser';
 import { UrlEncodedFormParser } from '#/flows/parsers/UrlEncodedFormParser';
+import { UrlEncodedParser } from '#/flows/parsers/UrlEncodedParser';
 
 interface ParserRecord<T extends DataFormatId> {
     dataFormatId: T;
@@ -20,6 +21,7 @@ export const Parsers = {
     'hex': parser({ dataFormatId: 'bytes', parser: new BytesHexParser() }),
     'base64': parser({ dataFormatId: 'base64', parser: new Base64Parser() }),
     'json': parser({ dataFormatId: 'json', parser: new JsonParser() }),
+    'url-encoded': parser({ dataFormatId: 'url-encoded', parser: new UrlEncodedParser() }),
     'url-encoded-form': parser({
         dataFormatId: 'url-encoded-form',
         parser: new UrlEncodedFormParser(),

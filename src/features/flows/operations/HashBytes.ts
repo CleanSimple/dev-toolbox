@@ -9,18 +9,18 @@ interface HashTextOptions {
 }
 
 export class HashBytes implements IOperation<Bytes, Bytes> {
-    private readonly algorithm: HashAlgorithm;
+    private readonly _algorithm: HashAlgorithm;
 
     public constructor(options: HashTextOptions) {
-        this.algorithm = options.algorithm;
-        this.name = `Generate ${this.algorithm} Hash`;
+        this._algorithm = options.algorithm;
+        this.name = `Generate ${this._algorithm} Hash`;
     }
 
     public readonly name: string;
     public readonly type = 'hash';
 
     public async handler(input: Bytes) {
-        const hash = await crypto.subtle.digest(this.algorithm, input.value);
+        const hash = await crypto.subtle.digest(this._algorithm, input.value);
         return new Bytes(new Uint8Array(hash));
     }
 }

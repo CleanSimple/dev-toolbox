@@ -6,18 +6,18 @@ interface JsonFormatterOptions {
 }
 
 export class JsonFormatter implements IFormatter<Json> {
-    private readonly space: number;
+    private readonly _space: number;
 
     public constructor(options: JsonFormatterOptions = {}) {
-        this.space = options.space ?? 2;
-        if (this.space < 0) this.space = 0;
+        this._space = options.space ?? 2;
+        if (this._space < 0) this._space = 0;
 
-        this.name = this.space == 0 ? 'JSON (compact)' : `JSON (Indent: ${this.space})`;
+        this.name = this._space == 0 ? 'JSON (Compact)' : `JSON (Indent: ${this._space})`;
     }
 
     public readonly name;
 
     public format(value: Json): string {
-        return JSON.stringify(value.value, null, this.space);
+        return JSON.stringify(value.value, null, this._space);
     }
 }

@@ -16,22 +16,23 @@ interface BytesToHexFormatterOptions {
 }
 
 export class BytesToHexFormatter implements IFormatter<Bytes> {
-    private readonly mode: HexMode;
-    private readonly bytesPerRow: number;
+    private readonly _mode: HexMode;
+    private readonly _bytesPerRow: number;
 
     public constructor(options: BytesToHexFormatterOptions = {}) {
-        this.mode = options.mode ?? 'spaced';
-        this.bytesPerRow = options.bytesPerRow ?? 16;
+        this._mode = options.mode ?? 'spaced';
+        this._bytesPerRow = options.bytesPerRow ?? 16;
 
-        const parts: string[] = [BytesToHexFormatter.ModeNames[this.mode]];
-        if (this.bytesPerRow > 0) parts.push(`${this.bytesPerRow} bytes per row`);
+        const parts: string[] = [BytesToHexFormatter.ModeNames[this._mode]];
+        if (this._bytesPerRow > 0) parts.push(`${this._bytesPerRow} bytes per row`);
         this.name = `Hex (${parts.join(', ')})`;
     }
 
     public readonly name: string;
 
     public format(value: Bytes): string {
-        const { separator, prefix, leading, trailing } = BytesToHexFormatter.ModeOptions[this.mode];
+        const { separator, prefix, leading, trailing } =
+            BytesToHexFormatter.ModeOptions[this._mode];
 
         const hexBytes = Array.from(
             value.value,
@@ -39,13 +40,13 @@ export class BytesToHexFormatter implements IFormatter<Bytes> {
         );
 
         let formatted: string;
-        if (this.bytesPerRow === 0) {
+        if (this._bytesPerRow === 0) {
             formatted = hexBytes.join(separator);
         }
         else {
             const rows: string[] = [];
-            for (let i = 0; i < hexBytes.length; i += this.bytesPerRow) {
-                const slice = hexBytes.slice(i, i + this.bytesPerRow);
+            for (let i = 0; i < hexBytes.length; i += this._bytesPerRow) {
+                const slice = hexBytes.slice(i, i + this._bytesPerRow);
                 rows.push(slice.join(separator) + separator.trim());
             }
             formatted = rows.join('\n');

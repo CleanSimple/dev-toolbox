@@ -73,16 +73,19 @@ async function parseInBackground(parserId: ParserId, input: string) {
 
 export async function runOperation(operationId: OperationId, input: DataRef) {
     if (input.scope === 'local') {
-        return runOperationInForeground(operationId, input);
+        return await runOperationInForeground(operationId, input);
     }
     else {
         return await runOperationInBackground(operationId, input);
     }
 }
 
-function runOperationInForeground(operationId: OperationId, input: LocalData): LocalData {
+async function runOperationInForeground(
+    operationId: OperationId,
+    input: LocalData,
+): Promise<LocalData> {
     const operation = Operations[operationId].operation as IOperation<DataFormat, DataFormat>;
-    const result = operation.handler(input.instance);
+    const result = await operation.handler(input.instance);
     return { scope: 'local', instance: result };
 }
 

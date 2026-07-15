@@ -25,7 +25,7 @@ function releaseData(data: WorkerData) {
     DataStore.delete(data.instanceId);
 }
 
-function handleMessage(message: ProcessingMessage): ResultMessage {
+async function handleMessage(message: ProcessingMessage): Promise<ResultMessage> {
     try {
         switch (message.type) {
             case 'parse': {
@@ -40,9 +40,10 @@ function handleMessage(message: ProcessingMessage): ResultMessage {
                     DataFormat,
                     DataFormat
                 >;
+                const result = await operation.handler(getData(message.data));
                 return {
                     type: 'runOperation',
-                    data: storeData(operation.handler(getData(message.data))),
+                    data: storeData(result),
                 };
             }
             case 'format': {
@@ -69,6 +70,7 @@ function handleMessage(message: ProcessingMessage): ResultMessage {
 }
 
 self.addEventListener('message', (message: MessageEvent<Message<ProcessingMessage>>) => {
-    const result = handleMessage(message.data.payload);
-    self.postMessage({ id: message.data.id, payload: result } satisfies Message<ResultMessage>);
+    void handleMessage(message.data.payload).then((result) => {
+        self.postMessage({ id: message.data.id, payload: result } satisfies Message<ResultMessage>);
+    });
 });

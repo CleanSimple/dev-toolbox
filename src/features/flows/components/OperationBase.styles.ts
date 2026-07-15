@@ -12,6 +12,7 @@ export const operationBaseStyles = tv({
             format: null,
             encode: null,
             decode: null,
+            hash: null,
         } satisfies Record<OperationType | 'unknown', unknown>,
         selected: {
             true: 'outline-2 outline-brand outline-offset-1',
@@ -28,27 +29,32 @@ export const operationBaseStyles = tv({
         {
             type: 'transform',
             inactive: false,
-            class: 'bg-cyan-600 dark:bg-cyan-600 text-inverse',
+            class: 'bg-cyan-600 text-slate-100',
         },
         {
             type: 'parse',
             inactive: false,
-            class: 'bg-amber-600 dark:bg-amber-600 text-inverse',
+            class: 'bg-amber-400 text-slate-900',
         },
         {
             type: 'format',
             inactive: false,
-            class: 'bg-yellow-600 dark:bg-yellow-600 text-inverse',
+            class: 'bg-amber-600 text-slate-100',
         },
         {
             type: 'encode',
             inactive: false,
-            class: 'bg-lime-600 dark:bg-lime-600 text-inverse',
+            class: 'bg-teal-400 text-slate-900',
         },
         {
             type: 'decode',
             inactive: false,
-            class: 'bg-teal-600 dark:bg-teal-600 text-inverse',
+            class: 'bg-teal-600 text-slate-100',
+        },
+        {
+            type: 'hash',
+            inactive: false,
+            class: 'bg-sky-600 text-slate-100',
         },
         {
             hasError: true,

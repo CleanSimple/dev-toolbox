@@ -17,19 +17,23 @@ const formatter = <T extends DataFormatId>(record: FormatterRecord<T>) => record
 
 export const Formatters = {
     'text': formatter({ dataFormatId: 'text', formatter: new TextFormatter() }),
-    'bytes-hex-compact-16': formatter({
+    'hex-compact': formatter({
+        dataFormatId: 'bytes',
+        formatter: new BytesToHexFormatter({ mode: 'compact', bytesPerRow: 0 }),
+    }),
+    'hex-compact-16': formatter({
         dataFormatId: 'bytes',
         formatter: new BytesToHexFormatter({ mode: 'compact', bytesPerRow: 16 }),
     }),
-    'bytes-hex-spaced-16': formatter({
+    'hex-spaced-16': formatter({
         dataFormatId: 'bytes',
         formatter: new BytesToHexFormatter({ mode: 'spaced', bytesPerRow: 16 }),
     }),
-    'bytes-hex-prefixed-16': formatter({
+    'hex-prefixed-16': formatter({
         dataFormatId: 'bytes',
         formatter: new BytesToHexFormatter({ mode: 'prefixed', bytesPerRow: 16 }),
     }),
-    'bytes-hex-cArray-16': formatter({
+    'hex-cArray-16': formatter({
         dataFormatId: 'bytes',
         formatter: new BytesToHexFormatter({ mode: 'cArray', bytesPerRow: 16 }),
     }),

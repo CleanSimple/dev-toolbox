@@ -1,6 +1,6 @@
 import type { Flow } from '#/flows/types/models';
 
-export const Flows: Readonly<Record<string, Flow>> = Object.freeze({
+export const Flows = Object.freeze<Record<string, Flow>>({
     ...(import.meta.env.DEV ? devFlows() : {}),
     'url-encode': {
         name: 'URL Encode',
@@ -108,7 +108,7 @@ export const Flows: Readonly<Record<string, Flow>> = Object.freeze({
                 operations: [
                     {
                         operationId: 'text-to-bytes',
-                        formatterId: 'bytes-hex-spaced-16',
+                        formatterId: 'hex-spaced-16',
                     },
                 ],
             },
@@ -119,32 +119,59 @@ export const Flows: Readonly<Record<string, Flow>> = Object.freeze({
 function devFlows(): Record<string, Flow> {
     return {
         'test': {
-            name: 'Test',
+            name: 'Bunch of Stuff™',
             dataFormatId: 'text',
             parserId: 'text',
             pipelines: [
                 {
-                    name: 'Bunch of Stuff™',
+                    name: 'Encode/Decode',
                     operations: [
                         {
                             operationId: 'base64-encode-text',
                             formatterId: 'text',
                         },
                         {
+                            operationId: 'base64-decode',
+                            formatterId: 'text',
+                        },
+                    ],
+                },
+                {
+                    name: 'Parse/Format',
+                    operations: [
+                        {
                             operationId: 'text-to-bytes',
-                            formatterId: 'bytes-hex-spaced-16',
+                            formatterId: 'hex-compact',
+                        },
+                        {
+                            operationId: 'format-hex-spaced-16',
+                            formatterId: 'text',
+                        },
+                        {
+                            operationId: 'parse-hex',
+                            formatterId: 'hex-spaced-16',
+                        },
+                    ],
+                },
+                {
+                    name: 'Transform',
+                    operations: [
+                        {
+                            operationId: 'text-to-bytes',
+                            formatterId: 'hex-spaced-16',
                         },
                         {
                             operationId: 'bytes-to-text',
                             formatterId: 'text',
                         },
+                    ],
+                },
+                {
+                    name: 'Hash',
+                    operations: [
                         {
-                            operationId: 'parse-base64',
-                            formatterId: 'text',
-                        },
-                        {
-                            operationId: 'base64-decode',
-                            formatterId: 'text',
+                            operationId: 'hash-text-sha256',
+                            formatterId: 'hex-compact',
                         },
                     ],
                 },
@@ -163,12 +190,12 @@ function devFlows(): Record<string, Flow> {
                             formatterId: 'text',
                         },
                         {
-                            operationId: 'format-bytes-hex-compact-16',
+                            operationId: 'format-hex-compact-16',
                             formatterId: 'text',
                         },
                         {
                             operationId: 'base64-encode-text',
-                            formatterId: 'bytes-hex-spaced-16',
+                            formatterId: 'hex-spaced-16',
                         },
                         {
                             operationId: 'bytes-to-text',

@@ -5,10 +5,12 @@ import { DataFormats } from '#/flows/definitions/data-formats';
 import { Formatters } from '#/flows/definitions/formatters';
 import { Parsers } from '#/flows/definitions/parsers';
 import { Base64Decode } from '#/flows/operations/Base64Decode';
-import { Base64Encode } from '#/flows/operations/Base64Encode';
 import { Base64EncodeBytes } from '#/flows/operations/Base64EncodeBytes';
+import { Base64EncodeText } from '#/flows/operations/Base64EncodeText';
 import { BytesToText } from '#/flows/operations/BytesToText';
 import { Format } from '#/flows/operations/Format';
+import { HashBytes } from '#/flows/operations/HashBytes';
+import { HashText } from '#/flows/operations/HashText';
 import { Parse } from '#/flows/operations/Parse';
 import { TextToBytes } from '#/flows/operations/TextToBytes';
 import { UrlDecode } from '#/flows/operations/UrlDecode';
@@ -39,7 +41,7 @@ export const Operations = {
     'base64-encode-text': operation({
         inDataFormatId: 'text',
         outDataFormatId: 'base64',
-        operation: new Base64Encode(),
+        operation: new Base64EncodeText(),
     }),
     'base64-encode-bytes': operation({
         inDataFormatId: 'bytes',
@@ -61,8 +63,53 @@ export const Operations = {
         outDataFormatId: 'text',
         operation: new UrlDecode(),
     }),
+    'hash-text-sha1': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'bytes',
+        operation: new HashText({ algorithm: 'SHA-1' }),
+    }),
+    'hash-text-sha256': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'bytes',
+        operation: new HashText({ algorithm: 'SHA-256' }),
+    }),
+    'hash-text-sha384': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'bytes',
+        operation: new HashText({ algorithm: 'SHA-384' }),
+    }),
+    'hash-text-sha512': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'bytes',
+        operation: new HashText({ algorithm: 'SHA-512' }),
+    }),
+    'hash-bytes-sha1': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'bytes',
+        operation: new HashBytes({ algorithm: 'SHA-1' }),
+    }),
+    'hash-bytes-sha256': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'bytes',
+        operation: new HashBytes({ algorithm: 'SHA-256' }),
+    }),
+    'hash-bytes-sha384': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'bytes',
+        operation: new HashBytes({ algorithm: 'SHA-384' }),
+    }),
+    'hash-bytes-sha512': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'bytes',
+        operation: new HashBytes({ algorithm: 'SHA-512' }),
+    }),
 
     /* --- Parsers --- */
+    'parse-hex': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'bytes',
+        operation: new Parse(Parsers.hex.parser),
+    }),
     'parse-base64': operation({
         inDataFormatId: 'text',
         outDataFormatId: 'base64',
@@ -86,25 +133,30 @@ export const Operations = {
 
     /* --- Formatters --- */
     // Bytes
-    'format-bytes-hex-compact-16': operation({
+    'format-hex-compact': operation({
         inDataFormatId: 'bytes',
         outDataFormatId: 'text',
-        operation: new Format(Formatters['bytes-hex-compact-16'].formatter),
+        operation: new Format(Formatters['hex-compact'].formatter),
     }),
-    'format-bytes-hex-spaced-16': operation({
+    'format-hex-compact-16': operation({
         inDataFormatId: 'bytes',
         outDataFormatId: 'text',
-        operation: new Format(Formatters['bytes-hex-spaced-16'].formatter),
+        operation: new Format(Formatters['hex-compact-16'].formatter),
     }),
-    'format-bytes-hex-prefixed-16': operation({
+    'format-hex-spaced-16': operation({
         inDataFormatId: 'bytes',
         outDataFormatId: 'text',
-        operation: new Format(Formatters['bytes-hex-prefixed-16'].formatter),
+        operation: new Format(Formatters['hex-spaced-16'].formatter),
     }),
-    'format-bytes-hex-cArray-16': operation({
+    'format-hex-prefixed-16': operation({
         inDataFormatId: 'bytes',
         outDataFormatId: 'text',
-        operation: new Format(Formatters['bytes-hex-cArray-16'].formatter),
+        operation: new Format(Formatters['hex-prefixed-16'].formatter),
+    }),
+    'format-hex-cArray-16': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'text',
+        operation: new Format(Formatters['hex-cArray-16'].formatter),
     }),
     // JSON
     'format-json-compact': operation({

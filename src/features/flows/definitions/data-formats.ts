@@ -1,37 +1,63 @@
 import type { IDataFormat } from '#/flows/types';
 import type { ConstructorOf } from '@/types';
 
-import { Base64, Bytes, Json, Text, UrlEncoded, UrlEncodedForm } from '#/flows/data-formats';
+import {
+    Base64,
+    Bytes,
+    Json,
+    Text,
+    UrlEncoded,
+    UrlEncodedData,
+    UrlEncodedForm,
+    UrlParameters,
+} from '#/flows/data-formats';
 
 interface DataFormatRecord {
     name: string;
     type: ConstructorOf<IDataFormat<unknown>>;
+    hidden: boolean;
 }
 
 export const DataFormats = {
     'text': {
         name: 'Text',
         type: Text,
+        hidden: false,
     },
     'bytes': {
         name: 'Bytes',
         type: Bytes,
+        hidden: false,
     },
     'base64': {
         name: 'Base64',
         type: Base64,
+        hidden: false,
     },
     'json': {
         name: 'JSON',
         type: Json,
+        hidden: false,
     },
     'url-encoded': {
         name: 'URL-encoded',
         type: UrlEncoded,
+        hidden: false,
+    },
+    'url-encoded-data': {
+        name: 'URL-encoded Data',
+        type: UrlEncodedData,
+        hidden: true,
+    },
+    'url-parameters': {
+        name: 'URL Parameters',
+        type: UrlParameters,
+        hidden: false,
     },
     'url-encoded-form': {
-        name: 'URL-encoded Form Data',
+        name: 'URL-encoded Form',
         type: UrlEncodedForm,
+        hidden: false,
     },
 } satisfies Record<string, DataFormatRecord>;
 

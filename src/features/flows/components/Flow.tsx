@@ -130,7 +130,11 @@ export function Flow(props: FlowProps) {
                             disabled={!canSetDataFormatId()}
                             onInput={(e) => setDataFormatId(e.currentTarget.value as DataFormatId)}
                         >
-                            <For each={Object.entries(DataFormats)}>
+                            <For
+                                each={Object.entries(DataFormats).filter(
+                                    ([, format]) => !format.hidden,
+                                )}
+                            >
                                 {([id, format]) => (
                                     <option value={id}>
                                         {format.name}

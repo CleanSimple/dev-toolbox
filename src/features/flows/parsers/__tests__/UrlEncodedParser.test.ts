@@ -11,7 +11,7 @@ describe('UrlEncodedParser', () => {
 
         // Assert
         expect(parser.name).toBe('URL-encoded');
-        expect(parser.placeholder).toBe('Enter URL-encoded data');
+        expect(parser.placeholder).toBe('Enter URL-encoded content');
     });
 
     it('should parse valid URL-encoded string', () => {

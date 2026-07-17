@@ -1,21 +1,21 @@
 import { UrlEncodedForm } from '#/flows/data-formats/UrlEncodedForm';
-import { UrlEncodedFormFormatter } from '#/flows/formatters/UrlEncodedFormFormatter';
+import { UrlEncodedDataFormatter } from '#/flows/formatters/UrlEncodedDataFormatter';
 import { describe, expect, it } from 'vitest';
 
-describe('UrlEncodedFormParser', () => {
+describe('UrlEncodedDataFormatter', () => {
     it('should have correct metadata', () => {
         // Arrange
-        const formatter = new UrlEncodedFormFormatter();
+        const formatter = new UrlEncodedDataFormatter();
 
         // Act
 
         // Assert
-        expect(formatter.name).toBe('URL-encoded Form Data');
+        expect(formatter.name).toBe('URL-encoded Data');
     });
 
     it('should format URL-encoded form correctly', () => {
         // Arrange
-        const formatter = new UrlEncodedFormFormatter();
+        const formatter = new UrlEncodedDataFormatter();
         const input = new UrlEncodedForm({
             escape: '~!@#$%^&*()_+-=',
             key1: 'value1',
@@ -32,7 +32,7 @@ describe('UrlEncodedFormParser', () => {
 
     it('should format duplicate keys correctly', () => {
         // Arrange
-        const formatter = new UrlEncodedFormFormatter();
+        const formatter = new UrlEncodedDataFormatter();
         const input = new UrlEncodedForm([
             ['key1', 'value1'],
             ['key1', 'value2'],

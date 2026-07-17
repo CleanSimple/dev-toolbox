@@ -10,8 +10,8 @@ describe('UrlEncodedFormParser', () => {
         // Act
 
         // Assert
-        expect(parser.name).toBe('URL-encoded Form Data');
-        expect(parser.placeholder).toBe('Enter URL-encoded form data');
+        expect(parser.name).toBe('URL-encoded Form');
+        expect(parser.placeholder).toBe('Enter URL-encoded form content');
     });
 
     it('should parse valid URL-encoded form string', () => {

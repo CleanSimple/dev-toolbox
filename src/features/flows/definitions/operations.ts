@@ -125,6 +125,11 @@ export const Operations = {
         outDataFormatId: 'url-encoded',
         operation: new Parse(Parsers['url-encoded'].parser),
     }),
+    'parse-url-parameters': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'url-parameters',
+        operation: new Parse(Parsers['url-parameters'].parser),
+    }),
     'parse-url-encoded-form': operation({
         inDataFormatId: 'text',
         outDataFormatId: 'url-encoded-form',
@@ -174,11 +179,11 @@ export const Operations = {
         outDataFormatId: 'text',
         operation: new Format(Formatters['json-space-4'].formatter),
     }),
-    // URL-encoded form
-    'format-url-encoded-form': operation({
-        inDataFormatId: 'url-encoded-form',
+    // URL-encoded data
+    'format-url-encoded-data': operation({
+        inDataFormatId: 'url-encoded-data',
         outDataFormatId: 'text',
-        operation: new Format(Formatters['url-encoded-form'].formatter),
+        operation: new Format(Formatters['url-encoded-data'].formatter),
     }),
 };
 

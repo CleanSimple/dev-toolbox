@@ -5,7 +5,7 @@ import { DataFormats } from '#/flows/definitions/data-formats';
 import { BytesToHexFormatter } from '#/flows/formatters/BytesToHexFormatter';
 import { JsonFormatter } from '#/flows/formatters/JsonFormatter';
 import { TextFormatter } from '#/flows/formatters/TextFormatter';
-import { UrlEncodedFormFormatter } from '#/flows/formatters/UrlEncodedFormFormatter';
+import { UrlEncodedDataFormatter } from '#/flows/formatters/UrlEncodedDataFormatter';
 import { isSubclassOf } from '#/flows/utils/general';
 
 interface FormatterRecord<T extends DataFormatId> {
@@ -40,9 +40,9 @@ export const Formatters = {
     'json-compact': formatter({ dataFormatId: 'json', formatter: new JsonFormatter({ space: 0 }) }),
     'json-space-2': formatter({ dataFormatId: 'json', formatter: new JsonFormatter({ space: 2 }) }),
     'json-space-4': formatter({ dataFormatId: 'json', formatter: new JsonFormatter({ space: 4 }) }),
-    'url-encoded-form': formatter({
-        dataFormatId: 'url-encoded-form',
-        formatter: new UrlEncodedFormFormatter(),
+    'url-encoded-data': formatter({
+        dataFormatId: 'url-encoded-data',
+        formatter: new UrlEncodedDataFormatter(),
     }),
 };
 

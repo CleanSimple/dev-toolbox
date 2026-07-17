@@ -1,12 +1,11 @@
 import { Text } from '#/flows/data-formats/Text';
 
-const Identifier = Symbol();
+declare const Identifier: unique symbol;
 
 export class UrlEncoded extends Text {
     public decode(): Text {
         return new Text(decodeURIComponent(this.value));
     }
 
-    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
-    public [Identifier]() {/* empty */}
+    declare public readonly [Identifier]: void;
 }

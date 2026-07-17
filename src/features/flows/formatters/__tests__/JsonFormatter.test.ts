@@ -13,7 +13,21 @@ describe('JsonFormatter', () => {
         expect(formatter.name).toBe('JSON (Indent: 2)');
     });
 
-    it('should format JSON correctly', () => {
+    it('should format JSON correctly without indentation', () => {
+        // Arrange
+        const formatter = new JsonFormatter();
+        const data = { key: 'value' };
+        const json = new Json(data);
+        const expected = '{"key":"value"}';
+
+        // Act
+        const result = formatter.format(json);
+
+        // Assert
+        expect(result).toBe(expected);
+    });
+
+    it('should format JSON correctly with indentation', () => {
         // Arrange
         const formatter = new JsonFormatter({ space: 2 });
         const data = { key: 'value' };

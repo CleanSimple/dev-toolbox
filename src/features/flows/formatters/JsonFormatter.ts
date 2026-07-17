@@ -9,8 +9,7 @@ export class JsonFormatter implements IFormatter<Json> {
     private readonly _space: number;
 
     public constructor(options: JsonFormatterOptions = {}) {
-        this._space = options.space ?? 2;
-        if (this._space < 0) this._space = 0;
+        this._space = options.space ?? 0;
 
         this.name = this._space == 0 ? 'JSON (Compact)' : `JSON (Indent: ${this._space})`;
     }

@@ -6,14 +6,13 @@ export class UrlParametersParser implements IParser<UrlParameters> {
     public readonly name = 'URL Parameters';
     public readonly placeholder = 'Enter a URL or a URL query string';
     public readonly example =
-        "https://example.com?key1=value1&key2=value2, key1=value1&key2=value2";
+        'https://example.com?key1=value1&key2=value2, key1=value1&key2=value2';
 
     public parse(text: string) {
         try {
             return new UrlParameters(new URL(text).searchParams);
         }
         catch {
-            console.info('Failed to parse URL parameters');
             if (text.includes('?')) {
                 text = text.split('?')[1];
             }

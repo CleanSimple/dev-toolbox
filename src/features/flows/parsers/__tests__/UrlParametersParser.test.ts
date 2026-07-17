@@ -27,6 +27,19 @@ describe('UrlParametersParser', () => {
         expect(result).toStrictEqual(expected);
     });
 
+    it('should parse partial URL', () => {
+        // Arrange
+        const parser = new UrlParametersParser();
+        const input = '?key1=value1&key2=value2#fragment';
+        const expected = new UrlParameters({ key1: 'value1', key2: 'value2' });
+
+        // Act
+        const result = parser.parse(input);
+
+        // Assert
+        expect(result).toStrictEqual(expected);
+    });
+
     it('should parse valid URL query string', () => {
         // Arrange
         const parser = new UrlParametersParser();

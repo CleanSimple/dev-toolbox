@@ -90,6 +90,8 @@ export function AddOperation(props: AddOperationProps) {
                         items={operations()}
                         renderValue={renderOperation}
                         renderItem={renderOperation}
+                        filter={(item, query) =>
+                            Operations[item].operation.name.toLowerCase().includes(query)}
                         onChange={(value) => setSelectedOperationId(value)}
                     />
 
@@ -98,6 +100,8 @@ export function AddOperation(props: AddOperationProps) {
                         items={formatters()}
                         renderValue={renderFormatter}
                         renderItem={renderFormatter}
+                        filter={(item, query) =>
+                            Formatters[item].formatter.name.toLowerCase().includes(query)}
                         onChange={(formatterId) => setSelectedFormatterId(formatterId)}
                     />
                 </div>

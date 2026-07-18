@@ -15,6 +15,7 @@ import { Parse } from '#/flows/operations/Parse';
 import { TextToBytes } from '#/flows/operations/TextToBytes';
 import { UrlDecode } from '#/flows/operations/UrlDecode';
 import { UrlEncode } from '#/flows/operations/UrlEncode';
+import { UrlEncodedDataToJson } from '#/flows/operations/UrlEncodedDataToJson';
 import { isSubclassOf } from '#/flows/utils/general';
 
 interface OperationRecord<TIn extends DataFormatId, TOut extends DataFormatId> {
@@ -102,6 +103,11 @@ export const Operations = {
         inDataFormatId: 'bytes',
         outDataFormatId: 'bytes',
         operation: new HashBytes({ algorithm: 'SHA-512' }),
+    }),
+    'url-encoded-data-to-json': operation({
+        inDataFormatId: 'url-encoded-data',
+        outDataFormatId: 'json',
+        operation: new UrlEncodedDataToJson(),
     }),
 
     /* --- Parsers --- */

@@ -11,6 +11,7 @@ import { BytesToText } from '#/flows/operations/BytesToText';
 import { Format } from '#/flows/operations/Format';
 import { HashBytes } from '#/flows/operations/HashBytes';
 import { HashText } from '#/flows/operations/HashText';
+import { JsonToUrlEncodedForm } from '#/flows/operations/JsonToUrlEncodedData';
 import { Parse } from '#/flows/operations/Parse';
 import { TextToBytes } from '#/flows/operations/TextToBytes';
 import { UrlDecode } from '#/flows/operations/UrlDecode';
@@ -108,6 +109,11 @@ export const Operations = {
         inDataFormatId: 'url-encoded-data',
         outDataFormatId: 'json',
         operation: new UrlEncodedDataToJson(),
+    }),
+    'json-to-url-encoded-form': operation({
+        inDataFormatId: 'json',
+        outDataFormatId: 'url-encoded-data',
+        operation: new JsonToUrlEncodedForm(),
     }),
 
     /* --- Parsers --- */

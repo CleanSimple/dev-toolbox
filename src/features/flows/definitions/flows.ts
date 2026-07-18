@@ -98,6 +98,22 @@ export const Flows = Object.freeze<Record<string, Flow>>({
             },
         ],
     },
+    'json-to-url-encoded-form': {
+        name: 'JSON to URL-encoded Form',
+        dataFormatId: 'json',
+        parserId: 'json',
+        pipelines: [
+            {
+                name: 'JSON to URL-encoded Form',
+                operations: [
+                    {
+                        operationId: 'json-to-url-encoded-form',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
     'bytes-to-text': {
         name: 'Bytes to Text',
         dataFormatId: 'bytes',

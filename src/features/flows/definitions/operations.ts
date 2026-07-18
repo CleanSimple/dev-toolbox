@@ -169,15 +169,15 @@ export const Operations = {
         outDataFormatId: 'text',
         operation: new Format(Formatters['json-compact'].formatter),
     }),
-    'format-json-space-2': operation({
+    'format-json-indent-2': operation({
         inDataFormatId: 'json',
         outDataFormatId: 'text',
-        operation: new Format(Formatters['json-space-2'].formatter),
+        operation: new Format(Formatters['json-indent-2'].formatter),
     }),
-    'format-json-space-4': operation({
+    'format-json-indent-4': operation({
         inDataFormatId: 'json',
         outDataFormatId: 'text',
-        operation: new Format(Formatters['json-space-4'].formatter),
+        operation: new Format(Formatters['json-indent-4'].formatter),
     }),
     // URL-encoded data
     'format-url-encoded-data': operation({

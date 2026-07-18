@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 describe('JsonFormatter', () => {
     it('should have correct name', () => {
         // Arrange
-        const formatter = new JsonFormatter({ space: 2 });
+        const formatter = new JsonFormatter({ indent: 2 });
 
         // Act
 
@@ -29,7 +29,7 @@ describe('JsonFormatter', () => {
 
     it('should format JSON correctly with indentation', () => {
         // Arrange
-        const formatter = new JsonFormatter({ space: 2 });
+        const formatter = new JsonFormatter({ indent: 2 });
         const data = { key: 'value' };
         const json = new Json(data);
         const expected = '{\n  "key": "value"\n}';

@@ -37,9 +37,18 @@ export const Formatters = {
         dataFormatId: 'bytes',
         formatter: new BytesToHexFormatter({ mode: 'cArray', bytesPerRow: 16 }),
     }),
-    'json-compact': formatter({ dataFormatId: 'json', formatter: new JsonFormatter({ space: 0 }) }),
-    'json-space-2': formatter({ dataFormatId: 'json', formatter: new JsonFormatter({ space: 2 }) }),
-    'json-space-4': formatter({ dataFormatId: 'json', formatter: new JsonFormatter({ space: 4 }) }),
+    'json-compact': formatter({
+        dataFormatId: 'json',
+        formatter: new JsonFormatter({ indent: 0 }),
+    }),
+    'json-indent-2': formatter({
+        dataFormatId: 'json',
+        formatter: new JsonFormatter({ indent: 2 }),
+    }),
+    'json-indent-4': formatter({
+        dataFormatId: 'json',
+        formatter: new JsonFormatter({ indent: 4 }),
+    }),
     'url-encoded-data': formatter({
         dataFormatId: 'url-encoded-data',
         formatter: new UrlEncodedDataFormatter(),

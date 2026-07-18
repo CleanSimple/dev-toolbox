@@ -43,12 +43,6 @@ export default defineConfig({
     worker: {
         plugins: () => [tsconfigPaths()],
     },
-    server: {
-        headers: {
-            'Cross-Origin-Opener-Policy': 'same-origin',
-            'Cross-Origin-Embedder-Policy': 'credentialless',
-        },
-    },
     test: {
         environment: 'jsdom',
         include: ['src/**/*.test.{ts,tsx}'],

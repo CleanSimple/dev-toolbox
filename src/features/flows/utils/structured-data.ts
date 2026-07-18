@@ -7,8 +7,33 @@ type SupportedTypes =
     | SupportedTypes[]
     | { [key: string]: SupportedTypes };
 
-
-export function flattenStructure<T extends SupportedTypes>(data: Record<string, T> | T[]) {
+/**
+ * Flattens a nested object into a single-level object.
+ *
+ * Nested objects are traversed recursively until primitive values are reached.
+ * Each primitive value is stored under a key representing its path in the
+ * original structure.
+ *
+ * Key format:
+ * - Object properties use `.` (e.g. `user.name`)
+ * - Array indices use `[]` (e.g. `users[0].name`)
+ *
+ * @example
+ * ```ts
+ * flattenStructure({
+ *   users: [
+ *     { name: "Alice" },
+ *     { name: "Bob" },
+ *   ],
+ * });
+ * // returns:
+ * // {
+ * //   "users[0].name": "Alice",
+ * //   "users[1].name": "Bob",
+ * // }
+ * ```
+ */
+export function flattenStructure<T extends SupportedTypes>(data: Record<string, T>) {
     const flatObject: Record<string, Primitive> = {};
     _flattenStructure(flatObject, null, data);
     return flatObject as Record<string, Exclude<T, T[] | Record<string, T>>>;

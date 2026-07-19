@@ -108,7 +108,7 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 operations: [
                     {
                         operationId: 'json-to-url-encoded-form',
-                        formatterId: 'text',
+                        formatterId: 'url-encoded-data',
                     },
                 ],
             },

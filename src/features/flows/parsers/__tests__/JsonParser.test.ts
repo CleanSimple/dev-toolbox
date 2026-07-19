@@ -36,18 +36,17 @@ describe('JsonParser', () => {
         expect(parse).toThrow();
     });
 
-    it('should throw error for values other than objects and arrays', () => {
-        // Arrange
-        const parser = new JsonParser();
+    it.each(['123', '"test"', 'true'])(
+        'should throw error for values other than objects and arrays',
+        (input) => {
+            // Arrange
+            const parser = new JsonParser();
 
-        // Act
-        const parse1 = () => parser.parse('123');
-        const parse2 = () => parser.parse('"test"');
-        const parse3 = () => parser.parse('true');
+            // Act
+            const parse = () => parser.parse(input);
 
-        // Assert
-        expect(parse1).toThrow();
-        expect(parse2).toThrow();
-        expect(parse3).toThrow();
-    });
+            // Assert
+            expect(parse).toThrow();
+        },
+    );
 });

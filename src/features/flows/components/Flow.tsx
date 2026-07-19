@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { Select } from '@/components/ui/Select';
+import { formatError } from '@/utils';
 import { ArrowLeft, Plus, Save, SquarePen, Trash2 } from 'lucide-solid';
 import { For, Show } from 'solid-js';
 import { Pipeline } from './Pipeline';
@@ -43,6 +44,7 @@ export function Flow(props: FlowProps) {
         inputPlaceholder,
         inputExample,
         inputError,
+        inputLang,
         pipelines,
         deletePipeline,
         addPipeline,
@@ -170,14 +172,17 @@ export function Flow(props: FlowProps) {
                 <div class='flex flex-col gap-2 relative'>
                     <CodeMirror
                         class='w-full h-50'
-                        hasError={Boolean(inputError())}
+                        error={inputError()}
                         value=''
                         placeholder={inputPlaceholder() ?? ''}
+                        lang={inputLang()}
                         onValueChange={(value) => setInput(value)}
                     />
                     <Show when={inputError()} keyed>
                         {(inputError) => (
-                            <span class='text-sm text-danger'>Error: {inputError}</span>
+                            <span class='text-sm text-danger'>
+                                Error: {formatError(inputError)}
+                            </span>
                         )}
                     </Show>
                     <Show when={inputExample()} keyed>

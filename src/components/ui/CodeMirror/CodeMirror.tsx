@@ -1,7 +1,11 @@
-import type { JSX } from 'solid-js';
+import type { SupportedLang } from '@/types';
 
+import { diagnosticsFromError } from '@/components/ui/CodeMirror/CodeMirror.diagnostics';
 import { useTheme } from '@/contexts/ThemeContext';
+import { closeBrackets } from '@codemirror/autocomplete';
 import { defaultKeymap } from '@codemirror/commands';
+import { json } from '@codemirror/lang-json';
+import { setDiagnostics } from '@codemirror/lint';
 import { Compartment, EditorState } from '@codemirror/state';
 import { oneDark } from '@codemirror/theme-one-dark';
 import {
@@ -10,30 +14,27 @@ import {
     lineNumbers,
     placeholder as placeholderExtension,
 } from '@codemirror/view';
-import { createEffect, on, onCleanup, onMount, splitProps } from 'solid-js';
-
+import { createEffect, on, onCleanup, onMount } from 'solid-js';
 import './CodeMirror.styles.css';
 
-interface CodeMirrorProps extends JSX.HTMLAttributes<HTMLDivElement> {
+const langs = {
+    'text': [],
+    'json': json(),
+} satisfies Record<SupportedLang, unknown>;
+
+interface CodeMirrorProps {
     value: string;
     placeholder?: string;
+    class: string;
     readonly?: boolean;
     disabled?: boolean;
     lineWrapping?: boolean;
-    hasError?: boolean;
+    error?: unknown;
+    lang?: SupportedLang;
     onValueChange?: (value: string) => void;
 }
 
 export function CodeMirror(props: CodeMirrorProps) {
-    const [, rest] = splitProps(props, [
-        'value',
-        'placeholder',
-        'readonly',
-        'disabled',
-        'lineWrapping',
-        'hasError',
-        'onValueChange',
-    ]);
     const { actualTheme } = useTheme();
     let container!: HTMLDivElement;
     let view: EditorView | null = null;
@@ -87,12 +88,26 @@ export function CodeMirror(props: CodeMirrorProps) {
     /* --- Has Error --- */
     const hasError = new Compartment();
     const getHasError = () =>
-        (props.hasError ?? false)
+        props.error
             ? EditorView.editorAttributes.of({ class: 'has-error' })
             : [];
     createEffect(on(getHasError, (content) => {
         if (!view) return;
         view.dispatch({ effects: hasError.reconfigure(content) });
+    }));
+
+    /* --- Lang --- */
+    const lang = new Compartment();
+    const getLang = () => langs[props.lang ?? 'text'];
+    createEffect(on(getLang, (content) => {
+        if (!view) return;
+        view.dispatch({ effects: lang.reconfigure(content) });
+    }));
+
+    /* --- Diagnostics --- */
+    createEffect(on(() => props.error, (error) => {
+        if (!view) return;
+        view.dispatch(setDiagnostics(view.state, diagnosticsFromError(error, view)));
     }));
 
     onMount(() => {
@@ -101,12 +116,14 @@ export function CodeMirror(props: CodeMirrorProps) {
             extensions: [
                 keymap.of(defaultKeymap),
                 lineNumbers(),
+                closeBrackets(),
                 placeholder.of(getPlaceholder()),
                 readonly.of(getReadonly()),
                 editorTheme.of(getEditorTheme()),
                 lineWrapping.of(getLineWrapping()),
                 disabled.of(getDisabled()),
                 hasError.of(getHasError()),
+                lang.of(getLang()),
 
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged) {
@@ -123,5 +140,5 @@ export function CodeMirror(props: CodeMirrorProps) {
         view?.destroy();
     });
 
-    return <div ref={container} {...rest} />;
+    return <div ref={container} class={props.class} />;
 }

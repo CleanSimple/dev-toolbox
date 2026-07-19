@@ -7,6 +7,7 @@ export class UrlParametersParser implements IParser<UrlParameters> {
     public readonly placeholder = 'Enter a URL or a URL query string';
     public readonly example =
         'https://example.com?key1=value1&key2=value2, key1=value1&key2=value2';
+    public readonly lang = 'text';
 
     public parse(text: string) {
         try {

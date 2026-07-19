@@ -1,5 +1,6 @@
 import type { DataFormatId, DataRef } from '#/flows/definitions/data-formats';
 import type { Flow } from '#/flows/types/models';
+import type { SupportedLang } from '@/types';
 import type { PipelineViewModel } from './PipelineViewModel';
 
 import { DataFormats } from '#/flows/definitions/data-formats';
@@ -33,7 +34,8 @@ export function createFlowViewModel(flowId: string) {
     });
     const [inputPlaceholder, setInputPlaceholder] = createSignal<string | null>(null);
     const [inputExample, setInputExample] = createSignal<string | null>(null);
-    const [inputError, setInputError] = createSignal<string | null>(null);
+    const [inputError, setInputError] = createSignal<unknown>(null);
+    const [inputLang, setInputLang] = createSignal<SupportedLang>('text');
     const [pipelines, setPipelines] = createSignal<PipelineViewModel[]>(
         [],
     );
@@ -53,12 +55,14 @@ export function createFlowViewModel(flowId: string) {
     createEffect(() => {
         setInputPlaceholder(null);
         setInputExample(null);
+        setInputLang('text');
         setParserError(null);
 
         const parser = availableParsers().get(parserId());
         if (parser) {
             setInputPlaceholder(parser.placeholder);
             setInputExample(parser.example ?? null);
+            setInputLang(parser.lang);
         }
         else {
             setParserError(
@@ -88,7 +92,7 @@ export function createFlowViewModel(flowId: string) {
             setInput(result);
         } catch (error) {
             console.error('parse error', error);
-            setInputError(error instanceof Error ? error.message : new String(error) as string);
+            setInputError(error);
             setInput(null);
         }
         finally {
@@ -172,7 +176,6 @@ export function createFlowViewModel(flowId: string) {
         editFlow,
         saveFlow,
         deleteFlow,
-        setInput: setRawInput,
         dataFormatId,
         dataFormatName,
         canSetDataFormatId,
@@ -181,9 +184,11 @@ export function createFlowViewModel(flowId: string) {
         parserId,
         setParserId,
         parserError,
+        setInput: setRawInput,
         inputPlaceholder,
         inputExample,
         inputError,
+        inputLang,
         pipelines,
         deletePipeline,
         addPipeline,

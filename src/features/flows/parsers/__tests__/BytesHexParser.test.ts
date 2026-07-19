@@ -14,49 +14,13 @@ describe('BytesHexParser', () => {
         expect(parser.placeholder).toBe('Enter bytes as hexadecimal values');
     });
 
-    it('should parse continuous hex strings', () => {
+    it.each(['616263', '61 62 63', '0x616263', '0x61 0x62 0x63'])('should parse %s', (input) => {
         // Arrange
         const parser = new BytesHexParser();
         const expected = new Bytes([0x61, 0x62, 0x63]);
 
         // Act
-        const result = parser.parse('616263');
-
-        // Assert
-        expect(result).toStrictEqual(expected);
-    });
-
-    it('should parse continuous hex strings with 0x prefix', () => {
-        // Arrange
-        const parser = new BytesHexParser();
-        const expected = new Bytes([0x61, 0x62, 0x63]);
-
-        // Act
-        const result = parser.parse('0x616263');
-
-        // Assert
-        expect(result).toStrictEqual(expected);
-    });
-
-    it('should parse space-separated hex bytes', () => {
-        // Arrange
-        const parser = new BytesHexParser();
-        const expected = new Bytes([0x61, 0x62, 0x63]);
-
-        // Act
-        const result = parser.parse('61 62 63');
-
-        // Assert
-        expect(result).toStrictEqual(expected);
-    });
-
-    it('should parse space-separated hex bytes with 0x prefixes', () => {
-        // Arrange
-        const parser = new BytesHexParser();
-        const expected = new Bytes([0x61, 0x62, 0x63]);
-
-        // Act
-        const result = parser.parse('0x61 0x62 0x63');
+        const result = parser.parse(input);
 
         // Assert
         expect(result).toStrictEqual(expected);
@@ -70,7 +34,7 @@ describe('BytesHexParser', () => {
         const parse = () => parser.parse('0x61 0xZZ 0x63');
 
         // Assert
-        expect(parse).toThrow(/contains non-hexadecimal characters/);
+        expect(parse).toThrow(/is not a valid hex-digit/);
     });
 
     it('should throw error if token length exceeds 2 bytes in space-separated format', () => {
@@ -81,10 +45,10 @@ describe('BytesHexParser', () => {
         const parse = () => parser.parse('0x6162 0x63');
 
         // Assert
-        expect(parse).toThrow(/represents more than one byte/);
+        expect(parse).toThrow(/expected at most 2 hex-digits/);
     });
 
-    it('should throw error for empty token after stripping 0x', () => {
+    it('should throw error for invalid hex-byte', () => {
         // Arrange
         const parser = new BytesHexParser();
 
@@ -92,6 +56,6 @@ describe('BytesHexParser', () => {
         const parse = () => parser.parse('0x61 0x');
 
         // Assert
-        expect(parse).toThrow(/is empty after stripping the "0x" prefix/);
+        expect(parse).toThrow(/is not a valid hex-byte/);
     });
 });

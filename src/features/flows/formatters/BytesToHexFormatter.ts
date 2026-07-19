@@ -29,6 +29,7 @@ export class BytesToHexFormatter implements IFormatter<Bytes> {
     }
 
     public readonly name: string;
+    public readonly lang = 'text';
 
     public format(value: Bytes): string {
         const { separator, prefix, leading, trailing } =

@@ -5,6 +5,7 @@ import { Loader } from '@/components/Loader';
 import { CodeMirror } from '@/components/ui/CodeMirror';
 import { Label } from '@/components/ui/Label';
 import { Select } from '@/components/ui/Select';
+import { formatError } from '@/utils';
 import { For, Show } from 'solid-js';
 
 interface OperationProps {
@@ -31,8 +32,12 @@ export function Operation(props: OperationProps) {
                         )}
                     </For>
                 </Select>
-                <Show when={props.operationVM.formatterError()}>
-                    <span class='text-sm text-danger'>{props.operationVM.formatterError()}</span>
+                <Show when={props.operationVM.formatterError()} keyed>
+                    {(error) => (
+                        <span class='text-sm text-danger'>
+                            {formatError(error)}
+                        </span>
+                    )}
                 </Show>
             </div>
 
@@ -40,18 +45,21 @@ export function Operation(props: OperationProps) {
                 <div class='relative flex'>
                     <CodeMirror
                         class='w-full h-50'
-                        hasError={Boolean(props.operationVM.outputError())}
+                        error={props.operationVM.outputError()}
                         readonly
+                        lang={props.operationVM.formatterLang()}
                         value={props.operationVM.formattedOutput() ?? ''}
                     />
                     <Show when={props.operationVM.isFormatting()}>
                         <Loader text='Formatting...' />
                     </Show>
                 </div>
-                <Show when={props.operationVM.outputError()}>
-                    <span class='text-sm text-danger'>
-                        Error: {props.operationVM.outputError()}
-                    </span>
+                <Show when={props.operationVM.outputError()} keyed>
+                    {(error) => (
+                        <span class='text-sm text-danger'>
+                            Error: {formatError(error)}
+                        </span>
+                    )}
                 </Show>
             </div>
         </div>

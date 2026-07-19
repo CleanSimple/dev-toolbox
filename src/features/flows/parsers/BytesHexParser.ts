@@ -1,11 +1,13 @@
 import type { IParser } from '#/flows/types';
 
 import { Bytes } from '#/flows/data-formats';
+import { regexSplit } from '@/utils';
 
 export class BytesHexParser implements IParser<Bytes> {
     public readonly name = 'Hex';
     public readonly placeholder = 'Enter bytes as hexadecimal values';
     public readonly example = "'0x61 0x62 0x63', '61 62 63', '616263'";
+    public readonly lang = 'text';
 
     public parse(text: string): Bytes {
         const trimmed = text.trim().replace(/^0x/i, '');
@@ -14,34 +16,26 @@ export class BytesHexParser implements IParser<Bytes> {
         }
 
         //  handle space separated tokens
-        const tokens = trimmed.split(/\s+/);
-        const bytes = new Uint8Array(tokens.length);
-
-        for (let i = 0; i < tokens.length; i++) {
-            const token = tokens[i];
-
+        const bytes = [];
+        for (const token of regexSplit(trimmed, /\s+/)) {
             // strip optional "0x" prefix
-            const hexPart = token.replace(/^0x/i, '');
+            const hexPart = token.text.replace(/^0x/i, '');
             if (hexPart.length === 0) {
-                throw new Error(
-                    `Token ${i + 1} ("${token}") is empty after stripping the "0x" prefix.`,
-                );
+                throw new SyntaxError(`'${token.text}' is not a valid hex-byte`);
             }
 
-            if (!/^[0-9a-fA-F]+$/.test(hexPart)) {
-                throw new Error(
-                    `Token ${i + 1} ("${token}") contains non-hexadecimal characters.`,
-                );
+            const invalidCharMatch = hexPart.match(/[^0-9a-fA-F]/);
+            if (invalidCharMatch) {
+                throw new SyntaxError(`'${invalidCharMatch[0]}' is not a valid hex-digit`);
             }
 
             if (hexPart.length > 2) {
-                throw new Error(
-                    `Token ${i + 1} ("${token}") represents more than one byte. `
-                        + `Each space-separated token must be at most 2 hex digits.`,
+                throw new SyntaxError(
+                    `'${token.text}' is not a valid hex-byte, expected at most 2 hex-digits`,
                 );
             }
 
-            bytes[i] = parseInt(hexPart, 16);
+            bytes.push(parseInt(hexPart, 16));
         }
 
         return new Bytes(bytes);

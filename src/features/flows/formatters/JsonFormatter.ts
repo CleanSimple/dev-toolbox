@@ -15,6 +15,7 @@ export class JsonFormatter implements IFormatter<Json> {
     }
 
     public readonly name;
+    public readonly lang = 'json';
 
     public format(value: Json): string {
         return JSON.stringify(value.value, null, this._indent);

@@ -27,20 +27,17 @@ describe('UrlEncodedParser', () => {
         expect(result).toStrictEqual(expected);
     });
 
-    it('should throw error for invalid URL-encoded string', () => {
-        // Arrange
-        const parser = new UrlEncodedParser();
+    it.each(['%', '%A', '%-1', '%ZZ'])(
+        'should throw error for invalid URL-encoded string',
+        (input) => {
+            // Arrange
+            const parser = new UrlEncodedParser();
 
-        // Act
-        const parse1 = () => parser.parse('test %');
-        const parse2 = () => parser.parse('test %A');
-        const parse3 = () => parser.parse('test %-1');
-        const parse4 = () => parser.parse('test %ZZ');
+            // Act
+            const parse = () => parser.parse(input);
 
-        // Assert
-        expect(parse1).toThrow();
-        expect(parse2).toThrow();
-        expect(parse3).toThrow();
-        expect(parse4).toThrow();
-    });
+            // Assert
+            expect(parse).toThrow();
+        },
+    );
 });

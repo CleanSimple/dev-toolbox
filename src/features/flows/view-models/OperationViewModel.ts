@@ -1,12 +1,13 @@
 import type { DataFormatId, DataRef } from '#/flows/definitions/data-formats';
 import type { Operation } from '#/flows/types/models';
+import type { SupportedLang } from '@/types';
 import type { Accessor } from 'solid-js';
 
 import { Formatters, getFormatters } from '#/flows/definitions/formatters';
 import { getOperations, Operations } from '#/flows/definitions/operations';
 import { format, releaseData, runOperation } from '#/flows/utils/processing';
 import { createDisposable, createLazyAsyncComputed } from '@/primitives';
-import { createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
+import { createDeferred, createEffect, createSignal } from 'solid-js';
 
 export function createOperationViewModel(
     operation: Operation,
@@ -15,13 +16,14 @@ export function createOperationViewModel(
 ) {
     const [operationError, setOperationError] = createSignal<string | null>(null);
     const [formatterId, setFormatterId] = createSignal(operation.formatterId);
-    const [formatterError, setFormatterError] = createSignal<string | null>(null);
+    const [formatterLang, setFormatterLang] = createSignal<SupportedLang>('text');
+    const [formatterError, setFormatterError] = createSignal<unknown>(null);
     const [_output, setOutput] = createDisposable<DataRef>((output) => {
         if (output.scope === 'local') return;
 
         releaseData(output).catch((error) => console.error('failed to release worker data', error));
     });
-    const [outputError, setOutputError] = createSignal<string | null>(null);
+    const [outputError, setOutputError] = createSignal<unknown>(null);
     const [isRunning, setIsRunning] = createSignal(false);
     const [isFormatting, setIsFormatting] = createSignal(false);
 
@@ -44,22 +46,23 @@ export function createOperationViewModel(
             : [],
     );
 
-    const validatedFormatterId = createMemo(() => {
-        if (!availableFormatters.has(formatterId())) {
+    createEffect(() => {
+        setFormatterLang('text');
+        setFormatterError(null);
+
+        const formatter = availableFormatters.get(formatterId());
+        if (formatter) {
+            setFormatterLang(formatter.lang);
+        }
+        else {
             setFormatterError(
                 "The selected formatter does not exist or is not compatible with the operation output's data format",
             );
-            return null;
-        }
-        else {
-            setFormatterError(null);
-            return formatterId();
         }
     });
 
     const formattedOutput = createLazyAsyncComputed(async () => {
-        const validatedFormatterIdLocal = validatedFormatterId();
-        if (!validatedFormatterIdLocal) {
+        if (formatterError()) {
             return null;
         }
 
@@ -71,11 +74,11 @@ export function createOperationViewModel(
         setOutputError(null);
         setIsFormatting(true);
         try {
-            return await format(validatedFormatterIdLocal, outputLocal);
+            return await format(formatterId(), outputLocal);
         }
         catch (error) {
             console.error('formatting error', error);
-            setOutputError(error instanceof Error ? error.message : new String(error) as string);
+            setOutputError(error);
             return null;
         }
         finally {
@@ -102,7 +105,7 @@ export function createOperationViewModel(
             setOutput(result);
         } catch (error) {
             console.error('operation error', error);
-            setOutputError(error instanceof Error ? error.message : new String(error) as string);
+            setOutputError(error);
             setOutput(null);
         }
         finally {
@@ -122,6 +125,7 @@ export function createOperationViewModel(
         availableFormatters,
         setFormatterId,
         formatterId,
+        formatterLang,
         formatterError,
         outputDataFormatId,
         output,

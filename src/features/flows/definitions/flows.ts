@@ -114,6 +114,22 @@ export const Flows = Object.freeze<Record<string, Flow>>({
             },
         ],
     },
+    'json-flatten': {
+        name: 'Flatten JSON Object',
+        dataFormatId: 'json',
+        parserId: 'json',
+        pipelines: [
+            {
+                name: 'Flatten JSON',
+                operations: [
+                    {
+                        operationId: 'json-flatten',
+                        formatterId: 'json-indent-4',
+                    },
+                ],
+            },
+        ],
+    },
     'bytes-to-text': {
         name: 'Bytes to Text',
         dataFormatId: 'bytes',

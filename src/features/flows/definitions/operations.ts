@@ -14,7 +14,10 @@ import { HashText } from '#/flows/operations/HashText';
 import { JsonFlatten } from '#/flows/operations/JsonFlatten';
 import { JsonToUrlEncodedForm } from '#/flows/operations/JsonToUrlEncodedData';
 import { Parse } from '#/flows/operations/Parse';
+import { Quote } from '#/flows/operations/Quote';
 import { TextToBytes } from '#/flows/operations/TextToBytes';
+import { Trim } from '#/flows/operations/Trim';
+import { Unquote } from '#/flows/operations/Unquote';
 import { UrlDecode } from '#/flows/operations/UrlDecode';
 import { UrlEncode } from '#/flows/operations/UrlEncode';
 import { UrlEncodedDataToJson } from '#/flows/operations/UrlEncodedDataToJson';
@@ -120,6 +123,31 @@ export const Operations = {
         inDataFormatId: 'json',
         outDataFormatId: 'json',
         operation: new JsonFlatten(),
+    }),
+    'quote-double': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new Quote({ quote: '"' }),
+    }),
+    'quote-single': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new Quote({ quote: "'" }),
+    }),
+    'quote-backtick': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new Quote({ quote: '`' }),
+    }),
+    'unquote': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new Unquote(),
+    }),
+    'trim': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new Trim(),
     }),
 
     /* --- Parsers --- */

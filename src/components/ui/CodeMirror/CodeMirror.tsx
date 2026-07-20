@@ -3,7 +3,7 @@ import type { SupportedLang } from '@/types';
 import { diagnosticsFromError } from '@/components/ui/CodeMirror/CodeMirror.diagnostics';
 import { useTheme } from '@/contexts/ThemeContext';
 import { closeBrackets } from '@codemirror/autocomplete';
-import { defaultKeymap } from '@codemirror/commands';
+import { defaultKeymap, indentWithTab } from '@codemirror/commands';
 import { json } from '@codemirror/lang-json';
 import { setDiagnostics } from '@codemirror/lint';
 import { Compartment, EditorState } from '@codemirror/state';
@@ -114,7 +114,7 @@ export function CodeMirror(props: CodeMirrorProps) {
         const state = EditorState.create({
             doc: props.value,
             extensions: [
-                keymap.of(defaultKeymap),
+                keymap.of([...defaultKeymap, indentWithTab]),
                 lineNumbers(),
                 closeBrackets(),
                 placeholder.of(getPlaceholder()),

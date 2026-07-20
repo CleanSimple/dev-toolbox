@@ -15,6 +15,8 @@ import { JsonFlatten } from '#/flows/operations/JsonFlatten';
 import { JsonToUrlEncodedForm } from '#/flows/operations/JsonToUrlEncodedData';
 import { Parse } from '#/flows/operations/Parse';
 import { Quote } from '#/flows/operations/Quote';
+import { StringDecode } from '#/flows/operations/StringDecode';
+import { StringEncode } from '#/flows/operations/StringEncode';
 import { TextToBytes } from '#/flows/operations/TextToBytes';
 import { Trim } from '#/flows/operations/Trim';
 import { Unquote } from '#/flows/operations/Unquote';
@@ -148,6 +150,16 @@ export const Operations = {
         inDataFormatId: 'text',
         outDataFormatId: 'text',
         operation: new Trim(),
+    }),
+    'json-string-encode': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new StringEncode({ format: 'JSON' }),
+    }),
+    'json-string-decode': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new StringDecode({ format: 'JSON' }),
     }),
 
     /* --- Parsers --- */

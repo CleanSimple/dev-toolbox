@@ -1,7 +1,7 @@
 import { Base64 } from '#/flows/data-formats/Base64';
 import { Bytes } from '#/flows/data-formats/Bytes';
 import { Text } from '#/flows/data-formats/Text';
-import { decodeString } from '#/flows/utils/text';
+import { bytesDecode } from '#/flows/utils/text';
 import { extendPrototype } from '@cleansimple/utils-js';
 
 interface BytesExtensions {
@@ -19,7 +19,7 @@ const bytesExtensions = (): BytesExtensions => ({
     },
 
     toText(): Text {
-        return new Text(decodeString(this.value));
+        return new Text(bytesDecode(this.value));
     },
 });
 

@@ -1,6 +1,6 @@
 import { Base64, Bytes } from '#/flows/data-formats';
 import { Base64EncodeBytes } from '#/flows/operations/Base64EncodeBytes';
-import { encodeString } from '#/flows/utils/text';
+import { bytesEncode } from '#/flows/utils/text';
 import { describe, expect, it } from 'vitest';
 
 describe('Base64EncodeBytes', () => {
@@ -18,7 +18,7 @@ describe('Base64EncodeBytes', () => {
     it('should encode Bytes to Base64', () => {
         // Arrange
         const op = new Base64EncodeBytes();
-        const input = new Bytes(encodeString('Hello'));
+        const input = new Bytes(bytesEncode('Hello'));
         const expected = new Base64('SGVsbG8=');
 
         // Act

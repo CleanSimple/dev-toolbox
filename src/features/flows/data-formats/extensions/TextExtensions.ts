@@ -2,7 +2,7 @@ import { Base64 } from '#/flows/data-formats/Base64';
 import { Bytes } from '#/flows/data-formats/Bytes';
 import { Text } from '#/flows/data-formats/Text';
 import { UrlEncoded } from '#/flows/data-formats/UrlEncoded';
-import { encodeString } from '#/flows/utils/text';
+import { bytesEncode } from '#/flows/utils/text';
 import { extendPrototype } from '@cleansimple/utils-js';
 
 interface TextExtensions {
@@ -17,7 +17,7 @@ declare module '#/flows/data-formats/text' {
 
 const textExtensions = (): TextExtensions => ({
     toBytes(): Bytes {
-        return new Bytes(encodeString(this.value));
+        return new Bytes(bytesEncode(this.value));
     },
     toBase64(): Base64 {
         return this.toBytes().toBase64();

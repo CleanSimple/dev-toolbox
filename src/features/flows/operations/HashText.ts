@@ -20,7 +20,7 @@ export class HashText implements IOperation<Text, Bytes> {
     public readonly type = 'hash';
 
     public async handler(input: Text) {
-        const hash = await crypto.subtle.digest(this._algorithm, input.toBytes().value);
+        const hash = await crypto.subtle.digest(this._algorithm, input.encode('bytes').value);
         return new Bytes(new Uint8Array(hash));
     }
 }

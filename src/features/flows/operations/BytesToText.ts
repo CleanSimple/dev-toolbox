@@ -6,6 +6,6 @@ export class BytesToText implements IOperation<Bytes, Text> {
     public readonly type = 'transform';
 
     public handler(input: Bytes): Text {
-        return input.toText();
+        return input.decode('text');
     }
 }

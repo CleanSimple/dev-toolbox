@@ -6,6 +6,6 @@ export class Base64EncodeText implements IOperation<Text, Base64> {
     public readonly type = 'encode';
 
     public handler(input: Text): Base64 {
-        return input.toBase64();
+        return input.encode('base64');
     }
 }

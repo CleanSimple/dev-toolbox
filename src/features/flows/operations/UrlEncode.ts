@@ -7,6 +7,6 @@ export class UrlEncode implements IOperation<Text, UrlEncoded> {
     public readonly type = 'encode';
 
     public handler(input: Text) {
-        return input.toUrlEncoded();
+        return input.encode('url');
     }
 }

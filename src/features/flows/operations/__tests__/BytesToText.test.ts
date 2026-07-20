@@ -1,6 +1,5 @@
 import { Bytes, Text } from '#/flows/data-formats';
 import { BytesToText } from '#/flows/operations/BytesToText';
-import { bytesEncode } from '#/flows/utils/text';
 import { describe, expect, it } from 'vitest';
 
 describe('BytesToText', () => {
@@ -18,7 +17,7 @@ describe('BytesToText', () => {
     it('should transform Bytes to Text', () => {
         // Arrange
         const op = new BytesToText();
-        const input = new Bytes(bytesEncode('Hello'));
+        const input = new Bytes('Hello');
         const expected = new Text('Hello');
 
         // Act

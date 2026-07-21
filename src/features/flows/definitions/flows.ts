@@ -35,7 +35,7 @@ export const Flows = Object.freeze<Record<string, Flow>>({
         ],
     },
     'base64-encode-text': {
-        name: 'Base64 Encode',
+        name: 'Base64 Encode Text',
         dataFormatId: 'text',
         parserId: 'text',
         pipelines: [
@@ -51,7 +51,7 @@ export const Flows = Object.freeze<Record<string, Flow>>({
         ],
     },
     'base64-encode-bytes': {
-        name: 'Base64 Encode',
+        name: 'Base64 Encode Bytes',
         dataFormatId: 'bytes',
         parserId: 'hex',
         pipelines: [
@@ -76,6 +76,38 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 operations: [
                     {
                         operationId: 'base64-decode',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
+    'json-prettify': {
+        name: 'JSON Prettify',
+        dataFormatId: 'json',
+        parserId: 'json',
+        pipelines: [
+            {
+                name: 'JSON Prettify',
+                operations: [
+                    {
+                        operationId: 'format-json-indent-4',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
+    'json-minify': {
+        name: 'JSON Minify',
+        dataFormatId: 'json',
+        parserId: 'json',
+        pipelines: [
+            {
+                name: 'JSON Minify',
+                operations: [
+                    {
+                        operationId: 'format-json-compact',
                         formatterId: 'text',
                     },
                 ],
@@ -125,6 +157,113 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                     {
                         operationId: 'json-flatten',
                         formatterId: 'json-indent-4',
+                    },
+                ],
+            },
+        ],
+    },
+    'path-to-unix': {
+        name: 'Path to Unix',
+        dataFormatId: 'text',
+        parserId: 'text',
+        pipelines: [
+            {
+                name: 'Path to Unix',
+                operations: [
+                    {
+                        operationId: 'path-to-unix',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
+    'path-to-windows': {
+        name: 'Path to Windows',
+        dataFormatId: 'text',
+        parserId: 'text',
+        pipelines: [
+            {
+                name: 'Path to Windows',
+                operations: [
+                    {
+                        operationId: 'path-to-windows',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
+    'json-string-encode': {
+        name: 'JSON String Encode',
+        dataFormatId: 'text',
+        parserId: 'text',
+        pipelines: [
+            {
+                name: 'JSON String Encode',
+                operations: [
+                    {
+                        operationId: 'json-string-encode',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
+    'json-string-decode': {
+        name: 'JSON String Decode',
+        dataFormatId: 'text',
+        parserId: 'text',
+        pipelines: [
+            {
+                name: 'JSON String Decode',
+                operations: [
+                    {
+                        operationId: 'json-string-decode',
+                        formatterId: 'text',
+                    },
+                ],
+            },
+        ],
+    },
+    'hash-text': {
+        name: 'Text Hash Generator',
+        dataFormatId: 'text',
+        parserId: 'text',
+        pipelines: [
+            {
+                name: 'SHA-1',
+                operations: [
+                    {
+                        operationId: 'hash-text-sha1',
+                        formatterId: 'hex-compact',
+                    },
+                ],
+            },
+            {
+                name: 'SHA-256',
+                operations: [
+                    {
+                        operationId: 'hash-text-sha256',
+                        formatterId: 'hex-compact',
+                    },
+                ],
+            },
+            {
+                name: 'SHA-384',
+                operations: [
+                    {
+                        operationId: 'hash-text-sha384',
+                        formatterId: 'hex-compact',
+                    },
+                ],
+            },
+            {
+                name: 'SHA-512',
+                operations: [
+                    {
+                        operationId: 'hash-text-sha512',
+                        formatterId: 'hex-compact',
                     },
                 ],
             },

@@ -15,8 +15,8 @@ export class Quote implements IOperation<Text, Text> {
     }
 
     public readonly name: string;
-    public readonly type = 'transform';
     public readonly description = 'Wraps the input in quotes';
+    public readonly type = 'transform';
 
     public handler(input: Text) {
         return new Text(this._quote + input.value + this._quote);

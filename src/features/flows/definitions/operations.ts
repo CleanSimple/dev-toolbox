@@ -14,6 +14,8 @@ import { HashText } from '#/flows/operations/HashText';
 import { JsonFlatten } from '#/flows/operations/JsonFlatten';
 import { JsonToUrlEncodedForm } from '#/flows/operations/JsonToUrlEncodedData';
 import { Parse } from '#/flows/operations/Parse';
+import { PathToUnix } from '#/flows/operations/PathToUnix';
+import { PathToWindows } from '#/flows/operations/PathToWindows';
 import { Quote } from '#/flows/operations/Quote';
 import { StringDecode } from '#/flows/operations/StringDecode';
 import { StringEncode } from '#/flows/operations/StringEncode';
@@ -160,6 +162,16 @@ export const Operations = {
         inDataFormatId: 'text',
         outDataFormatId: 'text',
         operation: new StringDecode({ format: 'JSON' }),
+    }),
+    'path-to-windows': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new PathToWindows(),
+    }),
+    'path-to-unix': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'text',
+        operation: new PathToUnix(),
     }),
 
     /* --- Parsers --- */

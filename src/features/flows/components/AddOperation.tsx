@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/Label';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { SearchableSelect } from '@/components/ui/SearchableSelect';
 import { Plus } from 'lucide-solid';
-import { createMemo, createSignal } from 'solid-js';
+import { createMemo, createSignal, Show } from 'solid-js';
 
 interface AddOperationProps {
     inputDataFormatId: DataFormatId | null;
@@ -37,9 +37,14 @@ export function AddOperation(props: AddOperationProps) {
         const operation = Operations[operationId].operation;
 
         return (
-            <div class='flex justify-between items-center gap-4'>
-                <span>{operation.name}</span>
-                <OperationChip type={operation.type} />
+            <div class='flex flex-col'>
+                <div class='flex justify-between items-center gap-4'>
+                    <span>{operation.name}</span>
+                    <OperationChip type={operation.type} />
+                </div>
+                <Show when={operation.description}>
+                    <span class='text-sm text-subtle italic'>{operation.description}</span>
+                </Show>
             </div>
         );
     }

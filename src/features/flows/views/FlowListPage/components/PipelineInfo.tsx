@@ -10,7 +10,7 @@ import { Parsers } from '#/flows/definitions/parsers';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { ArrowRight } from 'lucide-solid';
-import { For } from 'solid-js';
+import { For, Show } from 'solid-js';
 
 interface PipelineInfoProps {
     dataFormatId: DataFormatId;
@@ -27,18 +27,25 @@ export function PipelineInfo(props: PipelineInfoProps) {
             const operation = Operations[op.operationId];
             const operationName = operation?.operation.name ?? op.operationId;
             const operationType = operation?.operation.type ?? 'unknown';
+            const operationDescription = operation?.operation.description ?? null;
             const outputFormat = operation
                 ? DataFormats[operation.outDataFormatId].name
                 : 'Unknown';
             const formatterName = Formatters[op.formatterId]?.formatter.name ?? op.formatterId;
-            return { operationName, operationType, outputFormat, formatterName };
+            return {
+                operationName,
+                operationType,
+                operationDescription,
+                outputFormat,
+                formatterName,
+            };
         },
     );
 
     return (
         <div class='flex flex-col gap-3 p-3 border border-subtle rounded-md bg-subtle/10'>
             <span class='text-xs font-bold'>{props.pipeline.name} Pipeline</span>
-            <div class='flex flex-wrap items-center gap-2 text-sm'>
+            <div class='flex flex-wrap items-center gap-2'>
                 <Chip variant='outlined'>
                     Input: {inputFormat} {parserName !== inputFormat ? ` as ${parserName}` : null}
                 </Chip>
@@ -46,14 +53,19 @@ export function PipelineInfo(props: PipelineInfoProps) {
                 <For each={operations}>
                     {(op, index) => (
                         <>
-                            <Card style='filled' class='p-2!'>
+                            <Card style='filled' class='flex flex-col p-2!'>
                                 <div class='flex items-center justify-between gap-6'>
                                     <span class='text-head italic font-semibold'>
                                         {op.operationName}
                                     </span>
                                     <OperationChip type={op.operationType} />
                                 </div>
-                                <span class='text-body'>
+                                <Show when={op.operationDescription}>
+                                    <span class='text-sm'>
+                                        {op.operationDescription}
+                                    </span>
+                                </Show>
+                                <span class='text-sm text-subtle'>
                                     Output: {op.outputFormat} {op.outputFormat !== 'Unknown'
                                             && op.formatterName !== op.outputFormat
                                         ? ` as ${op.formatterName}`

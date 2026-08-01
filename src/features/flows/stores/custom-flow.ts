@@ -28,4 +28,4 @@ export function createCustomFlowStore(storeKey: string) {
     return { get, set, delete: delete_, has, entries };
 }
 
-export const CustomFlows = createCustomFlowStore('custom-flows');
+export type CustomFlowStore = ReturnType<typeof createCustomFlowStore>;

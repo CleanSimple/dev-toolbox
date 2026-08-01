@@ -3,10 +3,10 @@ import type { Flow } from '#/flows/types/models';
 import type { SupportedLang } from '@/types';
 import type { PipelineViewModel } from './PipelineViewModel';
 
+import { useFlows } from '#/flows/contexts/FlowsContext';
 import { DataFormats } from '#/flows/definitions/data-formats';
 import { Flows } from '#/flows/definitions/flows';
 import { getParsers, Parsers } from '#/flows/definitions/parsers';
-import { CustomFlows } from '#/flows/stores/custom-flow';
 import { parse, releaseData } from '#/flows/utils/processing';
 import { createDebounced, createDisposable } from '@/primitives';
 import { hasKey } from '@cleansimple/utils-js';
@@ -14,7 +14,8 @@ import { batch, createDeferred, createEffect, createMemo, createSignal } from 's
 import { createPipelineViewModel } from './PipelineViewModel';
 
 export function createFlowViewModel(flowId: string) {
-    const flow: Flow = Flows[flowId] ?? CustomFlows.get(flowId) ?? {
+    const { customFlows } = useFlows();
+    const flow: Flow = Flows[flowId] ?? customFlows.get(flowId) ?? {
         name: 'New Flow',
         dataFormatId: 'text',
         parserId: 'text',
@@ -145,7 +146,7 @@ export function createFlowViewModel(flowId: string) {
         if (!isCustom) return;
         _setIsEditing(false);
 
-        CustomFlows.set(flowId, {
+        customFlows.set(flowId, {
             name: name(),
             dataFormatId: dataFormatId(),
             parserId: parserId(),
@@ -161,7 +162,7 @@ export function createFlowViewModel(flowId: string) {
 
     const deleteFlow = () => {
         if (!isCustom) return;
-        CustomFlows.delete(flowId);
+        customFlows.delete(flowId);
     };
 
     setPipelines(flow.pipelines.map(

@@ -1,6 +1,6 @@
 import type { Flow } from '#/flows/types/models';
 
-import { Favorites } from '#/flows/stores/favorite';
+import { useFlows } from '#/flows/contexts/FlowsContext';
 import { Card } from '@/components/ui/Card';
 import { A } from '@solidjs/router';
 import { Star, Trash2 } from 'lucide-solid';
@@ -15,15 +15,16 @@ interface FlowInfoProps {
 }
 
 export function FlowInfo(props: FlowInfoProps) {
-    const isFavorite = () => Favorites.has(props.flowId);
+    const { favorites } = useFlows();
+    const isFavorite = () => favorites.has(props.flowId);
 
     const handleFavorite = (e: MouseEvent) => {
         e.preventDefault();
-        if (Favorites.has(props.flowId)) {
-            Favorites.remove(props.flowId);
+        if (favorites.has(props.flowId)) {
+            favorites.remove(props.flowId);
         }
         else {
-            Favorites.add(props.flowId);
+            favorites.add(props.flowId);
         }
     };
 

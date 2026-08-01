@@ -1,11 +1,12 @@
 import { createEffect, createSignal } from 'solid-js';
 
-export function createFavoriteStore(storeKey: string) {
+export function createFlowIdListStore(storeKey: string) {
     const [favorites, setFavorites] = createSignal<string[]>([]);
 
     const has = (flowId: string) => favorites().includes(flowId);
     const add = (flowId: string) => setFavorites((prev) => [...prev, flowId]);
     const remove = (flowId: string) => setFavorites((prev) => prev.filter((id) => id !== flowId));
+    const list = () => favorites();
 
     const data = localStorage.getItem(storeKey);
     if (data) {
@@ -19,7 +20,7 @@ export function createFavoriteStore(storeKey: string) {
 
     createEffect(() => localStorage.setItem(storeKey, JSON.stringify(favorites())));
 
-    return { has, add, remove };
+    return { has, add, remove, list };
 }
 
-export const Favorites = createFavoriteStore('favorites');
+export type FlowIdListStore = ReturnType<typeof createFlowIdListStore>;

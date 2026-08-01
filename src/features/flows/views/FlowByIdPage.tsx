@@ -1,15 +1,16 @@
 import { Flow } from '#/flows/components/Flow';
+import { useFlows } from '#/flows/contexts/FlowsContext';
 import { Flows } from '#/flows/definitions/flows';
-import { CustomFlows } from '#/flows/stores/custom-flow';
 import { createFlowViewModel } from '#/flows/view-models/FlowViewModel';
 import { hasKey } from '@cleansimple/utils-js';
 import { useNavigate, useParams } from '@solidjs/router';
 
 export function FlowByIdPage() {
+    const { customFlows } = useFlows();
     const params = useParams<{ flowId: string }>();
     const navigate = useNavigate();
 
-    if (!params.flowId || (!hasKey(Flows, params.flowId) && !CustomFlows.has(params.flowId))) {
+    if (!params.flowId || (!hasKey(Flows, params.flowId) && !customFlows.has(params.flowId))) {
         navigate('/flows');
         return;
     }

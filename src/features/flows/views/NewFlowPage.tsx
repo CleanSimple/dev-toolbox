@@ -1,5 +1,5 @@
 import { Flow } from '#/flows/components/Flow';
-import { CustomFlows } from '#/flows/stores/custom-flow';
+import { useFlows } from '#/flows/contexts/FlowsContext';
 import { createFlowViewModel } from '#/flows/view-models/FlowViewModel';
 import { useNavigate } from '@solidjs/router';
 
@@ -28,7 +28,8 @@ function parseCustomFlowNumber(flowId: string) {
 }
 
 export function nextCustomFlowId() {
-    const next = CustomFlows.entries().reduce(
+    const { customFlows } = useFlows();
+    const next = customFlows.entries().reduce(
         (maxId, [flowId]) => Math.max(maxId, parseCustomFlowNumber(flowId)),
         0,
     ) + 1;

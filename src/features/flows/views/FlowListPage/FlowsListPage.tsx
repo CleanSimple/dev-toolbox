@@ -1,8 +1,8 @@
 import type { Flow } from '#/flows/types/models';
+import type { Accessor } from 'solid-js';
 
+import { useFlows } from '#/flows/contexts/FlowsContext';
 import { Flows } from '#/flows/definitions/flows';
-import { CustomFlows } from '#/flows/stores/custom-flow';
-import { Favorites } from '#/flows/stores/favorite';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { createModal, Modal } from '@/components/ui/Modal';
@@ -18,26 +18,31 @@ interface FlowItem {
     flowId: string;
     flow: Flow;
     isCustom: boolean;
+    isFavorite: Accessor<boolean>;
 }
 
 const groupFilters: Record<Group, (item: FlowItem) => boolean> = {
     all: () => true,
     builtin: (item: FlowItem) => !item.isCustom,
     custom: (item: FlowItem) => item.isCustom,
-    favorite: (item: FlowItem) => Favorites.has(item.flowId),
+    favorite: (item: FlowItem) => item.isFavorite(),
 };
 
 export function FlowsListPage() {
     const [search, setSearch] = createSignal('');
     const [group, setGroup] = createSignal<Group>('all');
+    const { customFlows, favorites } = useFlows();
     const confirmDeleteFlowModal = createModal();
     const navigate = useNavigate();
 
     const filteredFlows = () => {
-        const items: FlowItem[] = [
-            ...CustomFlows.entries().map(([id, flow]) => ({ flowId: id, flow, isCustom: true })),
-            ...Object.entries(Flows).map(([id, flow]) => ({ flowId: id, flow, isCustom: false })),
-        ];
+        const items: FlowItem[] = [...customFlows.entries(), ...Object.entries(Flows)]
+            .map(([id, flow]) => ({
+                flowId: id,
+                flow,
+                isCustom: customFlows.has(id),
+                isFavorite: () => favorites.has(id),
+            }));
         const query = search().toLowerCase();
         const filtered = items.filter(groupFilters[group()])
             .filter(
@@ -52,7 +57,7 @@ export function FlowsListPage() {
         const confirmed = await confirmDeleteFlowModal.show();
         if (!confirmed) return;
 
-        CustomFlows.delete(flowId);
+        customFlows.delete(flowId);
     }
 
     const isGroupSelected = createSelector(group);

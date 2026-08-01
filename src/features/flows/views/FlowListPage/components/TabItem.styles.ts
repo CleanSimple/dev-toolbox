@@ -10,7 +10,7 @@ export const tabItemStyles = tv({
             true: 'bg-subtle/30 text-brand border-brand',
             false: `
                 border-subtle
-                hover:bg-subtle/20 hover:text-brand/80 hover:border-brand/50
+                hover:bg-subtle/20 hover:text-brand-hover hover:border-brand/50
             `,
         },
     },

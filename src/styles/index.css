@@ -30,11 +30,11 @@
     }
 
     a {
-        @apply text-body hover:text-brand transition-colors;
+        @apply text-body hover:text-brand-hover transition-colors;
     }
 
     a.active {
-        @apply text-brand;
+        @apply text-brand hover:text-brand-hover;
     }
 }
 

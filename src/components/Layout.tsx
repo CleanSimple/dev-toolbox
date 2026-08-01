@@ -15,7 +15,7 @@ export function Layout(props: ParentProps) {
                     </a>
 
                     <div class='flex-1 flex justify-start'>
-                        <A class='font-semibold' href='/flows'>Flows</A>
+                        <A class='font-semibold' href='/flows' end>Flows</A>
                     </div>
 
                     <ThemeToggle />

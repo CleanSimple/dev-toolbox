@@ -35,7 +35,7 @@ export function FlowInfo(props: FlowInfoProps) {
 
     return (
         <A href={`/flows/${props.flowId}`}>
-            <Card class='flex flex-col gap-3 h-full hover:border-brand/50 transition-colors group'>
+            <Card class='flex flex-col gap-3 h-full text-body hover:border-brand/50 transition-colors group'>
                 <div class='flex items-center gap-3'>
                     <h3 class='text-lg font-bold text-head group-hover:text-brand transition-colors'>
                         {props.flow.name}

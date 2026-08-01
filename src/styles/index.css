@@ -30,7 +30,11 @@
     }
 
     a {
-        @apply text-body hover:text-brand;
+        @apply text-body hover:text-brand transition-colors;
+    }
+
+    a.active {
+        @apply text-brand;
     }
 }
 

@@ -77,7 +77,9 @@ export function createOperationViewModel(
             return await format(formatterId(), outputLocal);
         }
         catch (error) {
-            console.error('formatting error', error);
+            if (import.meta.env.DEV) {
+                console.error('formatting error', error);
+            }
             setOutputError(error);
             return null;
         }
@@ -104,7 +106,9 @@ export function createOperationViewModel(
             const result = await runOperation(operation.operationId, inputLocal);
             setOutput(result);
         } catch (error) {
-            console.error('operation error', error);
+            if (import.meta.env.DEV) {
+                console.error('operation error', error);
+            }
             setOutputError(error);
             setOutput(null);
         }

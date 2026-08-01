@@ -103,7 +103,9 @@ export function createFlowViewModel(flowId: Accessor<string>) {
                 const result = await parse(parserId, rawInput);
                 setInput(result);
             } catch (error) {
-                console.error('parse error', error);
+                if (import.meta.env.DEV) {
+                    console.error('parse error', error);
+                }
                 setInputError(error);
                 setInput(null);
             }

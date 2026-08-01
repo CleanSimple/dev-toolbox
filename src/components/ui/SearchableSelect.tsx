@@ -1,7 +1,7 @@
 import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
-import { createEventHandler } from '@/primitives/createEventHandler';
+import { createEventHandler } from '@/primitives';
 import { ChevronDown, Search, X } from 'lucide-solid';
 import { createComputed, createEffect, createSignal, For, on, Show, splitProps } from 'solid-js';
 import { searchableSelectStyles } from './SearchableSelect.styles';

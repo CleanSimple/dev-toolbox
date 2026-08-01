@@ -28,6 +28,10 @@
         outline-style: solid;
         outline-offset: 1px;
     }
+
+    a {
+        @apply text-body hover:text-brand;
+    }
 }
 
 /* Animations */

@@ -32,6 +32,7 @@ export function Flow(props: FlowProps) {
         editFlow,
         saveFlow,
         deleteFlow,
+        input,
         setInput,
         dataFormatId,
         dataFormatName,
@@ -99,7 +100,7 @@ export function Flow(props: FlowProps) {
                     color='secondary'
                     size='lg'
                     class='gap-2'
-                    disabled={!isCustom}
+                    disabled={!isCustom()}
                     onClick={isEditing() ? handleSaveFlow : editFlow}
                 >
                     <Show when={isEditing()}>
@@ -113,7 +114,7 @@ export function Flow(props: FlowProps) {
                     color='danger'
                     size='lg'
                     class='gap-2'
-                    disabled={!isCustom}
+                    disabled={!isCustom()}
                     onClick={() => void handleDeleteFlow()}
                 >
                     <Trash2 class='w-5 h-5' />
@@ -173,7 +174,7 @@ export function Flow(props: FlowProps) {
                     <CodeMirror
                         class='w-full h-50'
                         error={inputError()}
-                        value=''
+                        value={input() ?? ''}
                         placeholder={inputPlaceholder() ?? ''}
                         lang={inputLang()}
                         onValueChange={(value) => setInput(value)}

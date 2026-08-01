@@ -1,6 +1,6 @@
 import type { Accessor, ParentProps, Setter } from 'solid-js';
 
-import { createEventHandler } from '@/primitives/createEventHandler';
+import { createEventHandler } from '@/primitives';
 import { createContext, createEffect, createSignal, useContext } from 'solid-js';
 
 const Themes = ['system', 'light', 'dark'] as const;

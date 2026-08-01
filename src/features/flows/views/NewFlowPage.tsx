@@ -1,22 +1,27 @@
 import { Flow } from '#/flows/components/Flow';
 import { useFlows } from '#/flows/contexts/FlowsContext';
 import { createFlowViewModel } from '#/flows/view-models/FlowViewModel';
+import { Container } from '@/components/ui/Container';
 import { useNavigate } from '@solidjs/router';
 
 export function NewFlowPage() {
     const navigate = useNavigate();
 
     const flowId = nextCustomFlowId();
-    const flowVM = createFlowViewModel(flowId);
+    const flowVM = createFlowViewModel(() => flowId);
     flowVM.editFlow();
 
     return (
-        <Flow
-            flowVM={flowVM}
-            onBack={() => navigate('/flows')}
-            onSave={() => navigate(`/flows/${flowId}`)}
-            onDelete={() => navigate('/flows')}
-        />
+        <Container>
+            <section>
+                <Flow
+                    flowVM={flowVM}
+                    onBack={() => navigate('/flows')}
+                    onSave={() => navigate(`/flows/${flowId}`)}
+                    onDelete={() => navigate('/flows')}
+                />
+            </section>
+        </Container>
     );
 }
 

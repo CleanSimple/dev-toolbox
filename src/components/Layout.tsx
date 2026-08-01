@@ -15,14 +15,14 @@ export function Layout(props: ParentProps) {
                     </a>
 
                     <div class='flex-1 flex justify-start'>
-                        <A class='text-body font-semibold hover:text-brand' href='/flows'>Flows</A>
+                        <A class='font-semibold' href='/flows'>Flows</A>
                     </div>
 
                     <ThemeToggle />
                 </div>
             </nav>
 
-            <main class='flex-1 w-full max-w-7xl mx-auto p-8'>
+            <main class='flex-1 p-6'>
                 {props.children}
             </main>
         </div>

@@ -56,7 +56,7 @@ export function Pipeline(props: PipelineProps) {
                     fallback={<h1 class='text-lg font-bold text-head'>{name()}</h1>}
                 >
                     <Input
-                        class='text-lg font-bold text-head w-80'
+                        class='text-lg font-bold text-head min-w-0 w-80'
                         type='text'
                         value={name()}
                         onInput={(e) => setName(e.currentTarget.value)}

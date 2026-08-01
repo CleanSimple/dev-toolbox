@@ -1,7 +1,9 @@
+import { Container } from '@/components/ui/Container';
+
 export function HomePage() {
     return (
-        <div class='w-full flex flex-col'>
+        <Container>
             <h1>Home</h1>
-        </div>
+        </Container>
     );
 }

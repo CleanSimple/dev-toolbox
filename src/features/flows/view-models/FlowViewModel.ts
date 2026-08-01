@@ -1,6 +1,6 @@
 import type { DataFormatId, DataRef } from '#/flows/definitions/data-formats';
-import type { Flow } from '#/flows/types/models';
 import type { SupportedLang } from '@/types';
+import type { Accessor } from 'solid-js';
 import type { PipelineViewModel } from './PipelineViewModel';
 
 import { useFlows } from '#/flows/contexts/FlowsContext';
@@ -8,26 +8,26 @@ import { DataFormats } from '#/flows/definitions/data-formats';
 import { Flows } from '#/flows/definitions/flows';
 import { getParsers, Parsers } from '#/flows/definitions/parsers';
 import { parse, releaseData } from '#/flows/utils/processing';
-import { createDebounced, createDisposable } from '@/primitives';
+import { createDebouncedEffect, createDisposable } from '@/primitives';
 import { hasKey } from '@cleansimple/utils-js';
-import { batch, createDeferred, createEffect, createMemo, createSignal } from 'solid-js';
+import { batch, createComputed, createEffect, createMemo, createSignal, on } from 'solid-js';
 import { createPipelineViewModel } from './PipelineViewModel';
 
-export function createFlowViewModel(flowId: string) {
+export function createFlowViewModel(flowId: Accessor<string>) {
     const { customFlows } = useFlows();
-    const flow: Flow = Flows[flowId] ?? customFlows.get(flowId) ?? {
-        name: 'New Flow',
-        dataFormatId: 'text',
-        parserId: 'text',
-        pipelines: [],
-    };
-    const isCustom = !hasKey(Flows, flowId);
-
-    const [name, _setName] = createSignal(flow.name);
-    const [dataFormatId, _setDataFormatId] = createSignal(flow.dataFormatId);
-    const [_parserId, setParserId] = createSignal(flow.parserId);
+    const flow = createMemo(() =>
+        Flows[flowId()] ?? customFlows.get(flowId()) ?? {
+            name: 'New Flow',
+            dataFormatId: 'text',
+            parserId: 'text',
+            pipelines: [],
+        }
+    );
+    const [name, _setName] = createSignal(flow().name);
+    const [dataFormatId, _setDataFormatId] = createSignal(flow().dataFormatId);
+    const [parserId, setParserId] = createSignal(flow().parserId);
     const [parserError, setParserError] = createSignal<string | null>(null);
-    const [_rawInput, setRawInput] = createSignal<string | null>(null);
+    const [rawInput, setRawInput] = createSignal<string | null>(null);
     const [input, setInput] = createDisposable<DataRef>((output) => {
         if (output.scope === 'local') return;
 
@@ -37,21 +37,31 @@ export function createFlowViewModel(flowId: string) {
     const [inputExample, setInputExample] = createSignal<string | null>(null);
     const [inputError, setInputError] = createSignal<unknown>(null);
     const [inputLang, setInputLang] = createSignal<SupportedLang>('text');
-    const [pipelines, setPipelines] = createSignal<PipelineViewModel[]>(
-        [],
-    );
+    const [pipelines, setPipelines] = createSignal<PipelineViewModel[]>([]);
     const [isParsing, setIsParsing] = createSignal(false);
     const [isEditing, _setIsEditing] = createSignal(false);
 
+    const isCustom = createMemo(() => !hasKey(Flows, flowId()));
     const dataFormatName = createMemo(() => DataFormats[dataFormatId()].name);
-    const parserId = createDeferred(_parserId);
-    const rawInput = createDebounced(_rawInput, 500);
 
     const availableParsers = createMemo(() => {
         return new Map(
             getParsers(dataFormatId()).map((id) => [id, Parsers[id].parser] as const),
         );
     });
+
+    createComputed(on(flow, (flow) => {
+        _setName(flow.name);
+        _setDataFormatId(flow.dataFormatId);
+        setRawInput(null);
+        setInput(null);
+        setInputError(null);
+        setParserId(flow.parserId);
+        setParserError(null);
+        setPipelines(flow.pipelines.map(
+            pipeline => createPipelineViewModel(pipeline, dataFormatId, input, isEditing),
+        ));
+    }));
 
     createEffect(() => {
         setInputPlaceholder(null);
@@ -72,34 +82,37 @@ export function createFlowViewModel(flowId: string) {
         }
     });
 
-    createEffect(async () => {
-        if (parserError()) {
-            setInputError(null);
-            setInput(null);
-            return;
-        }
+    createDebouncedEffect(
+        [parserId, parserError, rawInput],
+        async ([parserId, parserError, rawInput]) => {
+            if (parserError) {
+                setInputError(null);
+                setInput(null);
+                return;
+            }
 
-        const rawInputLocal = rawInput();
-        if (!rawInputLocal) {
-            setInputError(null);
-            setInput(null);
-            return;
-        }
+            if (!rawInput) {
+                setInputError(null);
+                setInput(null);
+                return;
+            }
 
-        setInputError(null);
-        setIsParsing(true);
-        try {
-            const result = await parse(parserId(), rawInputLocal);
-            setInput(result);
-        } catch (error) {
-            console.error('parse error', error);
-            setInputError(error);
-            setInput(null);
-        }
-        finally {
-            setIsParsing(false);
-        }
-    });
+            setInputError(null);
+            setIsParsing(true);
+            try {
+                const result = await parse(parserId, rawInput);
+                setInput(result);
+            } catch (error) {
+                console.error('parse error', error);
+                setInputError(error);
+                setInput(null);
+            }
+            finally {
+                setIsParsing(false);
+            }
+        },
+        500,
+    );
 
     const setName = (name: string) => {
         if (!isEditing()) return;
@@ -138,15 +151,15 @@ export function createFlowViewModel(flowId: string) {
     };
 
     const editFlow = () => {
-        if (!isCustom) return;
+        if (!isCustom()) return;
         _setIsEditing(true);
     };
 
     const saveFlow = () => {
-        if (!isCustom) return;
+        if (!isCustom()) return;
         _setIsEditing(false);
 
-        customFlows.set(flowId, {
+        customFlows.set(flowId(), {
             name: name(),
             dataFormatId: dataFormatId(),
             parserId: parserId(),
@@ -161,13 +174,9 @@ export function createFlowViewModel(flowId: string) {
     };
 
     const deleteFlow = () => {
-        if (!isCustom) return;
-        customFlows.delete(flowId);
+        if (!isCustom()) return;
+        customFlows.delete(flowId());
     };
-
-    setPipelines(flow.pipelines.map(
-        pipeline => createPipelineViewModel(pipeline, dataFormatId, input, isEditing),
-    ));
 
     return {
         isEditing,
@@ -185,6 +194,7 @@ export function createFlowViewModel(flowId: string) {
         parserId,
         setParserId,
         parserError,
+        input: rawInput,
         setInput: setRawInput,
         inputPlaceholder,
         inputExample,

@@ -11,6 +11,7 @@ import { Frown, Plus, Search } from 'lucide-solid';
 import { createSelector, createSignal, For } from 'solid-js';
 import { FlowInfo } from './components/FlowInfo';
 import { tabItemStyles } from './components/TabItem.styles';
+import { Container } from '@/components/ui/Container';
 
 type Group = 'all' | 'builtin' | 'custom' | 'favorite';
 
@@ -63,7 +64,7 @@ export function FlowsListPage() {
     const isGroupSelected = createSelector(group);
 
     return (
-        <div class='flex flex-col gap-4'>
+        <Container class='flex flex-col gap-4'>
             <div class='flex items-center gap-4'>
                 <div class='relative w-full'>
                     <Input
@@ -136,6 +137,6 @@ export function FlowsListPage() {
             >
                 <p>Are you sure you want to delete this flow?</p>
             </Modal>
-        </div>
+        </Container>
     );
 }

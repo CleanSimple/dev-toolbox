@@ -17,7 +17,8 @@ export class StringEncode implements IOperation<Text, Text> {
     }
 
     public readonly name: string;
-    public readonly description = 'Converts special characters into escape sequences (e.g. newline -> \\n)';
+    public readonly description =
+        'Converts special characters into escape sequences (e.g. newline -> \\n)';
     public readonly type = 'transform';
 
     public handler(input: Text) {

@@ -17,7 +17,8 @@ export class StringDecode implements IOperation<Text, Text> {
     }
 
     public readonly name: string;
-    public readonly description = 'Converts escape sequences back into their original characters (e.g. \\n -> newline)';
+    public readonly description =
+        'Converts escape sequences back into their original characters (e.g. \\n -> newline)';
     public readonly type = 'transform';
 
     public handler(input: Text) {

@@ -4,6 +4,7 @@ import type { Accessor } from 'solid-js';
 import { useFlows } from '#/flows/contexts/FlowsContext';
 import { Flows } from '#/flows/definitions/flows';
 import { Button } from '@/components/ui/Button';
+import { Container } from '@/components/ui/Container';
 import { Input } from '@/components/ui/Input';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { useNavigate } from '@solidjs/router';
@@ -11,7 +12,6 @@ import { Frown, Plus, Search } from 'lucide-solid';
 import { createSelector, createSignal, For } from 'solid-js';
 import { FlowInfo } from './components/FlowInfo';
 import { tabItemStyles } from './components/TabItem.styles';
-import { Container } from '@/components/ui/Container';
 
 type Group = 'all' | 'builtin' | 'custom' | 'favorite';
 

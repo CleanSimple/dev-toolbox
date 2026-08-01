@@ -1,16 +1,11 @@
 import type { Accessor, ParentProps, Setter } from 'solid-js';
 
-import {
-    createContext,
-    createEffect,
-    createSignal,
-    onCleanup,
-    onMount,
-    useContext,
-} from 'solid-js';
+import { createEventHandler } from '@/primitives/createEventHandler';
+import { createContext, createEffect, createSignal, useContext } from 'solid-js';
 
 const Themes = ['system', 'light', 'dark'] as const;
 type Theme = typeof Themes[number];
+const ThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
 const isTheme = (value: string): value is Theme => {
     return (Themes as readonly string[]).includes(value);
@@ -50,8 +45,9 @@ export function ThemeProvider(props: ParentProps) {
         storage.getTheme() ?? 'system',
     );
     const [systemTheme, setSystemTheme] = createSignal<'dark' | 'light'>(
-        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+        ThemeMediaQuery.matches ? 'dark' : 'light',
     );
+
     const actualTheme = () => {
         const currentTheme = theme();
         return currentTheme === 'system' ? systemTheme() : currentTheme;
@@ -75,15 +71,9 @@ export function ThemeProvider(props: ParentProps) {
         storage.setTheme(theme());
     });
 
-    onMount(() => {
-        // handle system theme change
-        const handleSystemThemeChange = (event: MediaQueryListEvent) => {
-            setSystemTheme(event.matches ? 'dark' : 'light');
-        };
-
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        mediaQuery.addEventListener('change', handleSystemThemeChange);
-        onCleanup(() => mediaQuery.removeEventListener('change', handleSystemThemeChange));
+    // handle system theme change
+    createEventHandler(ThemeMediaQuery, 'change', (event) => {
+        setSystemTheme(event.matches ? 'dark' : 'light');
     });
 
     return (

@@ -1,18 +1,9 @@
 import type { JSX } from 'solid-js';
 import type { VariantProps } from 'tailwind-variants/lite';
 
+import { createEventHandler } from '@/primitives/createEventHandler';
 import { ChevronDown, Search, X } from 'lucide-solid';
-import {
-    createComputed,
-    createEffect,
-    createSignal,
-    For,
-    on,
-    onCleanup,
-    onMount,
-    Show,
-    splitProps,
-} from 'solid-js';
+import { createComputed, createEffect, createSignal, For, on, Show, splitProps } from 'solid-js';
 import { searchableSelectStyles } from './SearchableSelect.styles';
 
 type SearchableSelectVariantProps = VariantProps<typeof searchableSelectStyles>;
@@ -37,16 +28,10 @@ export function SearchableSelect<T>(props: SearchableSelectProps<T>) {
     let containerRef: HTMLDivElement | undefined;
     let inputRef: HTMLInputElement | undefined;
 
-    onMount(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (containerRef && !containerRef.contains(e.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        onCleanup(() => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        });
+    createEventHandler(document, 'mousedown', (e) => {
+        if (containerRef && !containerRef.contains(e.target as Node)) {
+            setIsOpen(false);
+        }
     });
 
     const filteredItems = () => {

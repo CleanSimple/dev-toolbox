@@ -1,58 +1,45 @@
-import type { Flow } from '#/flows/types/models';
-import type { Accessor } from 'solid-js';
+import type { FlowInfoViewModel } from '#/flows/view-models/FlowInfoViewModel';
 
 import { useFlows } from '#/flows/contexts/FlowsContext';
 import { Flows } from '#/flows/definitions/flows';
+import { createFlowInfoViewModel } from '#/flows/view-models/FlowInfoViewModel';
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { Input } from '@/components/ui/Input';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { useNavigate } from '@solidjs/router';
 import { Frown, Plus, Search } from 'lucide-solid';
-import { createSelector, createSignal, For } from 'solid-js';
+import { createMemo, createSelector, createSignal, For } from 'solid-js';
 import { FlowInfo } from './components/FlowInfo';
 import { tabItemStyles } from './components/TabItem.styles';
 
 type Group = 'all' | 'builtin' | 'custom' | 'favorite';
 
-interface FlowItem {
-    flowId: string;
-    flow: Flow;
-    isCustom: boolean;
-    isFavorite: Accessor<boolean>;
-}
-
-const groupFilters: Record<Group, (item: FlowItem) => boolean> = {
+const groupFilters: Record<Group, (item: FlowInfoViewModel) => boolean> = {
     all: () => true,
-    builtin: (item: FlowItem) => !item.isCustom,
-    custom: (item: FlowItem) => item.isCustom,
-    favorite: (item: FlowItem) => item.isFavorite(),
+    builtin: (item: FlowInfoViewModel) => !item.isCustom,
+    custom: (item: FlowInfoViewModel) => item.isCustom,
+    favorite: (item: FlowInfoViewModel) => item.isFavorite(),
 };
 
-export function FlowsListPage() {
+export function FlowListPage() {
     const [search, setSearch] = createSignal('');
     const [group, setGroup] = createSignal<Group>('all');
-    const { customFlows, favorites } = useFlows();
+    const { customFlows } = useFlows();
     const confirmDeleteFlowModal = createModal();
     const navigate = useNavigate();
 
-    const filteredFlows = () => {
-        const items: FlowItem[] = [...customFlows.entries(), ...Object.entries(Flows)]
-            .map(([id, flow]) => ({
-                flowId: id,
-                flow,
-                isCustom: customFlows.has(id),
-                isFavorite: () => favorites.has(id),
-            }));
+    const flows = createMemo(() =>
+        [...customFlows.entries(), ...Object.entries(Flows)]
+            .map(([id]) => createFlowInfoViewModel(id))
+    );
+    const filteredFlows = createMemo(() => {
         const query = search().toLowerCase();
-        const filtered = items.filter(groupFilters[group()])
-            .filter(
-                (item) =>
-                    item.flow.name.toLowerCase().includes(query)
-                    || item.flowId.toLowerCase().includes(query),
-            );
+        const filtered = flows()
+            .filter(groupFilters[group()])
+            .filter((flowInfo) => flowInfo.name.toLowerCase().includes(query));
         return filtered;
-    };
+    });
 
     async function handleDeleteFlow(flowId: string) {
         const confirmed = await confirmDeleteFlowModal.show();
@@ -112,12 +99,10 @@ export function FlowsListPage() {
 
             <div class='grid gap-4 lg:grid-cols-2'>
                 <For each={filteredFlows()}>
-                    {(item) => (
+                    {(flowInfoVM) => (
                         <FlowInfo
-                            flowId={item.flowId}
-                            flow={item.flow}
-                            isCustom={item.isCustom}
-                            onDelete={() => void handleDeleteFlow(item.flowId)}
+                            flowInfoVM={flowInfoVM}
+                            onDelete={() => void handleDeleteFlow(flowInfoVM.id)}
                         />
                     )}
                 </For>

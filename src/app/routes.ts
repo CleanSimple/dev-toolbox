@@ -2,7 +2,7 @@ import type { RouteDefinition } from '@solidjs/router';
 
 import { UIPreviewPage } from '@/app/UIPreviewPage';
 import { Layout } from '@/components/Layout';
-import { FlowByIdPage, FlowsLayout, FlowsListPage, NewFlowPage } from '@/features/flows';
+import { FlowByIdPage, FlowsLayout, FlowListPage, NewFlowPage } from '@/features/flows';
 import { HomePage } from '@/features/home';
 
 export const routes: RouteDefinition[] = [
@@ -20,7 +20,7 @@ export const routes: RouteDefinition[] = [
                 children: [
                     {
                         path: '/',
-                        component: FlowsListPage,
+                        component: FlowListPage,
                     },
                     {
                         path: '/new',

@@ -1,4 +1,4 @@
-import type { Flow } from '#/flows/types/models';
+import type { FlowInfoViewModel } from '#/flows/view-models/FlowInfoViewModel';
 
 import { useFlows } from '#/flows/contexts/FlowsContext';
 import { Card } from '@/components/ui/Card';
@@ -8,23 +8,20 @@ import { For, Show } from 'solid-js';
 import { PipelineInfo } from './PipelineInfo';
 
 interface FlowInfoProps {
-    flowId: string;
-    flow: Flow;
-    isCustom: boolean;
+    flowInfoVM: FlowInfoViewModel;
     onDelete?: () => void;
 }
 
 export function FlowInfo(props: FlowInfoProps) {
     const { favorites } = useFlows();
-    const isFavorite = () => favorites.has(props.flowId);
 
     const handleFavorite = (e: MouseEvent) => {
         e.preventDefault();
-        if (favorites.has(props.flowId)) {
-            favorites.remove(props.flowId);
+        if (favorites.has(props.flowInfoVM.id)) {
+            favorites.remove(props.flowInfoVM.id);
         }
         else {
-            favorites.add(props.flowId);
+            favorites.add(props.flowInfoVM.id);
         }
     };
 
@@ -34,17 +31,17 @@ export function FlowInfo(props: FlowInfoProps) {
     };
 
     return (
-        <A href={`/flows/${props.flowId}`}>
+        <A href={`/flows/${props.flowInfoVM.id}`}>
             <Card class='flex flex-col gap-3 h-full text-body hover:border-brand/50 transition-colors group'>
                 <div class='flex items-center gap-3'>
                     <h3 class='text-lg font-bold text-head group-hover:text-brand transition-colors'>
-                        {props.flow.name}
+                        {props.flowInfoVM.name}
                     </h3>
 
                     {/* padding */}
                     <div class='flex-1' />
 
-                    <Show when={props.isCustom}>
+                    <Show when={props.flowInfoVM.isCustom}>
                         <button
                             class='p-2 rounded-full hover:bg-danger/80 hover:text-danger transition-colors cursor-pointer'
                             onClick={handleDelete}
@@ -58,18 +55,14 @@ export function FlowInfo(props: FlowInfoProps) {
                     >
                         <Star
                             class='h-5 w-5'
-                            classList={{ 'text-yellow-500 fill-yellow-500': isFavorite() }}
+                            classList={{
+                                'text-yellow-500 fill-yellow-500': props.flowInfoVM.isFavorite(),
+                            }}
                         />
                     </button>
                 </div>
-                <For each={props.flow.pipelines}>
-                    {(pipeline) => (
-                        <PipelineInfo
-                            dataFormatId={props.flow.dataFormatId}
-                            parserId={props.flow.parserId}
-                            pipeline={pipeline}
-                        />
-                    )}
+                <For each={props.flowInfoVM.pipelines}>
+                    {(pipelineInfoVM) => <PipelineInfo pipelineInfoVM={pipelineInfoVM} />}
                 </For>
             </Card>
         </A>

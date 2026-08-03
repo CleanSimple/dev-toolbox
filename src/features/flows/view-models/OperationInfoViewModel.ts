@@ -3,11 +3,12 @@ import type { Operation } from '#/flows/types/models';
 import { DataFormats } from '#/flows/definitions/data-formats';
 import { Formatters } from '#/flows/definitions/formatters';
 import { Operations } from '#/flows/definitions/operations';
+import { get } from '@/utils';
 
 export function createOperationInfoViewModel(operation: Operation) {
-    const opRecord = Operations[operation.operationId];
+    const opRecord = get(Operations, operation.operationId);
     const name = opRecord?.operation.name ?? operation.operationId;
-    const type = opRecord?.operation.type ?? 'unknown';
+    const type = opRecord?.operation.type ?? 'unknown' as const;
     const description = opRecord?.operation.description ?? null;
     const outputFormat = opRecord
         ? DataFormats[opRecord.outDataFormatId].name

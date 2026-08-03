@@ -9,6 +9,7 @@ import { TextParser } from '#/flows/parsers/TextParser';
 import { UrlEncodedFormParser } from '#/flows/parsers/UrlEncodedFormParser';
 import { UrlEncodedParser } from '#/flows/parsers/UrlEncodedParser';
 import { UrlParametersParser } from '#/flows/parsers/UrlParametersParser';
+import { hasKey } from '@cleansimple/utils-js';
 
 interface ParserRecord<T extends DataFormatId> {
     dataFormatId: T;
@@ -32,7 +33,10 @@ export const Parsers = {
 
 export type ParserId = keyof typeof Parsers;
 
-export function getParsers(dataFormatId: DataFormatId) {
+export function getParsers(dataFormatId: string) {
+    if (!hasKey(DataFormats, dataFormatId)) {
+        return [];
+    }
     const parsers: ParserId[] = [];
 
     const dataFormatType = DataFormats[dataFormatId].type;

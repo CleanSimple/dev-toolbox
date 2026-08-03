@@ -26,6 +26,7 @@ import { UrlDecode } from '#/flows/operations/UrlDecode';
 import { UrlEncode } from '#/flows/operations/UrlEncode';
 import { UrlEncodedDataToJson } from '#/flows/operations/UrlEncodedDataToJson';
 import { isSubclassOf } from '#/flows/utils/general';
+import { hasKey } from '@cleansimple/utils-js';
 
 interface OperationRecord<TIn extends DataFormatId, TOut extends DataFormatId> {
     inDataFormatId: TIn;
@@ -259,7 +260,10 @@ export const Operations = {
 
 export type OperationId = keyof typeof Operations;
 
-export function getOperations(dataFormatId: DataFormatId) {
+export function getOperations(dataFormatId: string) {
+    if (!hasKey(DataFormats, dataFormatId)) {
+        return [];
+    }
     const operations: OperationId[] = [];
 
     const dataFormatType = DataFormats[dataFormatId].type;

@@ -7,6 +7,7 @@ import { Formatters, getFormatters } from '#/flows/definitions/formatters';
 import { getOperations, Operations } from '#/flows/definitions/operations';
 import { format, releaseData, runOperation } from '#/flows/utils/processing';
 import { createDisposable, createLazyAsyncComputed } from '@/primitives';
+import { get } from '@/utils';
 import { createDeferred, createEffect, createSignal } from 'solid-js';
 
 export function createOperationViewModel(
@@ -120,10 +121,12 @@ export function createOperationViewModel(
 
     return {
         id: operation.operationId,
-        name: operationInst?.operation.name ?? Operations[operation.operationId]?.operation.name
+        name: operationInst?.operation.name
+            ?? get(Operations, operation.operationId)?.operation.name
             ?? operation.operationId,
-        type: operationInst?.operation.type ?? Operations[operation.operationId]?.operation.type
-            ?? 'unknown',
+        type: operationInst?.operation.type
+            ?? get(Operations, operation.operationId)?.operation.type
+            ?? 'unknown' as const,
         isInactive: inputDataFormatId === null,
         operationError,
         availableFormatters,

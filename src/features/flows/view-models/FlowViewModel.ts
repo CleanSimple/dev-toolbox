@@ -1,4 +1,5 @@
 import type { DataFormatId, DataRef } from '#/flows/definitions/data-formats';
+import type { Flow } from '#/flows/types/models';
 import type { SupportedLang } from '@/types';
 import type { Accessor } from 'solid-js';
 import type { PipelineViewModel } from './PipelineViewModel';
@@ -9,14 +10,15 @@ import { Flows } from '#/flows/definitions/flows';
 import { getParsers, Parsers } from '#/flows/definitions/parsers';
 import { parse, releaseData } from '#/flows/utils/processing';
 import { createDebouncedEffect, createDisposable } from '@/primitives';
+import { get } from '@/utils';
 import { hasKey } from '@cleansimple/utils-js';
 import { batch, createComputed, createEffect, createMemo, createSignal, on } from 'solid-js';
 import { createPipelineViewModel } from './PipelineViewModel';
 
 export function createFlowViewModel(flowId: Accessor<string>) {
     const { customFlows } = useFlows();
-    const flow = createMemo(() =>
-        Flows[flowId()] ?? customFlows.get(flowId()) ?? {
+    const flow = createMemo((): Flow =>
+        get(Flows, flowId()) ?? customFlows.get(flowId()) ?? {
             name: 'New Flow',
             dataFormatId: 'text',
             parserId: 'text',
@@ -42,7 +44,9 @@ export function createFlowViewModel(flowId: Accessor<string>) {
     const [isEditing, _setIsEditing] = createSignal(false);
 
     const isCustom = createMemo(() => !hasKey(Flows, flowId()));
-    const dataFormatName = createMemo(() => DataFormats[dataFormatId()].name);
+    const dataFormatName = createMemo(() =>
+        get(DataFormats, dataFormatId())?.name ?? dataFormatId()
+    );
 
     const availableParsers = createMemo(() => {
         return new Map(

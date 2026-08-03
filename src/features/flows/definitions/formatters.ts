@@ -7,6 +7,7 @@ import { JsonFormatter } from '#/flows/formatters/JsonFormatter';
 import { TextFormatter } from '#/flows/formatters/TextFormatter';
 import { UrlEncodedDataFormatter } from '#/flows/formatters/UrlEncodedDataFormatter';
 import { isSubclassOf } from '#/flows/utils/general';
+import { hasKey } from '@cleansimple/utils-js';
 
 interface FormatterRecord<T extends DataFormatId> {
     dataFormatId: T;
@@ -57,7 +58,10 @@ export const Formatters = {
 
 export type FormatterId = keyof typeof Formatters;
 
-export function getFormatters(dataFormatId: DataFormatId) {
+export function getFormatters(dataFormatId: string) {
+    if (!hasKey(DataFormats, dataFormatId)) {
+        return [];
+    }
     const formatters: FormatterId[] = [];
 
     const dataFormatType = DataFormats[dataFormatId].type;

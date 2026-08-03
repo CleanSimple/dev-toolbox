@@ -1,3 +1,7 @@
+export function get<T>(obj: Record<string, T>, key: string): T | undefined {
+    return obj[key];
+}
+
 export function formatError(error: unknown) {
     return error instanceof Error ? error.message : String(error);
 }

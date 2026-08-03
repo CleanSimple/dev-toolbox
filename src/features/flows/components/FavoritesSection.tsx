@@ -1,6 +1,7 @@
 import { useFlows } from '#/flows/contexts/FlowsContext';
 import { Flows } from '#/flows/definitions/flows';
 import { Card } from '@/components/ui/Card';
+import { get } from '@/utils';
 import { A } from '@solidjs/router';
 import { For } from 'solid-js';
 
@@ -8,8 +9,8 @@ export function FavoritesSection() {
     const { favorites, customFlows } = useFlows();
 
     function renderFlow(flowId: string) {
-        const flow = Flows[flowId] ?? customFlows.get(flowId);
-        return <A href={`/flows/${flowId}`}>{flow.name}</A>;
+        const flow = get(Flows, flowId) ?? customFlows.get(flowId);
+        return <A href={`/flows/${flowId}`}>{flow?.name ?? flowId}</A>;
     }
 
     return (

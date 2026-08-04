@@ -9,7 +9,15 @@ interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>, Butto
 }
 
 export function Button(props: ButtonProps) {
-    const [variantProps, rest] = splitProps(props, ['class', 'color', 'size']);
+    const [variantProps, rest] = splitProps(props, [
+        'class',
+        'variant',
+        'color',
+        'size',
+        'shape',
+        'round',
+        'disabled',
+    ]);
 
-    return <button class={buttonStyles(variantProps)} {...rest} />;
+    return <button class={buttonStyles(variantProps)} disabled={variantProps.disabled} {...rest} />;
 }

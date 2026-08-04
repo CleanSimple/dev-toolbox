@@ -9,11 +9,11 @@ type EventMapFor<T> = T extends Window ? WindowEventMap
 
 export function createEventHandler<
     T extends EventTarget,
-    K extends keyof EventMapFor<T>,
+    K extends keyof EventMapFor<T> | string,
 >(
     target: T,
     type: K,
-    handler: (this: T, ev: EventMapFor<T>[K]) => void,
+    handler: (this: T, ev: K extends keyof EventMapFor<T> ? EventMapFor<T>[K] : Event) => void,
     options?: boolean | AddEventListenerOptions,
 ) {
     target.addEventListener(type as string, handler as EventListener, options);

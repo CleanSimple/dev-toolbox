@@ -1,4 +1,3 @@
-import { Show } from 'solid-js';
 import { useRegisterSW } from 'virtual:pwa-register/solid';
 import { OfflinePrompt } from './OfflinePrompt';
 import { ReloadPrompt } from './ReloadPrompt';
@@ -36,17 +35,15 @@ export function ServiceWorkerRegistration() {
 
     return (
         <>
-            <Show when={needRefresh()}>
-                <ReloadPrompt
-                    onClose={closeReload}
-                    onUpdate={() => void updateServiceWorker(true)}
-                />
-            </Show>
-            <Show when={offlineReady()}>
-                <OfflinePrompt
-                    onClose={closeOffline}
-                />
-            </Show>
+            <ReloadPrompt
+                show={needRefresh()}
+                onClose={closeReload}
+                onUpdate={() => void updateServiceWorker(true)}
+            />
+            <OfflinePrompt
+                show={offlineReady()}
+                onClose={closeOffline}
+            />
         </>
     );
 }

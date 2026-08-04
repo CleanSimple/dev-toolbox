@@ -9,6 +9,7 @@ import { createContext, useContext } from 'solid-js';
 interface FlowsContext {
     customFlows: CustomFlowStore;
     favorites: FlowIdListStore;
+    recent: FlowIdListStore;
 }
 
 const FlowsContext = createContext<FlowsContext>();
@@ -24,9 +25,10 @@ export function useFlows() {
 export function FlowsProvider(props: ParentProps) {
     const customFlows = createCustomFlowStore('custom-flows');
     const favorites = createFlowIdListStore('favorites');
+    const recent = createFlowIdListStore('recent');
 
     return (
-        <FlowsContext.Provider value={{ customFlows, favorites }}>
+        <FlowsContext.Provider value={{ customFlows, favorites, recent }}>
             {props.children}
         </FlowsContext.Provider>
     );

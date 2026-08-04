@@ -27,9 +27,13 @@
     --background-color-accent-hover: var(--surface-accent-hover);
 
     --background-color-info: var(--surface-info);
+    --background-color-info-hover: var(--surface-info-hover);
     --background-color-success: var(--surface-success);
+    --background-color-success-hover: var(--surface-success-hover);
     --background-color-warning: var(--surface-warning);
+    --background-color-warning-hover: var(--surface-warning-hover);
     --background-color-danger: var(--surface-danger);
+    --background-color-danger-hover: var(--surface-danger-hover);
 
     /* Text Colors */
     --text-color-head: var(--text-head);
@@ -97,9 +101,13 @@
     --surface-accent-hover: var(--color-secondary-800);
 
     --surface-info: var(--color-info-300);
+    --surface-info-hover: var(--color-info-400);
     --surface-success: var(--color-success-300);
+    --surface-success-hover: var(--color-success-400);
     --surface-warning: var(--color-warning-300);
+    --surface-warning-hover: var(--color-warning-400);
     --surface-danger: var(--color-danger-300);
+    --surface-danger-hover: var(--color-danger-400);
 
     /* Text Colors */
     --text-head: var(--color-neutral-950);
@@ -117,10 +125,10 @@
     --text-accent-hover: var(--color-secondary-600);
     --text-on-accent: var(--color-neutral-200);
 
-    --text-info: var(--color-info-600);
-    --text-success: var(--color-success-600);
-    --text-warning: var(--color-warning-600);
-    --text-danger: var(--color-danger-600);
+    --text-info: var(--color-info-700);
+    --text-success: var(--color-success-700);
+    --text-warning: var(--color-warning-700);
+    --text-danger: var(--color-danger-700);
 
     /* Border Colors */
     --border-main: var(--color-neutral-300);
@@ -166,10 +174,14 @@
     --surface-accent-strong: var(--color-secondary-500);
     --surface-accent-hover: var(--color-secondary-400);
 
-    --surface-info: var(--color-info-700);
-    --surface-success: var(--color-success-700);
-    --surface-warning: var(--color-warning-700);
-    --surface-danger: var(--color-danger-700);
+    --surface-info: var(--color-info-900);
+    --surface-info-hover: var(--color-info-800);
+    --surface-success: var(--color-success-900);
+    --surface-success-hover: var(--color-success-800);
+    --surface-warning: var(--color-warning-900);
+    --surface-warning-hover: var(--color-warning-800);
+    --surface-danger: var(--color-danger-900);
+    --surface-danger-hover: var(--color-danger-800);
 
     /* Text Colors */
     --text-head: var(--color-neutral-100);

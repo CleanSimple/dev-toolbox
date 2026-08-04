@@ -66,8 +66,8 @@ export function Pipeline(props: PipelineProps) {
                 <div class='flex-1' />
 
                 <Show when={props.isEditing}>
-                    <Button color='danger' class='p-1!' onclick={props.onDelete}>
-                        <Trash2 class='w-5 h-5' />
+                    <Button variant='ghost' color='danger' shape='square' onclick={props.onDelete}>
+                        <Trash2 size={20} />
                     </Button>
                 </Show>
             </div>
@@ -91,7 +91,7 @@ export function Pipeline(props: PipelineProps) {
                                 onDelete={popOperation}
                             />
                             {index() !== operations().length - 1
-                                ? <ArrowRight class='w-4 h-4 text-subtle' />
+                                ? <ArrowRight size={20} class='text-subtle' />
                                 : null}
                         </>
                     )}

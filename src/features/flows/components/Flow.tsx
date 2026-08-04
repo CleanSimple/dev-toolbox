@@ -7,13 +7,25 @@ import { Loader } from '@/components/Loader';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CodeMirror } from '@/components/ui/CodeMirror';
+import { Divider } from '@/components/ui/Divider';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
+import { Menu } from '@/components/ui/Menu';
+import { MenuItem } from '@/components/ui/MenuItem';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { Select } from '@/components/ui/Select';
 import { formatError } from '@/utils';
-import { ArrowLeft, Plus, Save, SquarePen, Trash2 } from 'lucide-solid';
-import { For, Show } from 'solid-js';
+import {
+    ArrowLeft,
+    Clipboard,
+    EllipsisVertical,
+    Plus,
+    Save,
+    SquarePen,
+    Star,
+    Trash2,
+} from 'lucide-solid';
+import { createSignal, For, Show } from 'solid-js';
 import { Pipeline } from './Pipeline';
 
 interface FlowProps {
@@ -51,8 +63,13 @@ export function Flow(props: FlowProps) {
         addPipeline,
         isParsing,
     } = props.flowVM;
+    const [actionsMenuOpen, setActionsMenuOpen] = createSignal(false);
     const confirmDeleteFlowModal = createModal();
     const confirmDeletePipelineModal = createModal();
+
+    async function handlePaste() {
+        setInput(await navigator.clipboard.readText());
+    }
 
     function handleSaveFlow() {
         saveFlow();
@@ -78,48 +95,81 @@ export function Flow(props: FlowProps) {
         <div class='w-full flex flex-col gap-6'>
             {/* Header */}
             <div class='flex items-center gap-3 pb-2 border-b border-subtle'>
-                <Button class='p-2!' onclick={props.onBack}>
-                    <ArrowLeft class='w-6 h-6 text-brand' />
+                <Button shape='square' onclick={props.onBack}>
+                    <ArrowLeft size={24} />
                 </Button>
                 <Show
                     when={isEditing()}
-                    fallback={<h1 class='text-2xl font-bold text-head'>{name()}</h1>}
+                    fallback={<h1 class='flex-1 text-2xl font-bold text-head'>{name()}</h1>}
                 >
                     <Input
-                        class='text-2xl! font-bold text-head w-80'
+                        class='flex-1 text-2xl! font-bold text-head'
                         type='text'
                         value={name()}
                         onInput={(e) => setName(e.currentTarget.value)}
                     />
                 </Show>
 
-                {/* padding */}
-                <div class='flex-1' />
-
-                <Button
-                    color='secondary'
-                    size='lg'
-                    class='gap-2'
-                    disabled={!isCustom()}
-                    onClick={isEditing() ? handleSaveFlow : editFlow}
-                >
-                    <Show when={isEditing()}>
-                        <Save class='w-5 h-5' /> Save
-                    </Show>
-                    <Show when={!isEditing()}>
-                        <SquarePen class='w-5 h-5' /> Edit
-                    </Show>
-                </Button>
-                <Button
-                    color='danger'
-                    size='lg'
-                    class='gap-2'
-                    disabled={!isCustom()}
-                    onClick={() => void handleDeleteFlow()}
-                >
-                    <Trash2 class='w-5 h-5' />
-                    Delete
-                </Button>
+                <Show when={isEditing()}>
+                    <Button
+                        color='secondary'
+                        size='lg'
+                        class='gap-2'
+                        onClick={handleSaveFlow}
+                    >
+                        <Save size={24} /> Save
+                    </Button>
+                </Show>
+                <div class='relative'>
+                    <Button
+                        variant='ghost'
+                        shape='square'
+                        round
+                        onClick={() => setActionsMenuOpen(prev => !prev)}
+                    >
+                        <EllipsisVertical size={24} />
+                    </Button>
+                    <Menu
+                        show={actionsMenuOpen()}
+                        onClose={() => setActionsMenuOpen(false)}
+                        class='absolute top-full right-0'
+                    >
+                        <Show when={!props.flowVM.isFavorite()}>
+                            <MenuItem
+                                icon={Star}
+                                iconProps={{ class: 'text-yellow-500 fill-yellow-500' }}
+                                onClick={() => props.flowVM.setIsFavorite(true)}
+                            >
+                                Favorite
+                            </MenuItem>
+                        </Show>
+                        <Show when={props.flowVM.isFavorite()}>
+                            <MenuItem
+                                icon={Star}
+                                iconProps={{ class: 'text-yellow-500' }}
+                                onClick={() => props.flowVM.setIsFavorite(false)}
+                            >
+                                Unfavorite
+                            </MenuItem>
+                        </Show>
+                        <MenuItem
+                            icon={SquarePen}
+                            disabled={!isCustom() || isEditing()}
+                            onClick={editFlow}
+                        >
+                            Edit
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem
+                            icon={Trash2}
+                            class='text-danger'
+                            disabled={!isCustom()}
+                            onClick={() => void handleDeleteFlow()}
+                        >
+                            Delete
+                        </MenuItem>
+                    </Menu>
+                </div>
             </div>
 
             {/* Input Section */}
@@ -164,10 +214,22 @@ export function Flow(props: FlowProps) {
                                 )}
                             </For>
                         </Select>
+
                         <Show when={parserError()}>
                             <span class='text-danger'>{parserError()}</span>
                         </Show>
                     </div>
+
+                    <div class='flex-1' />
+
+                    <Button
+                        variant='ghost'
+                        shape='square'
+                        title='Paste from clipboard'
+                        onClick={() => void handlePaste()}
+                    >
+                        <Clipboard size={20} />
+                    </Button>
                 </div>
 
                 <div class='flex flex-col gap-2 relative'>
@@ -213,7 +275,7 @@ export function Flow(props: FlowProps) {
                     class='self-center gap-1'
                     onClick={() => addPipeline()}
                 >
-                    <Plus class='w-5 h-5' />
+                    <Plus size={24} />
                     Add Pipeline
                 </Button>
             </Show>

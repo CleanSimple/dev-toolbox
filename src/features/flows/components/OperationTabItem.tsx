@@ -25,8 +25,8 @@ export function OperationTabItem(props: OperationTabItemProps) {
         >
             <span>{props.operationVM.name}</span>
             <Show when={props.canDelete}>
-                <Button color='danger' size='sm' class='p-0.5!' onClick={() => props.onDelete()}>
-                    <X class='w-4 h-4' />
+                <Button color='danger' size='sm' shape='square' onClick={() => props.onDelete()}>
+                    <X size={16} />
                 </Button>
             </Show>
 

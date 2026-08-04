@@ -16,7 +16,7 @@ export const searchableSelectStyles = tv({
         listContainer: 'max-h-40 overflow-y-auto',
         listItem: 'px-2 py-1 cursor-pointer hover:bg-subtle/50 transition-colors',
         clearButton:
-            'p-1 text-subtle hover:bg-danger hover:text-danger rounded-md transition-colors',
+            'p-1 text-subtle hover:bg-danger/30 hover:text-danger rounded-md cursor-pointer transition-colors',
     },
     variants: {
         size: {

@@ -74,11 +74,13 @@ export function AddOperation(props: AddOperationProps) {
             <Button
                 title='Add Operation'
                 color='secondary'
-                class='p-1! ml-2'
+                size='sm'
+                shape='square'
+                class='ml-2'
                 disabled={props.inputDataFormatId === null}
                 onClick={() => void handleAddOperation()}
             >
-                <Plus class='w-6 h-6' />
+                <Plus size={24} />
             </Button>
 
             <Modal

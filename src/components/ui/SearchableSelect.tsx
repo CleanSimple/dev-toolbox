@@ -110,14 +110,13 @@ export function SearchableSelect<T>(props: SearchableSelectProps<T>) {
                         when={value() && !props.disabled}
                         fallback={<ChevronDown size={16} class='text-subtle' />}
                     >
-                        <div
+                        <button
+                            type='button'
                             class={styles.clearButton()}
                             onClick={handleClear}
-                            role='button'
-                            tabIndex={0}
                         >
                             <X size={16} />
-                        </div>
+                        </button>
                     </Show>
                 </div>
             </button>

@@ -1,26 +1,29 @@
 import { createEffect, createSignal } from 'solid-js';
 
 export function createFlowIdListStore(storeKey: string) {
-    const [favorites, setFavorites] = createSignal<string[]>([]);
+    const [flowIdList, setFlowIdList] = createSignal<string[]>([]);
 
-    const has = (flowId: string) => favorites().includes(flowId);
-    const add = (flowId: string) => setFavorites((prev) => [...prev, flowId]);
-    const remove = (flowId: string) => setFavorites((prev) => prev.filter((id) => id !== flowId));
-    const list = () => favorites();
+    const has = (flowId: string) => flowIdList().includes(flowId);
+    const add = (flowId: string) => setFlowIdList((prev) => [...prev, flowId]);
+    const unshift = (flowId: string) => setFlowIdList((prev) => [flowId, ...prev]);
+    const remove = (flowId: string) => setFlowIdList((prev) => prev.filter((id) => id !== flowId));
+    const clear = () => setFlowIdList([]);
+    const list = () => flowIdList();
+    const size = () => flowIdList().length;
 
     const data = localStorage.getItem(storeKey);
     if (data) {
         try {
-            setFavorites(JSON.parse(data) as string[]);
+            setFlowIdList(JSON.parse(data) as string[]);
         }
         catch (error) {
             console.warn('failed to load custom flows', error);
         }
     }
 
-    createEffect(() => localStorage.setItem(storeKey, JSON.stringify(favorites())));
+    createEffect(() => localStorage.setItem(storeKey, JSON.stringify(flowIdList())));
 
-    return { has, add, remove, list };
+    return { has, add, unshift, remove, clear, list, size };
 }
 
 export type FlowIdListStore = ReturnType<typeof createFlowIdListStore>;

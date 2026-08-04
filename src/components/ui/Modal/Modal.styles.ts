@@ -6,7 +6,7 @@ export const modalStyles = tv({
             'fixed top-0 left-0 right-0 bottom-0 z-50 bg-subtle/50 flex flex-col justify-center items-center p-10',
         container:
             'flex flex-col w-full min-h-0 bg-content border border-subtle rounded-xl shadow-lg animate-fade-in-up',
-        header: 'flex flex-row justify-between items-center border-b border-subtle',
+        header: 'flex flex-row items-start justify-between border-b border-subtle',
         content: 'bg-base overflow-y-auto',
         footer: 'border-t border-subtle flex justify-end gap-2',
         title: 'font-bold text-head',

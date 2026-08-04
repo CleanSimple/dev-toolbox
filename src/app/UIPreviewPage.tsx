@@ -1,3 +1,5 @@
+import { OfflinePrompt } from '@/components/pwa/OfflinePrompt';
+import { ReloadPrompt } from '@/components/pwa/ReloadPrompt';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
@@ -75,14 +77,52 @@ export function UIPreviewPage() {
             </div>
 
             <h1>Button</h1>
-            <For each={['sm', 'md', 'lg'] as const}>
-                {(size) => (
-                    <div class='flex flex-row gap-5'>
-                        <For each={['default', 'primary', 'secondary'] as const}>
-                            {(color) => <Button color={color} size={size}>Button</Button>}
-                        </For>
-                        <Button color='primary' size={size} disabled>Button</Button>
-                    </div>
+            <For each={['wide', 'square'] as const}>
+                {(shape) => (
+                    <For each={[false, true] as const}>
+                        {(round) => (
+                            <For each={['filled', 'ghost'] as const}>
+                                {(variant) => (
+                                    <For each={['sm', 'md', 'lg'] as const}>
+                                        {(size) => (
+                                            <div class='flex flex-row gap-5'>
+                                                <For
+                                                    each={[
+                                                        'default',
+                                                        'primary',
+                                                        'secondary',
+                                                        'danger',
+                                                    ] as const}
+                                                >
+                                                    {(color) => (
+                                                        <Button
+                                                            variant={variant}
+                                                            color={color}
+                                                            size={size}
+                                                            shape={shape}
+                                                            round={round}
+                                                        >
+                                                            Button
+                                                        </Button>
+                                                    )}
+                                                </For>
+                                                <Button
+                                                    variant={variant}
+                                                    color='primary'
+                                                    size={size}
+                                                    shape={shape}
+                                                    round={round}
+                                                    disabled
+                                                >
+                                                    Button
+                                                </Button>
+                                            </div>
+                                        )}
+                                    </For>
+                                )}
+                            </For>
+                        )}
+                    </For>
                 )}
             </For>
 
@@ -180,6 +220,12 @@ export function UIPreviewPage() {
                 <Modal title='Test' {...modal.props}>
                     Test
                 </Modal>
+            </div>
+
+            <h1>Prompts</h1>
+            <div>
+                <OfflinePrompt show={true} onClose={() => null} />
+                <ReloadPrompt show={false} onUpdate={() => null} onClose={() => null} />
             </div>
         </div>
     );

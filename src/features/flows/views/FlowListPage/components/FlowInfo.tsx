@@ -1,6 +1,7 @@
 import type { FlowInfoViewModel } from '#/flows/view-models/FlowInfoViewModel';
 
 import { useFlows } from '#/flows/contexts/FlowsContext';
+import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { A } from '@solidjs/router';
 import { Star, Trash2 } from 'lucide-solid';
@@ -42,24 +43,30 @@ export function FlowInfo(props: FlowInfoProps) {
                     <div class='flex-1' />
 
                     <Show when={props.flowInfoVM.isCustom}>
-                        <button
-                            class='p-2 rounded-full hover:bg-danger/80 hover:text-danger transition-colors cursor-pointer'
+                        <Button
+                            variant='ghost'
+                            color='danger'
+                            shape='square'
+                            round
                             onClick={handleDelete}
                         >
-                            <Trash2 class='h-5 w-5' />
-                        </button>
+                            <Trash2 size={20} />
+                        </Button>
                     </Show>
-                    <button
-                        class='border border-main p-2 rounded-full hover:bg-subtle/50 cursor-pointer group/star active:scale-95'
+                    <Button
+                        variant='ghost'
+                        shape='square'
+                        round
+                        class='hover:text-yellow-500'
                         onClick={handleFavorite}
                     >
                         <Star
-                            class='h-5 w-5'
+                            size={20}
                             classList={{
                                 'text-yellow-500 fill-yellow-500': props.flowInfoVM.isFavorite(),
                             }}
                         />
-                    </button>
+                    </Button>
                 </div>
                 <For each={props.flowInfoVM.pipelines}>
                     {(pipelineInfoVM) => <PipelineInfo pipelineInfoVM={pipelineInfoVM} />}

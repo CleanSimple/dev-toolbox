@@ -16,7 +16,7 @@ import { batch, createComputed, createEffect, createMemo, createSignal, on } fro
 import { createPipelineViewModel } from './PipelineViewModel';
 
 export function createFlowViewModel(flowId: Accessor<string>) {
-    const { customFlows } = useFlows();
+    const { customFlows, favorites } = useFlows();
     const flow = createMemo((): Flow =>
         get(Flows, flowId()) ?? customFlows.get(flowId()) ?? {
             name: 'New Flow',
@@ -44,6 +44,15 @@ export function createFlowViewModel(flowId: Accessor<string>) {
     const [isEditing, _setIsEditing] = createSignal(false);
 
     const isCustom = createMemo(() => !hasKey(Flows, flowId()));
+    const isFavorite = createMemo(() => favorites.has(flowId()));
+    const setIsFavorite = (isFavorite: boolean) => {
+        if (isFavorite) {
+            favorites.add(flowId());
+        }
+        else {
+            favorites.remove(flowId());
+        }
+    };
     const dataFormatName = createMemo(() =>
         get(DataFormats, dataFormatId())?.name ?? dataFormatId()
     );
@@ -189,6 +198,8 @@ export function createFlowViewModel(flowId: Accessor<string>) {
         name,
         setName,
         isCustom,
+        isFavorite,
+        setIsFavorite,
         editFlow,
         saveFlow,
         deleteFlow,

@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/Button';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Monitor, Moon, Sun } from 'lucide-solid';
 import { Match, Switch } from 'solid-js';
@@ -17,9 +18,12 @@ export function ThemeToggle() {
     };
 
     return (
-        <button
+        <Button
+            variant='ghost'
+            color='secondary'
+            shape='square'
+            round
             onClick={toggleTheme}
-            class='p-2 rounded-full text-body hover:bg-accent hover:text-on-accent transition-colors'
             aria-label='Toggle Theme'
             title={buttonTitle()}
         >
@@ -34,6 +38,6 @@ export function ThemeToggle() {
                     <Moon size={20} />
                 </Match>
             </Switch>
-        </button>
+        </Button>
     );
 }

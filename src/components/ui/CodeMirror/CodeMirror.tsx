@@ -1,6 +1,5 @@
 import type { SupportedLang } from '@/types';
 
-import { diagnosticsFromError } from '@/components/ui/CodeMirror/CodeMirror.diagnostics';
 import { useTheme } from '@/contexts/ThemeContext';
 import { closeBrackets } from '@codemirror/autocomplete';
 import { defaultKeymap, indentWithTab } from '@codemirror/commands';
@@ -15,6 +14,7 @@ import {
     placeholder as placeholderExtension,
 } from '@codemirror/view';
 import { createEffect, on, onCleanup, onMount } from 'solid-js';
+import { diagnosticsFromError } from './CodeMirror.diagnostics';
 import './CodeMirror.styles.css';
 
 const langs = {
@@ -38,11 +38,16 @@ export function CodeMirror(props: CodeMirrorProps) {
     const { actualTheme } = useTheme();
     let container!: HTMLDivElement;
     let view: EditorView | null = null;
+    let currentValue = props.value;
 
     /* --- Value --- */
     createEffect(on(() => props.value, (value) => {
         if (!view) return;
-        view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: value } });
+        if (value === currentValue) return;
+        view.dispatch({
+            userEvent: 'input.value.set',
+            changes: { from: 0, to: view.state.doc.length, insert: value },
+        });
     }));
 
     /* --- Placeholder --- */
@@ -112,7 +117,7 @@ export function CodeMirror(props: CodeMirrorProps) {
 
     onMount(() => {
         const state = EditorState.create({
-            doc: props.value,
+            doc: currentValue,
             extensions: [
                 keymap.of([...defaultKeymap, indentWithTab]),
                 lineNumbers(),
@@ -126,9 +131,15 @@ export function CodeMirror(props: CodeMirrorProps) {
                 lang.of(getLang()),
 
                 EditorView.updateListener.of((update) => {
-                    if (update.docChanged) {
-                        props.onValueChange?.(update.state.doc.toString());
+                    if (!update.docChanged) {
+                        return;
                     }
+                    if (update.transactions[0].isUserEvent('input.value.set')) {
+                        return;
+                    }
+
+                    currentValue = update.state.doc.toString();
+                    props.onValueChange?.(currentValue);
                 }),
             ],
         });

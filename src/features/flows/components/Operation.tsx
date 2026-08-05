@@ -1,13 +1,12 @@
 import type { FormatterId } from '#/flows/definitions/formatters';
 import type { OperationViewModel } from '#/flows/view-models/OperationViewModel';
 
+import { CopyButton } from '@/components/CopyButton';
 import { Loader } from '@/components/Loader';
-import { Button } from '@/components/ui/Button';
 import { CodeMirror } from '@/components/ui/CodeMirror';
 import { Label } from '@/components/ui/Label';
 import { Select } from '@/components/ui/Select';
 import { formatError } from '@/utils';
-import { Copy } from 'lucide-solid';
 import { For, Show } from 'solid-js';
 
 interface OperationProps {
@@ -15,59 +14,47 @@ interface OperationProps {
 }
 
 export function Operation(props: OperationProps) {
-    function handleCopy() {
-        void navigator.clipboard.writeText(props.operationVM.formattedOutput() ?? '');
-    }
-
     return (
-        <div class='flex flex-col gap-4'>
-            <div class='flex items-center gap-6'>
-                <div class='flex items-center gap-2'>
-                    <Label size='sm'>Formatter</Label>
-                    <Select
-                        size='sm'
-                        hasError={Boolean(props.operationVM.formatterError())}
-                        value={props.operationVM.formatterId()}
-                        onInput={(e) =>
-                            props.operationVM.setFormatterId(e.currentTarget.value as FormatterId)}
-                    >
-                        <For each={Array.from(props.operationVM.availableFormatters.entries())}>
-                            {([id, formatter]) => (
-                                <option value={id}>
-                                    {formatter.name}
-                                </option>
-                            )}
-                        </For>
-                    </Select>
-                    <Show when={props.operationVM.formatterError()} keyed>
-                        {(error) => (
-                            <span class='text-sm text-danger'>
-                                {formatError(error)}
-                            </span>
+        <div class='flex flex-col'>
+            <div class='flex items-center gap-2'>
+                <Label size='sm'>Formatter</Label>
+                <Select
+                    size='sm'
+                    hasError={Boolean(props.operationVM.formatterError())}
+                    value={props.operationVM.formatterId()}
+                    onInput={(e) =>
+                        props.operationVM.setFormatterId(e.currentTarget.value as FormatterId)}
+                >
+                    <For each={Array.from(props.operationVM.availableFormatters.entries())}>
+                        {([id, formatter]) => (
+                            <option value={id}>
+                                {formatter.name}
+                            </option>
                         )}
-                    </Show>
-                </div>
-
-                <div class='flex-1' />
-
-                <Button variant='ghost' shape='square' title='Copy' onClick={handleCopy}>
-                    <Copy size={20} />
-                </Button>
+                    </For>
+                </Select>
+                <Show when={props.operationVM.formatterError()} keyed>
+                    {(error) => (
+                        <span class='text-sm text-danger'>
+                            {formatError(error)}
+                        </span>
+                    )}
+                </Show>
             </div>
 
             <div class='flex flex-col gap-2'>
-                <div class='relative flex'>
-                    <CodeMirror
-                        class='w-full h-50'
-                        error={props.operationVM.outputError()}
-                        readonly
-                        lang={props.operationVM.formatterLang()}
-                        value={props.operationVM.formattedOutput() ?? ''}
-                    />
-                    <Show when={props.operationVM.isFormatting()}>
-                        <Loader text='Formatting...' />
-                    </Show>
+                <div class='flex items-end justify-between'>
+                    <Label size='sm'>Output</Label>
+
+                    <CopyButton source={props.operationVM.formattedOutput} />
                 </div>
+                <CodeMirror
+                    class='w-full h-50'
+                    error={props.operationVM.outputError()}
+                    readonly
+                    lang={props.operationVM.formatterLang()}
+                    value={props.operationVM.formattedOutput() ?? ''}
+                />
                 <Show when={props.operationVM.outputError()} keyed>
                     {(error) => (
                         <span class='text-sm text-danger'>
@@ -76,6 +63,9 @@ export function Operation(props: OperationProps) {
                     )}
                 </Show>
             </div>
+            <Show when={props.operationVM.isFormatting()}>
+                <Loader text='Formatting...' />
+            </Show>
         </div>
     );
 }

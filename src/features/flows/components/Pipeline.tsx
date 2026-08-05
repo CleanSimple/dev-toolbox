@@ -49,77 +49,85 @@ export function Pipeline(props: PipelineProps) {
     });
 
     return (
-        <Card class='flex flex-col gap-4'>
-            <div class='flex items-center gap-2'>
-                <Show
-                    when={props.isEditing}
-                    fallback={<h1 class='text-lg font-bold text-head'>{name()}</h1>}
-                >
-                    <Input
-                        class='text-lg font-bold text-head min-w-0 w-80'
-                        type='text'
-                        value={name()}
-                        onInput={(e) => setName(e.currentTarget.value)}
-                    />
-                </Show>
+        <Card class='flex flex-col p-0! overflow-clip'>
+            <div class='flex flex-col p-4 gap-2 border-b border-subtle'>
+                <div class='flex items-center gap-2'>
+                    <Show
+                        when={props.isEditing}
+                        fallback={<h1 class='text-lg font-bold text-head'>{name()}</h1>}
+                    >
+                        <Input
+                            class='text-lg font-bold text-head flex-1'
+                            type='text'
+                            value={name()}
+                            onInput={(e) => setName(e.currentTarget.value)}
+                        />
+                    </Show>
 
-                <div class='flex-1' />
+                    <Show when={props.isEditing}>
+                        <Button
+                            variant='ghost'
+                            color='danger'
+                            shape='square'
+                            onclick={props.onDelete}
+                        >
+                            <Trash2 size={20} />
+                        </Button>
+                    </Show>
+                </div>
 
-                <Show when={props.isEditing}>
-                    <Button variant='ghost' color='danger' shape='square' onclick={props.onDelete}>
-                        <Trash2 size={20} />
-                    </Button>
-                </Show>
-            </div>
-
-            <div class='flex flex-wrap gap-1 items-center'>
-                <span>Operations:</span>
-                <For each={operations()}>
-                    {(operation, index) => (
-                        <>
-                            <OperationTabItem
-                                operationVM={operation}
-                                type={operation.type}
-                                selected={index() == selectedOperation()}
-                                inactive={operation.isInactive}
-                                hasError={Boolean(
-                                    operation.operationError() ?? operation.formatterError()
-                                        ?? operation.outputError(),
-                                )}
-                                canDelete={props.isEditing && index() === operations().length - 1}
-                                onClick={() => setSelectedOperation(index())}
-                                onDelete={popOperation}
-                            />
-                            {index() !== operations().length - 1
-                                ? <ArrowRight size={20} class='text-subtle' />
-                                : null}
-                        </>
-                    )}
-                </For>
-                <Show when={props.isEditing}>
-                    <AddOperation
-                        inputDataFormatId={newOperationDataFormat()}
-                        onOperationSelected={addOperation}
-                    />
-                </Show>
+                <div class='flex flex-wrap gap-2 items-center'>
+                    <span>Operations:</span>
+                    <For each={operations()}>
+                        {(operation, index) => (
+                            <>
+                                <OperationTabItem
+                                    operationVM={operation}
+                                    type={operation.type}
+                                    selected={index() == selectedOperation()}
+                                    inactive={operation.isInactive}
+                                    hasError={Boolean(
+                                        operation.operationError() ?? operation.formatterError()
+                                            ?? operation.outputError(),
+                                    )}
+                                    canDelete={props.isEditing
+                                        && index() === operations().length - 1}
+                                    onClick={() => setSelectedOperation(index())}
+                                    onDelete={popOperation}
+                                />
+                                {index() !== operations().length - 1
+                                    ? <ArrowRight size={20} class='text-subtle' />
+                                    : null}
+                            </>
+                        )}
+                    </For>
+                    <Show when={props.isEditing}>
+                        <AddOperation
+                            inputDataFormatId={newOperationDataFormat()}
+                            onOperationSelected={addOperation}
+                        />
+                    </Show>
+                </div>
             </div>
 
             {/* Output */}
-            <Show when={operations()[selectedOperation()]} keyed>
-                {(operation) => (
-                    <Switch>
-                        <Match when={operation.isInactive}>
-                            <span>The operation is not active</span>
-                        </Match>
-                        <Match when={operation.operationError()}>
-                            <span class='text-danger'>Error: {operation.operationError()}</span>
-                        </Match>
-                        <Match when={true}>
-                            <Operation operationVM={operation} />
-                        </Match>
-                    </Switch>
-                )}
-            </Show>
+            <div class='relative flex flex-col gap-2 p-4'>
+                <Show when={operations()[selectedOperation()]} keyed>
+                    {(operation) => (
+                        <Switch>
+                            <Match when={operation.isInactive}>
+                                <span>The operation is not active</span>
+                            </Match>
+                            <Match when={operation.operationError()}>
+                                <span class='text-danger'>Error: {operation.operationError()}</span>
+                            </Match>
+                            <Match when={true}>
+                                <Operation operationVM={operation} />
+                            </Match>
+                        </Switch>
+                    )}
+                </Show>
+            </div>
         </Card>
     );
 }

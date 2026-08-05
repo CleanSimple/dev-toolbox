@@ -4,6 +4,7 @@ import type { FlowViewModel } from '#/flows/view-models/FlowViewModel';
 
 import { DataFormats } from '#/flows/definitions/data-formats';
 import { Loader } from '@/components/Loader';
+import { PasteButton } from '@/components/PasteButton';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CodeMirror } from '@/components/ui/CodeMirror';
@@ -15,16 +16,7 @@ import { MenuItem } from '@/components/ui/MenuItem';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { Select } from '@/components/ui/Select';
 import { formatError } from '@/utils';
-import {
-    ArrowLeft,
-    Clipboard,
-    EllipsisVertical,
-    Plus,
-    Save,
-    SquarePen,
-    Star,
-    Trash2,
-} from 'lucide-solid';
+import { ArrowLeft, EllipsisVertical, Plus, Save, SquarePen, Star, Trash2 } from 'lucide-solid';
 import { createSignal, For, Show } from 'solid-js';
 import { Pipeline } from './Pipeline';
 
@@ -66,10 +58,6 @@ export function Flow(props: FlowProps) {
     const [actionsMenuOpen, setActionsMenuOpen] = createSignal(false);
     const confirmDeleteFlowModal = createModal();
     const confirmDeletePipelineModal = createModal();
-
-    async function handlePaste() {
-        setInput(await navigator.clipboard.readText());
-    }
 
     function handleSaveFlow() {
         saveFlow();
@@ -173,7 +161,7 @@ export function Flow(props: FlowProps) {
             </div>
 
             {/* Input Section */}
-            <Card class='flex flex-col gap-4'>
+            <Card class='relative flex flex-col overflow-clip'>
                 <div class='flex items-center gap-6'>
                     <div class='flex items-center gap-2'>
                         <Label size='sm'>Input Type</Label>
@@ -219,20 +207,15 @@ export function Flow(props: FlowProps) {
                             <span class='text-danger'>{parserError()}</span>
                         </Show>
                     </div>
-
-                    <div class='flex-1' />
-
-                    <Button
-                        variant='ghost'
-                        shape='square'
-                        title='Paste from clipboard'
-                        onClick={() => void handlePaste()}
-                    >
-                        <Clipboard size={20} />
-                    </Button>
                 </div>
 
-                <div class='flex flex-col gap-2 relative'>
+                <div class='flex flex-col gap-2'>
+                    <div class='flex items-end justify-between'>
+                        <Label size='sm'>Input</Label>
+
+                        <PasteButton onPaste={setInput} />
+                    </div>
+
                     <CodeMirror
                         class='w-full h-50'
                         error={inputError()}
@@ -253,10 +236,10 @@ export function Flow(props: FlowProps) {
                             <span class='text-sm text-subtle'>Example: {inputExample}</span>
                         )}
                     </Show>
-                    <Show when={isParsing()}>
-                        <Loader text='Parsing...' />
-                    </Show>
                 </div>
+                <Show when={isParsing()}>
+                    <Loader text='Parsing...' />
+                </Show>
             </Card>
 
             <For each={pipelines()}>

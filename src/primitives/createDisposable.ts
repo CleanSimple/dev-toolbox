@@ -4,11 +4,12 @@ export function createDisposable<T>(disposer: (value: T) => void) {
     const [value, _setValue] = createSignal<T | null>(null);
 
     function setValue(next: T | null) {
-        const old = value();
-        if (old && old !== next) {
-            disposer(old);
-        }
-        _setValue(() => next);
+        _setValue((prev) => {
+            if (prev && prev !== next) {
+                disposer(prev);
+            }
+            return next;
+        });
     }
 
     onCleanup(() => {

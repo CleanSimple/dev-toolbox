@@ -1,9 +1,10 @@
-import type { IParser } from '#/flows/types';
+import type { ITextParser } from '#/flows/types/ITextParser';
 
 import { UrlParameters } from '#/flows/data-formats';
 
-export class UrlParametersParser implements IParser<UrlParameters> {
+export class UrlParametersParser implements ITextParser<UrlParameters> {
     public readonly name = 'URL Parameters';
+    public readonly type = 'text';
     public readonly placeholder = 'Enter a URL or a URL query string';
     public readonly example =
         'https://example.com?key1=value1&key2=value2, key1=value1&key2=value2';

@@ -1,4 +1,6 @@
-import type { DataFormatId, DataRef } from '#/flows/definitions/data-formats';
+import type { DataFormat, DataFormatId, DataRef } from '#/flows/definitions/data-formats';
+import type { IParser } from '#/flows/types';
+import type { ParserInput } from '#/flows/types/IParser';
 import type { Flow } from '#/flows/types/models';
 import type { SupportedLang } from '@/types';
 import type { Accessor } from 'solid-js';
@@ -29,7 +31,7 @@ export function createFlowViewModel(flowId: Accessor<string>) {
     const [dataFormatId, _setDataFormatId] = createSignal(flow().dataFormatId);
     const [parserId, setParserId] = createSignal(flow().parserId);
     const [parserError, setParserError] = createSignal<string | null>(null);
-    const [rawInput, setRawInput] = createSignal<string | null>(null);
+    const [rawInput, setRawInput] = createSignal<ParserInput | null>(null);
     const [input, setInput] = createDisposable<DataRef>((output) => {
         if (output.scope === 'local') return;
 
@@ -59,7 +61,9 @@ export function createFlowViewModel(flowId: Accessor<string>) {
 
     const availableParsers = createMemo(() => {
         return new Map(
-            getParsers(dataFormatId()).map((id) => [id, Parsers[id].parser] as const),
+            getParsers(dataFormatId()).map((id) =>
+                [id, Parsers[id].parser as IParser<DataFormat>] as const
+            ),
         );
     });
 
@@ -83,15 +87,17 @@ export function createFlowViewModel(flowId: Accessor<string>) {
         setParserError(null);
 
         const parser = availableParsers().get(parserId());
-        if (parser) {
-            setInputPlaceholder(parser.placeholder);
-            setInputExample(parser.example ?? null);
-            setInputLang(parser.lang);
-        }
-        else {
+        if (!parser) {
             setParserError(
                 'The selected parser does not exit or is not compatible with the input data format',
             );
+            return;
+        }
+
+        if (parser.type === 'text') {
+            setInputPlaceholder(parser.placeholder);
+            setInputExample(parser.example ?? null);
+            setInputLang(parser.lang);
         }
     });
 

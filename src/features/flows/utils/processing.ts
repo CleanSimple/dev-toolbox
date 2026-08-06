@@ -3,6 +3,7 @@ import type { FormatterId } from '#/flows/definitions/formatters';
 import type { OperationId } from '#/flows/definitions/operations';
 import type { ParserId } from '#/flows/definitions/parsers';
 import type { IFormatter, IOperation } from '#/flows/types';
+import type { ParserInput } from '#/flows/types/IParser';
 import type {
     InferMessageResult,
     Message,
@@ -52,21 +53,35 @@ function sendMessage<T extends ProcessingMessage>(message: T) {
     });
 }
 
-export async function parse(parserId: ParserId, input: string) {
-    // input = largeByteArray;
-    if (input.length >= BACKGROUND_THRESHOLD) {
+export async function parse(parserId: ParserId, input: ParserInput) {
+    if (
+        (typeof input === 'string' && input.length >= BACKGROUND_THRESHOLD)
+        || (input instanceof File && input.size >= BACKGROUND_THRESHOLD)
+    ) {
         return await parseInBackground(parserId, input);
     }
-    return parseInForeground(parserId, input);
+    return await parseInForeground(parserId, input);
 }
 
-function parseInForeground(parserId: ParserId, input: string): LocalData {
+async function parseInForeground(parserId: ParserId, input: ParserInput): Promise<LocalData> {
     const parser = Parsers[parserId].parser;
-    const result = parser.parse(input);
-    return { scope: 'local', instance: result };
+    if (parser.type === 'text') {
+        if (typeof input !== 'string') {
+            throw new Error('Invalid input: Expected text');
+        }
+        const result = parser.parse(input);
+        return { scope: 'local', instance: result };
+    }
+    else {
+        if (input instanceof File === false) {
+            throw new Error('Invalid input: Expected file');
+        }
+        const result = await parser.parse(input);
+        return { scope: 'local', instance: result };
+    }
 }
 
-async function parseInBackground(parserId: ParserId, input: string) {
+async function parseInBackground(parserId: ParserId, input: ParserInput) {
     const result = await sendMessage({ type: 'parse', parserId, data: input });
     return result.data;
 }

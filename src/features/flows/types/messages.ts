@@ -2,6 +2,7 @@ import type { WorkerData } from '#/flows/definitions/data-formats';
 import type { FormatterId } from '#/flows/definitions/formatters';
 import type { OperationId } from '#/flows/definitions/operations';
 import type { ParserId } from '#/flows/definitions/parsers';
+import type { ParserInput } from '#/flows/types/IParser';
 import type { SerializedError } from '#/flows/utils/serialization';
 
 export interface Message<T> {
@@ -12,7 +13,7 @@ export interface Message<T> {
 export interface ParseMessage {
     type: 'parse';
     parserId: ParserId;
-    data: string;
+    data: ParserInput;
 }
 
 export interface ParseResultMessage {

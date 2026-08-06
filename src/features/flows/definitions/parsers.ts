@@ -3,6 +3,7 @@ import type { IParser } from '#/flows/types';
 
 import { DataFormats } from '#/flows/definitions/data-formats';
 import { Base64Parser } from '#/flows/parsers/Base64Parser';
+import { BytesFileParser } from '#/flows/parsers/BytesFileParser';
 import { BytesHexParser } from '#/flows/parsers/BytesHexParser';
 import { JsonParser } from '#/flows/parsers/JsonParser';
 import { TextParser } from '#/flows/parsers/TextParser';
@@ -11,16 +12,19 @@ import { UrlEncodedParser } from '#/flows/parsers/UrlEncodedParser';
 import { UrlParametersParser } from '#/flows/parsers/UrlParametersParser';
 import { hasKey } from '@cleansimple/utils-js';
 
-interface ParserRecord<T extends DataFormatId> {
+interface ParserRecord<T extends DataFormatId, TParser extends IParser<DataFormatById<T>>> {
     dataFormatId: T;
-    parser: IParser<DataFormatById<T>>;
+    parser: TParser;
 }
 
-const parser = <T extends DataFormatId>(record: ParserRecord<T>) => record;
+const parser = <T extends DataFormatId, TParser extends IParser<DataFormatById<T>>>(
+    record: ParserRecord<T, TParser>,
+) => record;
 
 export const Parsers = {
     'text': parser({ dataFormatId: 'text', parser: new TextParser() }),
     'hex': parser({ dataFormatId: 'bytes', parser: new BytesHexParser() }),
+    'bytes-file': parser({ dataFormatId: 'bytes', parser: new BytesFileParser() }),
     'base64': parser({ dataFormatId: 'base64', parser: new Base64Parser() }),
     'json': parser({ dataFormatId: 'json', parser: new JsonParser() }),
     'url-encoded': parser({ dataFormatId: 'url-encoded', parser: new UrlEncodedParser() }),

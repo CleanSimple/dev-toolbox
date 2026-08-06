@@ -1,10 +1,5 @@
-import type { SupportedLang } from '@/types';
 import type { IDataFormat } from './IDataFormat';
+import type { IFileParser } from './IFileParser';
+import type { ITextParser } from './ITextParser';
 
-export interface IParser<T extends IDataFormat<unknown>> {
-    name: string;
-    placeholder: string;
-    example?: string;
-    lang: SupportedLang;
-    parse: (text: string) => T;
-}
+export type IParser<T extends IDataFormat<unknown>> = ITextParser<T> | IFileParser<T>;

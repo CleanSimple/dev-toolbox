@@ -30,10 +30,24 @@ async function handleMessage(message: ProcessingMessage): Promise<ResultMessage>
         switch (message.type) {
             case 'parse': {
                 const parser = Parsers[message.parserId].parser;
-                return {
-                    type: 'parse',
-                    data: storeData(parser.parse(message.data)),
-                };
+                if (parser.type === 'text') {
+                    if (typeof message.data !== 'string') {
+                        throw new Error('Invalid input: Expected text');
+                    }
+                    return {
+                        type: 'parse',
+                        data: storeData(parser.parse(message.data)),
+                    };
+                }
+                else {
+                    if (message.data instanceof File === false) {
+                        throw new Error('Invalid input: Expected file');
+                    }
+                    return {
+                        type: 'parse',
+                        data: storeData(await parser.parse(message.data)),
+                    };
+                }
             }
             case 'runOperation': {
                 const operation = Operations[message.operationId].operation as IOperation<

@@ -1,10 +1,11 @@
-import type { IParser } from '#/flows/types';
+import type { ITextParser } from '#/flows/types/ITextParser';
 
 import { Bytes } from '#/flows/data-formats';
 import { regexSplit } from '@/utils';
 
-export class BytesHexParser implements IParser<Bytes> {
+export class BytesHexParser implements ITextParser<Bytes> {
     public readonly name = 'Hex';
+    public readonly type = 'text';
     public readonly placeholder = 'Enter bytes as hexadecimal values';
     public readonly example = "'0x61 0x62 0x63', '61 62 63', '616263'";
     public readonly lang = 'text';

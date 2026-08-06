@@ -1,7 +1,25 @@
-import { formatError, regexSplit } from '@/utils';
+import { formatError, get, regexSplit } from '@/utils';
 import { describe, expect, it } from 'vitest';
 
 describe('Utils', () => {
+    describe('get', () => {
+        it.each([
+            ['a', 1],
+            ['b', 2],
+            ['c', undefined],
+            ['d', undefined],
+        ])('should get value from object', (key, expected) => {
+            // Arrange
+            const obj = { a: 1, b: 2 };
+
+            // Act
+            const result = get(obj, key);
+
+            // Assert
+            expect(result).toBe(expected);
+        });
+    });
+
     describe('formatError', () => {
         it('should format error correctly', () => {
             // Arrange

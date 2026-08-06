@@ -94,6 +94,11 @@ export const Operations = {
         outDataFormatId: 'bytes',
         operation: new HashText({ algorithm: 'SHA-512' }),
     }),
+    'hash-text-crc32': operation({
+        inDataFormatId: 'text',
+        outDataFormatId: 'bytes',
+        operation: new HashText({ algorithm: 'CRC-32' }),
+    }),
     'hash-bytes-sha1': operation({
         inDataFormatId: 'bytes',
         outDataFormatId: 'bytes',
@@ -113,6 +118,11 @@ export const Operations = {
         inDataFormatId: 'bytes',
         outDataFormatId: 'bytes',
         operation: new HashBytes({ algorithm: 'SHA-512' }),
+    }),
+    'hash-bytes-crc32': operation({
+        inDataFormatId: 'bytes',
+        outDataFormatId: 'bytes',
+        operation: new HashBytes({ algorithm: 'CRC-32' }),
     }),
     'url-encoded-data-to-json': operation({
         inDataFormatId: 'url-encoded-data',

@@ -12,14 +12,11 @@ const crcTable = (() => {
     return table;
 })();
 
-export function crc32(str: string) {
-    const encoder = new TextEncoder();
-    const bytes = encoder.encode(str);
-
+export function crc32(data: Uint8Array) {
     let crc = 0xFFFFFFFF;
 
-    for (const b of bytes) {
-        crc = crcTable[(crc ^ b) & 0xFF] ^ (crc >>> 8);
+    for (const byte of data) {
+        crc = crcTable[(crc ^ byte) & 0xFF] ^ (crc >>> 8);
     }
 
     return (crc ^ 0xFFFFFFFF) >>> 0;

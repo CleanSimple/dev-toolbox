@@ -1,8 +1,8 @@
 import type { IOperation } from '#/flows/types';
+import type { HashAlgorithm } from '@/utils/hashing';
 
 import { Bytes } from '#/flows/data-formats';
-
-type HashAlgorithm = 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512';
+import { generateHash } from '@/utils/hashing';
 
 interface HashTextOptions {
     algorithm: HashAlgorithm;
@@ -20,7 +20,7 @@ export class HashBytes implements IOperation<Bytes, Bytes> {
     public readonly type = 'hash';
 
     public async handler(input: Bytes) {
-        const hash = await crypto.subtle.digest(this._algorithm, input.value);
+        const hash = await generateHash(this._algorithm, input.value);
         return new Bytes(new Uint8Array(hash));
     }
 }

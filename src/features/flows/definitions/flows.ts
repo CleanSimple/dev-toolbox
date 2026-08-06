@@ -267,6 +267,15 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                     },
                 ],
             },
+            {
+                name: 'CRC-32',
+                operations: [
+                    {
+                        operationId: 'hash-text-crc32',
+                        formatterId: 'hex-compact',
+                    },
+                ],
+            },
         ],
     },
     'bytes-to-text': {

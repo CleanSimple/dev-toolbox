@@ -5,7 +5,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'url-encode': {
         name: 'URL Encode',
         dataFormatId: 'text',
-        parserId: 'text',
         pipelines: [
             {
                 name: 'URL Encode',
@@ -21,7 +20,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'url-decode': {
         name: 'URL Decode',
         dataFormatId: 'url-encoded',
-        parserId: 'url-encoded',
         pipelines: [
             {
                 name: 'URL Decode',
@@ -37,7 +35,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'base64-encode-text': {
         name: 'Base64 Encode Text',
         dataFormatId: 'text',
-        parserId: 'text',
         pipelines: [
             {
                 name: 'Base64 Encode',
@@ -53,7 +50,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'base64-encode-bytes': {
         name: 'Base64 Encode Bytes',
         dataFormatId: 'bytes',
-        parserId: 'hex',
         pipelines: [
             {
                 name: 'Base64 Encode',
@@ -69,7 +65,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'base64-decode': {
         name: 'Base64 Decode',
         dataFormatId: 'base64',
-        parserId: 'base64',
         pipelines: [
             {
                 name: 'Base64 Decode',
@@ -85,7 +80,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'json-prettify': {
         name: 'JSON Prettify',
         dataFormatId: 'json',
-        parserId: 'json',
         pipelines: [
             {
                 name: 'JSON Prettify',
@@ -101,7 +95,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'json-minify': {
         name: 'JSON Minify',
         dataFormatId: 'json',
-        parserId: 'json',
         pipelines: [
             {
                 name: 'JSON Minify',
@@ -117,7 +110,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'url-params-to-json': {
         name: 'URL Parameters to JSON',
         dataFormatId: 'url-parameters',
-        parserId: 'url-parameters',
         pipelines: [
             {
                 name: 'URL Parameters to JSON',
@@ -133,7 +125,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'json-to-url-encoded-form': {
         name: 'JSON to URL-encoded Form',
         dataFormatId: 'json',
-        parserId: 'json',
         pipelines: [
             {
                 name: 'JSON to URL-encoded Form',
@@ -149,7 +140,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'json-flatten': {
         name: 'Flatten JSON Object',
         dataFormatId: 'json',
-        parserId: 'json',
         pipelines: [
             {
                 name: 'Flatten JSON',
@@ -165,7 +155,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'path-to-unix': {
         name: 'Path to Unix',
         dataFormatId: 'text',
-        parserId: 'text',
         pipelines: [
             {
                 name: 'Path to Unix',
@@ -181,7 +170,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'path-to-windows': {
         name: 'Path to Windows',
         dataFormatId: 'text',
-        parserId: 'text',
         pipelines: [
             {
                 name: 'Path to Windows',
@@ -197,7 +185,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'json-string-encode': {
         name: 'JSON String Encode',
         dataFormatId: 'text',
-        parserId: 'text',
         pipelines: [
             {
                 name: 'JSON String Encode',
@@ -213,7 +200,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'json-string-decode': {
         name: 'JSON String Decode',
         dataFormatId: 'text',
-        parserId: 'text',
         pipelines: [
             {
                 name: 'JSON String Decode',
@@ -229,7 +215,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'hash-text': {
         name: 'Text Hash Generator',
         dataFormatId: 'text',
-        parserId: 'text',
         pipelines: [
             {
                 name: 'SHA-1',
@@ -281,7 +266,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'bytes-to-text': {
         name: 'Bytes to Text',
         dataFormatId: 'bytes',
-        parserId: 'hex',
         pipelines: [
             {
                 name: 'Bytes to Text',
@@ -297,7 +281,6 @@ export const Flows = Object.freeze<Record<string, Flow>>({
     'text-to-bytes': {
         name: 'Text to Bytes',
         dataFormatId: 'text',
-        parserId: 'text',
         pipelines: [
             {
                 name: 'Text to Bytes',
@@ -317,7 +300,6 @@ function devFlows(): Record<string, Flow> {
         'test': {
             name: 'Bunch of Stuff™',
             dataFormatId: 'text',
-            parserId: 'text',
             pipelines: [
                 {
                     name: 'Encode/Decode',
@@ -376,7 +358,6 @@ function devFlows(): Record<string, Flow> {
         'bad-flow': {
             name: 'Bad Flow',
             dataFormatId: 'text',
-            parserId: 'hex',
             pipelines: [
                 {
                     name: 'Broken',

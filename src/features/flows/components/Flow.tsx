@@ -1,13 +1,11 @@
 import type { DataFormatId } from '#/flows/definitions/data-formats';
-import type { ParserId } from '#/flows/definitions/parsers';
+import type { ParserInput } from '#/flows/types/IParser';
 import type { FlowViewModel } from '#/flows/view-models/FlowViewModel';
 
 import { DataFormats } from '#/flows/definitions/data-formats';
 import { Loader } from '@/components/Loader';
-import { PasteButton } from '@/components/PasteButton';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { CodeMirror } from '@/components/ui/CodeMirror';
 import { Divider } from '@/components/ui/Divider';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
@@ -15,10 +13,12 @@ import { Menu } from '@/components/ui/Menu';
 import { MenuItem } from '@/components/ui/MenuItem';
 import { createModal, Modal } from '@/components/ui/Modal';
 import { Select } from '@/components/ui/Select';
-import { formatError } from '@/utils';
 import { ArrowLeft, EllipsisVertical, Plus, Save, SquarePen, Star, Trash2 } from 'lucide-solid';
 import { createSignal, For, Show } from 'solid-js';
+import { FileParser } from './FileParser';
 import { Pipeline } from './Pipeline';
+import { tabItemStyles } from './TabItem.styles';
+import { TextParser } from './TextParser';
 
 interface FlowProps {
     flowVM: FlowViewModel;
@@ -39,17 +39,14 @@ export function Flow(props: FlowProps) {
         input,
         setInput,
         dataFormatId,
-        dataFormatName,
         canSetDataFormatId,
         setDataFormatId,
         availableParsers,
-        parserId,
-        setParserId,
+        selectedParser,
+        setSelectedParser,
         parserError,
-        inputPlaceholder,
-        inputExample,
+        parser,
         inputError,
-        inputLang,
         pipelines,
         deletePipeline,
         addPipeline,
@@ -161,82 +158,71 @@ export function Flow(props: FlowProps) {
             </div>
 
             {/* Input Section */}
-            <Card class='relative flex flex-col overflow-clip'>
-                <div class='flex items-center gap-6'>
-                    <div class='flex items-center gap-2'>
-                        <Label size='sm'>Input Type</Label>
-                        <Select
-                            size='sm'
-                            value={dataFormatId()}
-                            disabled={!canSetDataFormatId()}
-                            onInput={(e) => setDataFormatId(e.currentTarget.value as DataFormatId)}
+            <Card class='relative flex flex-col gap-2 overflow-clip'>
+                <div class='flex items-center gap-2'>
+                    <Label size='sm'>Input Type</Label>
+                    <Select
+                        size='sm'
+                        value={dataFormatId()}
+                        disabled={!canSetDataFormatId()}
+                        onInput={(e) => setDataFormatId(e.currentTarget.value as DataFormatId)}
+                    >
+                        <For
+                            each={Object.entries(DataFormats).filter(
+                                ([, format]) => !format.hidden,
+                            )}
                         >
-                            <For
-                                each={Object.entries(DataFormats).filter(
-                                    ([, format]) => !format.hidden,
-                                )}
-                            >
-                                {([id, format]) => (
-                                    <option value={id}>
-                                        {format.name}
-                                    </option>
-                                )}
-                            </For>
-                        </Select>
-                    </div>
-                    <div class='flex items-center gap-2'>
-                        <Label size='sm'>Parser</Label>
-                        <Select
-                            size='sm'
-                            hasError={Boolean(parserError())}
-                            value={parserId()}
-                            onInput={(e) => setParserId(e.currentTarget.value as ParserId)}
-                        >
-                            <For each={Array.from(availableParsers().entries())}>
-                                {([id, parser]) => (
-                                    <option value={id}>
-                                        {parser.name === dataFormatName()
-                                            ? 'Default'
-                                            : parser.name}
-                                    </option>
-                                )}
-                            </For>
-                        </Select>
-
-                        <Show when={parserError()}>
-                            <span class='text-danger'>{parserError()}</span>
-                        </Show>
-                    </div>
+                            {([id, format]) => (
+                                <option value={id}>
+                                    {format.name}
+                                </option>
+                            )}
+                        </For>
+                    </Select>
                 </div>
 
-                <div class='flex flex-col gap-2'>
-                    <div class='flex items-end justify-between'>
-                        <Label size='sm'>Input</Label>
-
-                        <PasteButton onPaste={setInput} />
+                <Show when={parserError()}>
+                    <span class='text-danger'>{parserError()}</span>
+                </Show>
+                <Show when={availableParsers().length > 1}>
+                    <div class='flex items-center'>
+                        <For each={availableParsers()}>
+                            {(parser, index) => (
+                                <button
+                                    class={tabItemStyles({
+                                        selected: selectedParser() === index(),
+                                    })}
+                                    onClick={() => setSelectedParser(index())}
+                                >
+                                    {parser.parser.name}
+                                </button>
+                            )}
+                        </For>
                     </div>
+                </Show>
 
-                    <CodeMirror
-                        class='w-full h-50'
-                        error={inputError()}
-                        value={input() ?? ''}
-                        placeholder={inputPlaceholder() ?? ''}
-                        lang={inputLang()}
-                        onValueChange={(value) => setInput(value)}
-                    />
-                    <Show when={inputError()} keyed>
-                        {(inputError) => (
-                            <span class='text-sm text-danger'>
-                                Error: {formatError(inputError)}
-                            </span>
-                        )}
-                    </Show>
-                    <Show when={inputExample()} keyed>
-                        {(inputExample) => (
-                            <span class='text-sm text-subtle'>Example: {inputExample}</span>
-                        )}
-                    </Show>
-                </div>
+                <Show when={parser()} keyed>
+                    {(parser) => (
+                        <>
+                            {parser.type === 'text' && (
+                                <TextParser
+                                    parser={parser}
+                                    input={textOnlyInput(input())}
+                                    inputError={inputError()}
+                                    onInputChange={setInput}
+                                />
+                            )}
+                            {parser.type === 'file' && (
+                                <FileParser
+                                    parser={parser}
+                                    input={fileOnlyInput(input())}
+                                    inputError={inputError()}
+                                    onInputChange={setInput}
+                                />
+                            )}
+                        </>
+                    )}
+                </Show>
                 <Show when={isParsing()}>
                     <Loader text='Parsing...' />
                 </Show>
@@ -281,4 +267,12 @@ export function Flow(props: FlowProps) {
             </Modal>
         </div>
     );
+}
+
+function textOnlyInput(input: ParserInput | null) {
+    return typeof input === 'string' ? input : '';
+}
+
+function fileOnlyInput(input: ParserInput | null) {
+    return input instanceof File ? input : null;
 }

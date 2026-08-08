@@ -1,5 +1,6 @@
 import type { FlowInfoViewModel } from '#/flows/view-models/FlowInfoViewModel';
 
+import { tabItemStyles } from '#/flows/components/TabItem.styles';
 import { useFlows } from '#/flows/contexts/FlowsContext';
 import { Flows } from '#/flows/definitions/flows';
 import { createFlowInfoViewModel } from '#/flows/view-models/FlowInfoViewModel';
@@ -11,20 +12,36 @@ import { useNavigate } from '@solidjs/router';
 import { Frown, Plus, Search } from 'lucide-solid';
 import { createMemo, createSelector, createSignal, For } from 'solid-js';
 import { FlowInfo } from './components/FlowInfo';
-import { tabItemStyles } from './components/TabItem.styles';
 
-type Group = 'all' | 'builtin' | 'custom' | 'favorite';
+interface Group {
+    label: string;
+    filter: (item: FlowInfoViewModel) => boolean;
+}
 
-const groupFilters: Record<Group, (item: FlowInfoViewModel) => boolean> = {
-    all: () => true,
-    builtin: (item: FlowInfoViewModel) => !item.isCustom,
-    custom: (item: FlowInfoViewModel) => item.isCustom,
-    favorite: (item: FlowInfoViewModel) => item.isFavorite(),
-};
+const groups = {
+    all: {
+        label: 'All',
+        filter: () => true,
+    },
+    builtin: {
+        label: 'Builtin',
+        filter: (item: FlowInfoViewModel) => !item.isCustom,
+    },
+    custom: {
+        label: 'Custom',
+        filter: (item: FlowInfoViewModel) => item.isCustom,
+    },
+    favorite: {
+        label: 'Favorites',
+        filter: (item: FlowInfoViewModel) => item.isFavorite(),
+    },
+} satisfies Record<string, Group>;
+
+type GroupKey = keyof typeof groups;
 
 export function FlowListPage() {
     const [search, setSearch] = createSignal('');
-    const [group, setGroup] = createSignal<Group>('all');
+    const [group, setGroup] = createSignal<GroupKey>('all');
     const { customFlows } = useFlows();
     const confirmDeleteFlowModal = createModal();
     const navigate = useNavigate();
@@ -36,7 +53,7 @@ export function FlowListPage() {
     const filteredFlows = createMemo(() => {
         const query = search().toLowerCase();
         const filtered = flows()
-            .filter(groupFilters[group()])
+            .filter(groups[group()].filter)
             .filter((flowInfo) => flowInfo.name.toLowerCase().includes(query));
         return filtered;
     });
@@ -71,30 +88,16 @@ export function FlowListPage() {
             </div>
 
             <div class='flex items-center flex-1'>
-                <button
-                    class={tabItemStyles({ selected: isGroupSelected('all') })}
-                    onClick={() => setGroup('all')}
-                >
-                    All
-                </button>
-                <button
-                    class={tabItemStyles({ selected: isGroupSelected('builtin') })}
-                    onClick={() => setGroup('builtin')}
-                >
-                    Builtin
-                </button>
-                <button
-                    class={tabItemStyles({ selected: isGroupSelected('custom') })}
-                    onClick={() => setGroup('custom')}
-                >
-                    Custom
-                </button>
-                <button
-                    class={tabItemStyles({ selected: isGroupSelected('favorite') })}
-                    onClick={() => setGroup('favorite')}
-                >
-                    Favorites
-                </button>
+                <For each={Object.entries(groups)}>
+                    {([key, group]) => (
+                        <button
+                            class={tabItemStyles({ selected: isGroupSelected(key as GroupKey) })}
+                            onClick={() => setGroup(key as GroupKey)}
+                        >
+                            {group.label}
+                        </button>
+                    )}
+                </For>
             </div>
 
             <div class='grid gap-4 lg:grid-cols-2'>

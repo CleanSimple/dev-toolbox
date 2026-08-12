@@ -75,6 +75,7 @@ export function createFlowViewModel(flowId: Accessor<string>) {
         setParserId(null);
         setParser(null);
         setRawInput(null);
+        setInput(null);
 
         const parser = availableParsers().at(selectedParser());
         if (!parser) {

@@ -43,9 +43,10 @@ export function CodeMirror(props: CodeMirrorProps) {
     /* --- Value --- */
     createEffect(on(() => props.value, (value) => {
         if (!view) return;
+        value = value.replaceAll('\r\n', '\n');
         if (value === currentValue) return;
+        currentValue = value;
         view.dispatch({
-            userEvent: 'input.value.set',
             changes: { from: 0, to: view.state.doc.length, insert: value },
         });
     }));
@@ -134,11 +135,9 @@ export function CodeMirror(props: CodeMirrorProps) {
                     if (!update.docChanged) {
                         return;
                     }
-                    if (update.transactions[0].isUserEvent('input.value.set')) {
-                        return;
-                    }
-
-                    currentValue = update.state.doc.toString();
+                    const value = update.state.doc.toString();
+                    if (value === currentValue) return;
+                    currentValue = value;
                     props.onValueChange?.(currentValue);
                 }),
             ],

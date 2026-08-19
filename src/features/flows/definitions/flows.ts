@@ -1,8 +1,23 @@
+import type { DataFormatId } from '#/flows/definitions/data-formats';
+import type { FormatterId } from '#/flows/definitions/formatters';
+import type { OperationId } from '#/flows/definitions/operations';
 import type { Flow } from '#/flows/models';
+
+const flow = (flow: {
+    name: string;
+    dataFormatId: DataFormatId;
+    pipelines: {
+        name: string;
+        operations: {
+            operationId: OperationId;
+            formatterId: FormatterId;
+        }[];
+    }[];
+}) => flow;
 
 export const Flows = Object.freeze<Record<string, Flow>>({
     ...(import.meta.env.DEV ? devFlows() : {}),
-    'url-encode': {
+    'url-encode': flow({
         name: 'URL Encode',
         dataFormatId: 'text',
         pipelines: [
@@ -16,8 +31,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'url-decode': {
+    }),
+    'url-decode': flow({
         name: 'URL Decode',
         dataFormatId: 'url-encoded',
         pipelines: [
@@ -31,8 +46,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'base64-encode-text': {
+    }),
+    'base64-encode-text': flow({
         name: 'Base64 Encode Text',
         dataFormatId: 'text',
         pipelines: [
@@ -46,8 +61,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'base64-encode-bytes': {
+    }),
+    'base64-encode-bytes': flow({
         name: 'Base64 Encode Bytes',
         dataFormatId: 'bytes',
         pipelines: [
@@ -61,8 +76,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'base64-decode': {
+    }),
+    'base64-decode': flow({
         name: 'Base64 Decode',
         dataFormatId: 'base64',
         pipelines: [
@@ -76,8 +91,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'json-prettify': {
+    }),
+    'json-prettify': flow({
         name: 'JSON Prettify',
         dataFormatId: 'json',
         pipelines: [
@@ -85,14 +100,14 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 name: 'JSON Prettify',
                 operations: [
                     {
-                        operationId: 'format-json-indent-4',
-                        formatterId: 'text',
+                        operationId: 'json-no-op',
+                        formatterId: 'json-indent-4',
                     },
                 ],
             },
         ],
-    },
-    'json-minify': {
+    }),
+    'json-minify': flow({
         name: 'JSON Minify',
         dataFormatId: 'json',
         pipelines: [
@@ -100,14 +115,14 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 name: 'JSON Minify',
                 operations: [
                     {
-                        operationId: 'format-json-compact',
-                        formatterId: 'text',
+                        operationId: 'json-no-op',
+                        formatterId: 'json-compact',
                     },
                 ],
             },
         ],
-    },
-    'url-params-to-json': {
+    }),
+    'url-params-to-json': flow({
         name: 'URL Parameters to JSON',
         dataFormatId: 'url-parameters',
         pipelines: [
@@ -121,8 +136,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'json-to-url-encoded-form': {
+    }),
+    'json-to-url-encoded-form': flow({
         name: 'JSON to URL-encoded Form',
         dataFormatId: 'json',
         pipelines: [
@@ -136,8 +151,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'json-flatten': {
+    }),
+    'json-flatten': flow({
         name: 'Flatten JSON Object',
         dataFormatId: 'json',
         pipelines: [
@@ -151,8 +166,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'path-to-unix': {
+    }),
+    'path-to-unix': flow({
         name: 'Path to Unix',
         dataFormatId: 'text',
         pipelines: [
@@ -166,8 +181,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'path-to-windows': {
+    }),
+    'path-to-windows': flow({
         name: 'Path to Windows',
         dataFormatId: 'text',
         pipelines: [
@@ -181,8 +196,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'json-string-encode': {
+    }),
+    'json-string-encode': flow({
         name: 'JSON String Encode',
         dataFormatId: 'text',
         pipelines: [
@@ -196,8 +211,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'json-string-decode': {
+    }),
+    'json-string-decode': flow({
         name: 'JSON String Decode',
         dataFormatId: 'text',
         pipelines: [
@@ -211,8 +226,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'hash-text': {
+    }),
+    'hash-text': flow({
         name: 'Text Hash Generator',
         dataFormatId: 'text',
         pipelines: [
@@ -262,8 +277,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'bytes-to-text': {
+    }),
+    'bytes-to-text': flow({
         name: 'Bytes to Text',
         dataFormatId: 'bytes',
         pipelines: [
@@ -277,8 +292,8 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
-    'text-to-bytes': {
+    }),
+    'text-to-bytes': flow({
         name: 'Text to Bytes',
         dataFormatId: 'text',
         pipelines: [
@@ -292,12 +307,12 @@ export const Flows = Object.freeze<Record<string, Flow>>({
                 ],
             },
         ],
-    },
+    }),
 });
 
 function devFlows(): Record<string, Flow> {
     return {
-        'test': {
+        'test': flow({
             name: 'Bunch of Stuff™',
             dataFormatId: 'text',
             pipelines: [
@@ -354,8 +369,8 @@ function devFlows(): Record<string, Flow> {
                     ],
                 },
             ],
-        },
-        'bad-flow': {
+        }),
+        'bad-flow': flow({
             name: 'Bad Flow',
             dataFormatId: 'text',
             pipelines: [
@@ -383,12 +398,12 @@ function devFlows(): Record<string, Flow> {
                             formatterId: 'text',
                         },
                         {
-                            operationId: 'bad-operation',
-                            formatterId: 'bad-formatter',
+                            operationId: 'bad-operation' as OperationId,
+                            formatterId: 'bad-formatter' as FormatterId,
                         },
                     ],
                 },
             ],
-        },
+        }),
     };
 }

@@ -1,6 +1,7 @@
 import type { DataFormatById, DataFormatId } from '#/flows/definitions/data-formats';
 import type { IOperation } from '#/flows/types';
 
+import { Json } from '#/flows/data-formats';
 import { DataFormats } from '#/flows/definitions/data-formats';
 import { Formatters } from '#/flows/definitions/formatters';
 import { Parsers } from '#/flows/definitions/parsers';
@@ -13,6 +14,7 @@ import { HashBytes } from '#/flows/operations/HashBytes';
 import { HashText } from '#/flows/operations/HashText';
 import { JsonFlatten } from '#/flows/operations/JsonFlatten';
 import { JsonToUrlEncodedForm } from '#/flows/operations/JsonToUrlEncodedData';
+import { NoOp } from '#/flows/operations/NoOp';
 import { Parse } from '#/flows/operations/Parse';
 import { PathToUnix } from '#/flows/operations/PathToUnix';
 import { PathToWindows } from '#/flows/operations/PathToWindows';
@@ -265,6 +267,13 @@ export const Operations = {
         inDataFormatId: 'url-encoded-data',
         outDataFormatId: 'text',
         operation: new Format(Formatters['url-encoded-data'].formatter),
+    }),
+
+    // No Operation
+    'json-no-op': operation({
+        inDataFormatId: 'json',
+        outDataFormatId: 'json',
+        operation: new NoOp<Json>(),
     }),
 };
 

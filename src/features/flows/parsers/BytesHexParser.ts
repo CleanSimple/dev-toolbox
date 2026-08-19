@@ -1,7 +1,7 @@
 import type { ITextParser } from '#/flows/types/ITextParser';
 
 import { Bytes } from '#/flows/data-formats';
-import { regexSplit } from '@/utils';
+import { regexSplit } from '@/utils/text';
 
 export class BytesHexParser implements ITextParser<Bytes> {
     public readonly name = 'Hex';

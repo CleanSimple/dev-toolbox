@@ -1,4 +1,4 @@
-import type { Flow } from '#/flows/types/models';
+import type { Flow } from '#/flows/models';
 
 export const Flows = Object.freeze<Record<string, Flow>>({
     ...(import.meta.env.DEV ? devFlows() : {}),
@@ -381,6 +381,10 @@ function devFlows(): Record<string, Flow> {
                         {
                             operationId: 'base64-decode',
                             formatterId: 'text',
+                        },
+                        {
+                            operationId: 'bad-operation',
+                            formatterId: 'bad-formatter',
                         },
                     ],
                 },

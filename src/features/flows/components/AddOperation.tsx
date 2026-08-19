@@ -1,7 +1,6 @@
-import type { DataFormatId } from '#/flows/definitions/data-formats';
 import type { FormatterId } from '#/flows/definitions/formatters';
 import type { OperationId } from '#/flows/definitions/operations';
-import type { Operation } from '#/flows/types/models';
+import type { Operation } from '#/flows/models';
 
 import { OperationChip } from '#/flows/components/OperationChip';
 import { Formatters, getFormatters } from '#/flows/definitions/formatters';
@@ -14,7 +13,7 @@ import { Plus } from 'lucide-solid';
 import { createMemo, createSignal, Show } from 'solid-js';
 
 interface AddOperationProps {
-    inputDataFormatId: DataFormatId | null;
+    inputDataFormatId: string | null;
     onOperationSelected: (operation: Operation) => void;
 }
 

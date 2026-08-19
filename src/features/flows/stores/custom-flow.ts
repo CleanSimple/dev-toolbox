@@ -1,7 +1,9 @@
-import type { Flow } from '#/flows/types/models';
+import type { Flow } from '#/flows/models';
 
+import { FlowSchema } from '#/flows/models';
 import { createEffect } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
+import { parse } from 'valibot';
 
 export function createCustomFlowStore(storeKey: string) {
     const [state, setState] = createStore<Record<string, Flow>>({});
@@ -14,13 +16,25 @@ export function createCustomFlowStore(storeKey: string) {
 
     const data = localStorage.getItem(storeKey);
     if (data) {
+        let flows: Record<string, unknown> = {};
         try {
-            const flows = JSON.parse(data) as Record<string, Flow>;
-            setState(produce(state => Object.assign(state, flows)));
+            flows = JSON.parse(data) as Record<string, unknown>;
         }
         catch (error) {
             console.warn('failed to load custom flows', error);
         }
+
+        const flowsValidated: Record<string, Flow> = {};
+        for (const [flowId, flowRaw] of Object.entries(flows)) {
+            try {
+                flowsValidated[flowId] = parse(FlowSchema, flowRaw);
+            }
+            catch (error) {
+                console.warn(`failed to load custom flow: ${flowId}`, error);
+            }
+        }
+
+        setState(produce(state => Object.assign(state, flowsValidated)));
     }
 
     createEffect(() => localStorage.setItem(storeKey, JSON.stringify(state)));

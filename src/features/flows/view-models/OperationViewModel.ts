@@ -1,23 +1,32 @@
-import type { DataFormatId, DataRef } from '#/flows/definitions/data-formats';
-import type { Operation } from '#/flows/types/models';
-import type { SupportedLang } from '@/types';
+import type { DataFormat, DataRef } from '#/flows/definitions/data-formats';
+import type { FormatterId } from '#/flows/definitions/formatters';
+import type { Operation } from '#/flows/models';
+import type { IFormatter } from '#/flows/types';
 import type { Accessor } from 'solid-js';
 
 import { Formatters, getFormatters } from '#/flows/definitions/formatters';
 import { getOperations, Operations } from '#/flows/definitions/operations';
 import { format, releaseData, runOperation } from '#/flows/utils/processing';
-import { createDisposable, createLazyAsyncComputed } from '@/primitives';
-import { get } from '@/utils';
-import { createDeferred, createEffect, createSignal } from 'solid-js';
+import { createDisposable, createLazyAsyncMemo } from '@/primitives';
+import { get, includes } from '@/utils';
+import { createComputed, createDeferred, createEffect, createSignal, on } from 'solid-js';
+
+const InvalidOperation = {
+    operation: {
+        name: undefined,
+        type: 'unknown',
+    },
+} as const;
 
 export function createOperationViewModel(
     operation: Operation,
-    inputDataFormatId: DataFormatId | null,
+    inputDataFormatId: string | null,
     input: Accessor<DataRef | null>,
 ) {
     const [operationError, setOperationError] = createSignal<string | null>(null);
-    const [formatterId, setFormatterId] = createSignal(operation.formatterId);
-    const [formatterLang, setFormatterLang] = createSignal<SupportedLang>('text');
+    const [selectedFormatter, setSelectedFormatter] = createSignal<number>(0);
+    const [formatterId, setFormatterId] = createSignal<FormatterId | null>(null);
+    const [formatter, setFormatter] = createSignal<IFormatter<DataFormat> | null>(null);
     const [formatterError, setFormatterError] = createSignal<unknown>(null);
     const [_output, setOutput] = createDisposable<DataRef>((output) => {
         if (output.scope === 'local') return;
@@ -30,72 +39,81 @@ export function createOperationViewModel(
 
     const output = createDeferred(_output);
 
-    const operationInst =
-        inputDataFormatId && getOperations(inputDataFormatId).includes(operation.operationId)
-            ? Operations[operation.operationId]
-            : null;
-    if (!operationInst) {
+    const availableOperations = inputDataFormatId ? getOperations(inputDataFormatId) : [];
+    const operationId = includes(availableOperations, operation.operationId)
+        ? operation.operationId
+        : null;
+    const {
+        operation: {
+            name = operation.operationId,
+            type,
+        },
+    } = operationId
+        ? Operations[operationId]
+        : get(Operations, operation.operationId) ?? InvalidOperation;
+    const outputDataFormatId = operationId ? Operations[operationId].outDataFormatId : null;
+
+    const _availableFormatters = outputDataFormatId ? getFormatters(outputDataFormatId) : [];
+    const availableFormatters = _availableFormatters.map(id => Formatters[id].formatter);
+
+    if (!operationId) {
         setOperationError(
-            "The selected operation does not exist or is not compatible with the input's data format",
+            "This operation does not exist or is not compatible with the input's data format",
         );
     }
+    if (includes(_availableFormatters, operation.formatterId)) {
+        setSelectedFormatter(_availableFormatters.indexOf(operation.formatterId));
+    }
 
-    const outputDataFormatId = operationInst?.outDataFormatId ?? null;
-    const availableFormatters = new Map(
-        outputDataFormatId
-            ? getFormatters(outputDataFormatId).map((id) => [id, Formatters[id].formatter] as const)
-            : [],
-    );
-
-    createEffect(() => {
-        setFormatterLang('text');
+    createComputed(on(selectedFormatter, (selectedFormatter) => {
+        setFormatterId(null);
+        setFormatter(null);
         setFormatterError(null);
 
-        const formatter = availableFormatters.get(formatterId());
-        if (formatter) {
-            setFormatterLang(formatter.lang);
-        }
-        else {
-            setFormatterError(
-                "The selected formatter does not exist or is not compatible with the operation output's data format",
-            );
-        }
-    });
-
-    const formattedOutput = createLazyAsyncComputed(async () => {
-        if (formatterError()) {
-            return null;
-        }
-
-        const outputLocal = output();
-        if (!outputLocal) {
-            return null;
-        }
-
-        setOutputError(null);
-        setIsFormatting(true);
-        try {
-            return await format(formatterId(), outputLocal);
-        }
-        catch (error) {
-            if (import.meta.env.DEV) {
-                console.error('formatting error', error);
-            }
-            setOutputError(error);
-            return null;
-        }
-        finally {
-            setIsFormatting(false);
-        }
-    });
-
-    createEffect(async () => {
-        if (!operationInst) {
+        const formatterId = _availableFormatters.at(selectedFormatter);
+        if (!formatterId) {
+            setFormatterError('Invalid formatter selected');
             return;
         }
 
-        const inputLocal = input();
-        if (!inputLocal) {
+        setFormatterId(formatterId);
+        setFormatter(Formatters[formatterId].formatter as IFormatter<DataFormat>);
+    }));
+
+    const formattedOutput = createLazyAsyncMemo(
+        on([formatterId, output], async ([formatterId, output]) => {
+            if (!formatterId) {
+                return null;
+            }
+
+            if (!output) {
+                return null;
+            }
+
+            setOutputError(null);
+            setIsFormatting(true);
+            try {
+                return await format(formatterId, output);
+            }
+            catch (error) {
+                if (import.meta.env.DEV) {
+                    console.error('formatting error', error);
+                }
+                setOutputError(error);
+                return null;
+            }
+            finally {
+                setIsFormatting(false);
+            }
+        }),
+    );
+
+    createEffect(on(input, async (input) => {
+        if (!operationId) {
+            return;
+        }
+
+        if (!input) {
             setOutputError(null);
             setOutput(null);
             return;
@@ -104,7 +122,7 @@ export function createOperationViewModel(
         setOutputError(null);
         setIsRunning(true);
         try {
-            const result = await runOperation(operation.operationId, inputLocal);
+            const result = await runOperation(operationId, input);
             setOutput(result);
         } catch (error) {
             if (import.meta.env.DEV) {
@@ -117,22 +135,19 @@ export function createOperationViewModel(
             await new Promise((resolve) => requestIdleCallback(resolve));
             setIsRunning(false);
         }
-    });
+    }));
 
     return {
         id: operation.operationId,
-        name: operationInst?.operation.name
-            ?? get(Operations, operation.operationId)?.operation.name
-            ?? operation.operationId,
-        type: operationInst?.operation.type
-            ?? get(Operations, operation.operationId)?.operation.type
-            ?? 'unknown' as const,
+        name,
+        type,
         isInactive: inputDataFormatId === null,
         operationError,
         availableFormatters,
-        setFormatterId,
+        selectedFormatter,
+        setSelectedFormatter,
         formatterId,
-        formatterLang,
+        formatter,
         formatterError,
         outputDataFormatId,
         output,

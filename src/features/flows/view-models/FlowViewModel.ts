@@ -1,8 +1,8 @@
 import type { DataFormat, DataFormatId, DataRef } from '#/flows/definitions/data-formats';
 import type { ParserId } from '#/flows/definitions/parsers';
+import type { Flow } from '#/flows/models';
 import type { IParser } from '#/flows/types';
 import type { ParserInput } from '#/flows/types/IParser';
-import type { Flow } from '#/flows/types/models';
 import type { Accessor } from 'solid-js';
 import type { PipelineViewModel } from './PipelineViewModel';
 
@@ -52,9 +52,9 @@ export function createFlowViewModel(flowId: Accessor<string>) {
             favorites.remove(flowId());
         }
     };
+    const _availableParsers = createMemo(() => getParsers(dataFormatId()));
     const availableParsers = createMemo(() => {
-        return getParsers(dataFormatId())
-            .map((id) => ({ id, parser: Parsers[id].parser as IParser<DataFormat> }));
+        return _availableParsers().map(id => Parsers[id].parser as IParser<DataFormat>);
     });
 
     createComputed(on(flow, (flow) => {
@@ -77,13 +77,14 @@ export function createFlowViewModel(flowId: Accessor<string>) {
         setRawInput(null);
         setInput(null);
 
-        const parser = availableParsers().at(selectedParser());
-        if (!parser) {
-            setParserError('Parser not found.');
+        const parserId = _availableParsers().at(selectedParser());
+        if (!parserId) {
+            setParserError('Invalid parser selected');
             return;
         }
-        setParserId(parser.id);
-        setParser(parser.parser);
+
+        setParserId(parserId);
+        setParser(Parsers[parserId].parser as IParser<DataFormat>);
     });
 
     createDebouncedEffect([parserId, rawInput], async ([parserId, rawInput]) => {
@@ -168,7 +169,7 @@ export function createFlowViewModel(flowId: Accessor<string>) {
                 name: pipeline.name(),
                 operations: pipeline.operations().map(operation => ({
                     operationId: operation.id,
-                    formatterId: operation.formatterId(),
+                    formatterId: operation.formatterId() ?? 'text',
                 })),
             })),
         });

@@ -1,4 +1,3 @@
-import type { FormatterId } from '#/flows/definitions/formatters';
 import type { OperationViewModel } from '#/flows/view-models/OperationViewModel';
 
 import { CopyButton } from '@/components/CopyButton';
@@ -21,13 +20,13 @@ export function Operation(props: OperationProps) {
                 <Select
                     size='sm'
                     hasError={Boolean(props.operationVM.formatterError())}
-                    value={props.operationVM.formatterId()}
+                    value={props.operationVM.selectedFormatter()}
                     onInput={(e) =>
-                        props.operationVM.setFormatterId(e.currentTarget.value as FormatterId)}
+                        props.operationVM.setSelectedFormatter(Number(e.currentTarget.value))}
                 >
-                    <For each={Array.from(props.operationVM.availableFormatters.entries())}>
-                        {([id, formatter]) => (
-                            <option value={id}>
+                    <For each={props.operationVM.availableFormatters}>
+                        {(formatter, index) => (
+                            <option value={index()}>
                                 {formatter.name}
                             </option>
                         )}
@@ -52,7 +51,7 @@ export function Operation(props: OperationProps) {
                     class='w-full h-50'
                     error={props.operationVM.outputError()}
                     readonly
-                    lang={props.operationVM.formatterLang()}
+                    lang={props.operationVM.formatter()?.lang ?? 'text'}
                     value={props.operationVM.formattedOutput() ?? ''}
                 />
                 <Show when={props.operationVM.outputError()} keyed>

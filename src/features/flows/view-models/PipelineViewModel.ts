@@ -1,5 +1,5 @@
-import type { DataFormatId, DataRef } from '#/flows/definitions/data-formats';
-import type { Operation, Pipeline } from '#/flows/types/models';
+import type { DataRef } from '#/flows/definitions/data-formats';
+import type { Operation, Pipeline } from '#/flows/models';
 import type { Accessor } from 'solid-js';
 import type { OperationViewModel } from './OperationViewModel';
 
@@ -8,7 +8,7 @@ import { createOperationViewModel } from './OperationViewModel';
 
 export function createPipelineViewModel(
     pipeline: Pipeline,
-    inputDataFormatId: Accessor<DataFormatId>,
+    inputDataFormatId: Accessor<string>,
     input: Accessor<DataRef | null>,
     isEditing: Accessor<boolean>,
 ) {
@@ -18,7 +18,7 @@ export function createPipelineViewModel(
     );
 
     const operationsLocal: OperationViewModel[] = [];
-    let nextInputDataFormatId: DataFormatId | null = inputDataFormatId();
+    let nextInputDataFormatId: string | null = inputDataFormatId();
     for (const operation of pipeline.operations) {
         const operationVM = createOperationViewModel(operation, nextInputDataFormatId, input);
         operationsLocal.push(operationVM);

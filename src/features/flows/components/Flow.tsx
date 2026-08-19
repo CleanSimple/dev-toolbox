@@ -194,7 +194,7 @@ export function Flow(props: FlowProps) {
                                     })}
                                     onClick={() => setSelectedParser(index())}
                                 >
-                                    {parser.parser.name}
+                                    {parser.name}
                                 </button>
                             )}
                         </For>

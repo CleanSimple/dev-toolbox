@@ -16,9 +16,144 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <title>Dev Toolbox</title>
+
+  <style>
+    :root {
+      --color-loader-bg-primary: #020618;
+      --color-loader-bg-secondary: #0f172b;
+
+      --color-loader-accent-primary: #155dfc;
+      --color-loader-accent-secondary: #2b7fff;
+
+      --color-loader-text: #a1a1a1;
+    }
+
+    /* Overlay */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      font-family: Arial, sans-serif;
+      background: var(--color-loader-bg-primary);
+    }
+
+    .loader-container {
+      background: radial-gradient(circle at center, var(--color-loader-bg-primary), var(--color-loader-bg-secondary));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loader {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    /* Animated dots */
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-loader-accent-primary), var(--color-loader-accent-secondary));
+      animation: bounce 1.5s ease-in infinite;
+
+      &:nth-child(1) {
+        animation-delay: -0.32s;
+      }
+
+      &:nth-child(2) {
+        animation-delay: -0.16s;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 0s;
+      }
+    }
+
+    /* Text */
+    .text {
+      margin: 0;
+      padding: 0;
+      color: var(--color-loader-text);
+    }
+
+    /* Animations */
+    .animate-fade-in {
+      animation: fade-in 0.5s ease-out forwards;
+    }
+
+    .animate-fade-out {
+      animation: fade-out 0.5s ease-in forwards;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0);
+      }
+
+      40% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fade-out {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 
 <body>
+
+  <div class="loader-overlay">
+    <div class="loader-container animate-fade-in">
+      <div class="loader">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <p class="text">Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    const loader = document.querySelector('.loader-overlay');
+
+    function onDocReadyStateChange() {
+      if (document.readyState === 'complete') {
+        document.removeEventListener('readystatechange', onDocReadyStateChange);
+        loader.classList.add('animate-fade-out');
+        loader.addEventListener('animationend', () => loader.remove());
+      }
+    }
+
+    loader.addEventListener('animationend', () => {
+      document.addEventListener('readystatechange', onDocReadyStateChange);
+      onDocReadyStateChange();
+    }, { once: true });
+  </script>
+
   <div id="root"></div>
   <script type="module" src="/src/index.tsx"></script>
 </body>
